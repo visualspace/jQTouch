@@ -9,7 +9,7 @@ Added
 - etc.
 
 See the demo here:
-    http://dev.beedesk.com/jqtouch_iscroll/demos/iscroll/
+    [Demo](http://dev.beedesk.com/jqtouch_iscroll/demos/iscroll/)
 
 
 jQTouch
