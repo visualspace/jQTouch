@@ -12,9 +12,9 @@ body {
     margin: 0;
     padding-left: 5px;
     padding-right: 5px;
-    color: rgb(76, 86, 108);
+    color: white;
     font: bold 13.5pt "Helvetica Neue", Helvetica;
-    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-shadow: 0px -1px 0px #374683;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -23,12 +23,11 @@ body {
 
 #jqt h2 {
     margin: 0;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 10px 20px 2px 20px; 
     color: rgb(76, 86, 108);
     font: bold 12pt "Helvetica Neue", Helvetica;
     text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
-    text-align: center;
+    text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -488,7 +487,7 @@ body {
 }
 
 #jqt ul li {
-    color: #666;
+    /* color: #666; */
     border-top: 1px solid #B4B4B4;
     list-style-type: none;
     padding: 10px 10px 10px 10px;
@@ -598,7 +597,7 @@ body {
 }
 
 #jqt ul li a + a + a, #jqt ul li.img a + a + a + a, #jqt ul li.img a + small + a + a + a {
-    color: #666;
+    /* color: #666; */
     font: 13px "Helvetica Neue", Helvetica;
     margin: 0;
     text-overflow: ellipsis;
@@ -613,6 +612,10 @@ body {
 
 
 /* @group Forms */
+#jqt form {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 
 #jqt ul.form li {
     padding: 7px 10px;
@@ -626,7 +629,37 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    right: 0;
+}
+
+#jqt ul li.value:first-child {
+    padding-top: 6px;
+}
+
+#jqt ul li.value {
+    width: auto;
+    color: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-weight: bold;
+    font-size: 11pt;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#jqt ul li.value:last-child {
+    padding-bottom: 6px;
+}
+
+#jqt ul li p {
+    position: relative;
+    width: 100%;
+    color: grey;
+    font-weight: 400;
+    font-size: 9pt;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #jqt ul.form li.error {
@@ -650,15 +683,19 @@ body {
 #jqt ul li input[type="url"],
 #jqt ul li textarea,
 #jqt ul li select {
-    color: #777;
+    position: relative;
+    float: right;
     background: #fff url('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
     border: 0;
     font: normal 17px "Helvetica Neue", Helvetica;
     padding: 0;
     display: inline-block;
     margin-left: 0px;
-    width: 100%;
     -webkit-appearance: textarea;
+    color: #385487;
+    font-weight: 500;
+    text-align: right;
+    width: 300px;
 }
 
 #jqt ul li .name + input[type="text"],
@@ -1051,6 +1088,7 @@ body {
     height: 27px;
     display: block;
     overflow: hidden;
+    top: -4px;
     float: right;
 }
 
@@ -1071,8 +1109,8 @@ body {
     background-color: transparent;
     -webkit-transition: left .15s;
     position: absolute;
-    top: 0;
     left: -55px;
+    background-color: grey;
 }
 
 /* @end */
