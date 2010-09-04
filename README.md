@@ -1,3 +1,5 @@
+(BeeDesk's fork. Added iScroll integration, Grid layout, Tabbar etc.)
+
 jQTouch
 =======
 
