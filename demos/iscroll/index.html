@@ -85,7 +85,9 @@
                   scroll.refresh();
 
                   $this.bind('pageAnimationEnd', function() {
-                    setHeight($(this));
+                    if (info.direction == 'in') {
+                      setHeight($(this));
+                    }
                   });
                 }
               });
