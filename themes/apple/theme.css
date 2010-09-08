@@ -8,7 +8,7 @@ body {
     background: rgb(197,204,211) url(img/pinstripes.png);
 }
 
-#jqt .toolbar > h1, #jqt .tabbar > h1 {
+#jqt > * .toolbar > h1, #jqt .tabbar > h1 {
     margin: 0;
     padding-left: 5px;
     padding-right: 5px;
@@ -21,7 +21,7 @@ body {
     
 }
 
-#jqt .toolbar > h2, #jqt .tabbar > h2 {
+#jqt > * .toolbar > h2, #jqt .tabbar > h2 {
     margin: 0;
     padding: 10px 20px 2px 20px; 
     color: rgb(76, 86, 108);
@@ -43,7 +43,7 @@ body {
     white-space: nowrap;
 }
 
-#jqt h3 {
+#jqt > * .toolbar > h3, #jqt .tabbar > h3 {
     margin: 0;
     padding-left: 5px;
     padding-right: 5px;
@@ -55,7 +55,30 @@ body {
     white-space: nowrap;
 }
 
-#jqt h4 {
+#jqt > * form h2 {
+    margin: 0;
+    padding: 10px 20px 2px 20px; 
+    color: rgb(76, 86, 108);
+    font: bold 12pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+#jqt > * form h3 {
+    padding-left: 15px;
+    padding-right: 5px;
+    font: bold 10pt "Helvetica Neue", Helvetica;
+    color: rgb(63,63,63);
+    text-shadow: rgba(255,255,255,1) 0pt 1pt 1pt, rgba(127,127,127,1) -1pt 0pt 1pt;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jqt > * form h4 {
     margin: 0;
     padding-left: 5px;
     padding-right: 5px;
@@ -66,21 +89,19 @@ body {
 }
 
 #jqt .left {
-    position: absolute;
-    top: 5px;
-    left: 5px;
+    position: relative;
+    float: left;
+    margin-right: 15px;
 }
 
 #jqt .right {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+    position: relative;
+    float: right;
+    margin-left: 15px;
 }
 
 #jqt .center {
-    position: relative;
     text-align: center;
-    width: 100%;
 }
 
 /* @end */
@@ -177,10 +198,11 @@ body {
     color: #ddd;
 }
 
-#jqt .buttonicon {
-  min-width: 20px;
-  min-height: 20px;
+#jqt .toolbar .buttonicon {
+  color: #fff;
+  width: 40px;
 }
+
 
 @media only screen and (max-device-width: 320px) and (orientation:landscape) {
   #jqt .toolbar {
@@ -224,7 +246,7 @@ body {
     width: 100%;
     bottom: 0px;
     margin: 0;
-    padding: 6px 5px 6px 5px;
+    padding: 8px 5px 8px 5px;
     border-top: 1px solid #2d3642;
     border-bottom: none;
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
@@ -232,15 +254,13 @@ body {
 }
 
 #jqt .tabbar .button {
+    display: block;
     overflow: hidden;
     -webkit-box-sizing: border-box;
-    height: 30px;
     line-height: 30px;
-    width: 30px;
-    /* bottom: 4px; */
-    margin: 2px 0px 7px 0px;
-    padding-top: 7px;
-    padding-bottom: 6px;
+    height: 30px;
+    min-height: 30px;
+    min-width: 30px;
     padding-left: 8px;
     padding-right: 8px;
     font-family: inherit;
@@ -252,13 +272,19 @@ body {
     text-overflow: ellipsis;
     text-decoration: none;
     white-space: nowrap;
-}
-
-#jqt .tabbar .button {
     border:1px solid #45505d;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
     -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
     -webkit-border-radius:6px;
+}
+
+#jqt .tabbar .button.nopad {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#jqt .tabbar .buttonicon {
+  color: #fff;
 }
 
 #jqt .tabbar .redbadge {
@@ -266,11 +292,6 @@ body {
     min-width: 16px;
     width: 16px;
     min-height: 16px;
-    /*
-    top: 0px;
-    margin-left: 62%;
-    margin-right: 35%;
-     */
     padding: 0 4px 0 4px;
     background-color: #C02020;
     /* border: 2pt solid white; */
@@ -305,11 +326,11 @@ body {
       padding: 2px 5px 2px 5px;
       height: 32px;
   }
-  
+
   #jqt .tabbar h3 {
       padding-top: 1px;
   }
-  
+
   #jqt .tabbar .button {
       height: 24px;
       line-height: 24px;
@@ -320,12 +341,17 @@ body {
       padding-left: 12px;
       padding-right: 12px;
   }
-  
+
+  #jqt .tabbar .button.nopad {
+      padding-left: 12px;
+      padding-right: 12px;
+  }
+
   #jqt .left {
       top: 2px;
       left: 5px;
   }
-  
+
   #jqt .right {
       top: 2px;
       right: 5px;
@@ -409,8 +435,8 @@ body {
     width: 57px;
     height: 57px;
     -webkit-border-radius: 8.5px;
-    background-image: -webkit-gradient(radial, 28 -100, 95, 28 -50, 200, from(rgba(255,255,255,0.6)), to(rgba(255,255,255,0)), 
-      color-stop(6%, rgba(255,255,255,0.3)),
+    background-image: -webkit-gradient(radial, 50% -58%, 40, 50% -35%, 135, from(rgba(255,255,255,0.35)), to(rgba(255,255,255,0)), 
+      color-stop(3%, rgba(255,255,255,0.3)),
       color-stop(22%, rgba(239,239,239,0)),
       color-stop(22%, rgba(31,31,31,0.2)),
       color-stop(35%, rgba(127,127,127,0.1)),
@@ -418,12 +444,17 @@ body {
 }
 
 #jqt .grid .row .item .icon {
+    display: block;
     width: 57px;
     height: 57px;
     background-color: #707090;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     -webkit-box-shadow: rgba(0,0,0,0.5) 2pt 2pt 4pt;
+}
+
+#jqt .grid .row .item .icon.active {
+    background-color: #606070;
 }
 
 #jqt .grid .row .item .ico_txt {
@@ -552,8 +583,9 @@ body {
 }
 
 #jqt ul li a.active {
-    background-color: #194fdb;
     color: #fff;
+    background-color: #194fdb;
+    background-color: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4286f5), to(#194fdb));
 }
 
 #jqt ul li.arrow a.active {
