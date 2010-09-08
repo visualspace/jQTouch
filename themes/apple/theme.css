@@ -8,7 +8,7 @@ body {
     background: rgb(197,204,211) url(img/pinstripes.png);
 }
 
-#jqt h1 {
+#jqt .toolbar > h1, #jqt .tabbar > h1 {
     margin: 0;
     padding-left: 5px;
     padding-right: 5px;
@@ -21,7 +21,18 @@ body {
     
 }
 
-#jqt h2 {
+#jqt .toolbar > h2, #jqt .tabbar > h2 {
+    margin: 0;
+    padding: 10px 20px 2px 20px; 
+    color: rgb(76, 86, 108);
+    font: bold 12pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jqt form h2, #jqt form h2 {
     margin: 0;
     padding: 10px 20px 2px 20px; 
     color: rgb(76, 86, 108);
@@ -115,8 +126,6 @@ body {
     margin: 7px 0px 2px 0px;
     padding-top: 0;
     padding-bottom: 0;
-    padding-left: 8px;
-    padding-right: 8px;
     font-family: inherit;
     font-weight: bold;
     font-size: 9pt;
@@ -131,6 +140,8 @@ body {
 #jqt .toolbar .button, #jqt .toolbar .add {
     right: 5px;
     border:1px solid #45505d;
+    padding-left: 8px;
+    padding-right: 8px;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
     -webkit-box-shadow:inset 0 1px 1px rgba(127, 127, 127, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
     -webkit-border-radius:6px;
@@ -139,6 +150,8 @@ body {
 #jqt .toolbar .actionButton, #jqt .toolbar .done {
     right: 5px;
     border:1px solid #55606d;
+    padding-left: 8px;
+    padding-right: 8px;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #77A2F8), color-stop(0.5, #225FDA), color-stop(0.5, #1F55C3), color-stop(1, #1F57C6));
     -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
     -webkit-border-radius:6px;
@@ -146,8 +159,8 @@ body {
 
 #jqt .toolbar .button.active, #jqt .toolbar .add.active,
 #jqt .toolbar .actionButton.active, #jqt .toolbar .done.active {
-    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), c
-        olor-stop(0.5, #3a4e78), color-stop(0.5, #273f6d), color-stop(1, #273f6d));
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
+        color-stop(0.5, #3a4e78), color-stop(0.5, #273f6d), color-stop(1, #273f6d));
     color: #ddd;
 }
 
