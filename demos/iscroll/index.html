@@ -84,7 +84,7 @@
 
                   scroll.refresh();
 
-                  $this.bind('pageAnimationEnd', function() {
+                  $this.bind('pageAnimationEnd', function(event, info) {
                     if (info.direction == 'in') {
                       setHeight($(this));
                     }
