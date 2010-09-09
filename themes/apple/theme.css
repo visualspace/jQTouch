@@ -32,6 +32,7 @@ body {
     width: 100%;
     padding: 7px 5px 7px 5px;
     text-align: center;
+    overflow: hidden;
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
 }
@@ -153,18 +154,18 @@ body {
     -webkit-border-radius:6px;
 }
 
-#jqt .toolbar .back, #jqt .toolbar .cancel {
-    float: left;
-    border-width: 1px 8px 2px 14px;
-    max-width: 95px;
-    -webkit-border-image: url(img/backButton.png) 0 8 0 14;
-}
-
 #jqt .tabbar .button {
     border:1px solid #45505d;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
     -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
     -webkit-border-radius:6px;
+}
+
+#jqt .toolbar .back, #jqt .toolbar .cancel {
+    float: left;
+    border-width: 1px 8px 2px 14px;
+    max-width: 95px;
+    -webkit-border-image: url(img/backButton.png) 0 8 0 14;
 }
 
 #jqt .toolbar .button.active, #jqt .toolbar .add.active,
@@ -212,27 +213,30 @@ body {
 
 @media only screen and (max-device-width: 320px) and (orientation:landscape) {
   #jqt .toolbar, #jqt .tabbar {
-      padding: 2px 5px 2px 5px;
+      padding: 3px 5px 3px 5px;
       height: 32px;
   }
 
-  #jqt .toolbar h1, #jqt .tabbar h1 {
-      margin-top: 1px;
+  #jqt .toolbar > h1, #jqt .tabbar > h1 {
+      margin-top: 0px;
   }
 
-  #jqt .toolbar .button, #jqt .toolbar .actionButton, #jqt .toolbar .back, 
-  #jqt .toolbar .cancel, #jqt .toolbar .add, #jqt .toolbar .done,
-  #jqt .tabbar .button { /** tabbar */
+  #jqt .toolbar .button, #jqt .toolbar .add,
+  #jqt .toolbar .actionButton, #jqt .toolbar .done, 
+  #jqt .toolbar .back, #jqt .toolbar .cancel,
+  #jqt .tabbar .button { /** tabbar **/
       height: 24px;
       line-height: 24px;
-      margin: 4px 0px 2px 0px;
+      min-height: 24px;
+      padding-left: 10px;
+      padding-right: 10px;
       font-size: 8.5pt;
-      padding-top: 1px;
-      padding-bottom: 1px;
-      padding-left: 12px;
-      padding-right: 12px;
   }
 
+  #jqt .toolbar .back, #jqt .toolbar .cancel {
+      height: 27px; /* different in counting png and css border */
+  }
+  
   #jqt .toolbar .button.nopad, #jqt .tabbar .button.nopad {
       padding-left: 0px;
       padding-right: 0px;
