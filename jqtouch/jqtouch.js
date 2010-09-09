@@ -555,8 +555,8 @@
             
             if (e) {
                 var hoverTimeout = null,
-                    startX = $.support.touch? event.changedTouches[0].clientX: event.clientX,
-                    startY = $.support.touch? event.changedTouches[0].clientY: event.clientY,
+                    startX = $.support.touch? e.changedTouches[0].clientX: e.clientX,
+                    startY = $.support.touch? e.changedTouches[0].clientY: e.clientY,
                     startTime = (new Date).getTime(),
                     deltaX = 0,
                     deltaY = 0,
@@ -603,7 +603,7 @@
             }
 
             function updateChanges() {
-                var first = $.support.touch? event.changedTouches[0] || null: event;
+                var first = $.support.touch? e.changedTouches[0] || null: e;
                 deltaX = first.pageX - startX;
                 deltaY = first.pageY - startY;
                 deltaT = (new Date).getTime() - startTime;
