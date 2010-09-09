@@ -5,7 +5,9 @@ body {
 /* @group general */
 
 #jqt > * {
-    background: rgb(197,204,211) url(img/pinstripes.png);
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    background: rgb(197,204,211) url(img/pinstripes.png);    
 }
 
 #jqt > * > h2 {
@@ -117,7 +119,7 @@ body {
     display: block;
     -webkit-box-sizing: border-box;
     overflow: hidden;
-    line-height: 27px;
+    line-height: 30px;
     height: 30px;
     min-height: 30px;
     min-width: 30px;
@@ -130,6 +132,12 @@ body {
     text-overflow: ellipsis;
     text-decoration: none;
     white-space: nowrap;
+}
+
+#jqt .toolbar .back, #jqt .toolbar .cancel {
+    min-height: 33px;
+    height: 33px;
+    line-height: 30px;
 }
 
 #jqt .toolbar .button, #jqt .toolbar .add {
