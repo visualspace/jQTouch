@@ -8,31 +8,7 @@ body {
     background: rgb(197,204,211) url(img/pinstripes.png);
 }
 
-#jqt > * .toolbar > h1, #jqt .tabbar > h1 {
-    margin: 0;
-    padding-left: 5px;
-    padding-right: 5px;
-    color: white;
-    font: bold 13.5pt "Helvetica Neue", Helvetica;
-    text-shadow: 0px -1px 0px #374683;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    
-}
-
-#jqt > * .toolbar > h2, #jqt .tabbar > h2 {
-    margin: 0;
-    padding: 10px 20px 2px 20px; 
-    color: rgb(76, 86, 108);
-    font: bold 12pt "Helvetica Neue", Helvetica;
-    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#jqt form h2, #jqt form h2 {
+#jqt > * > h2 {
     margin: 0;
     padding: 10px 20px 2px 20px; 
     color: rgb(76, 86, 108);
@@ -41,116 +17,113 @@ body {
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-#jqt > * .toolbar > h3, #jqt .tabbar > h3 {
-    margin: 0;
-    padding-left: 5px;
-    padding-right: 5px;
-    font: bold 10pt "Helvetica Neue", Helvetica;
-    text-shadow: rgba(63,63,63,1) -0.5pt -0.5pt 1pt, rgba(63,63,63,1) 1pt 1pt 1pt;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#jqt > * form h2 {
-    margin: 0;
-    padding: 10px 20px 2px 20px; 
-    color: rgb(76, 86, 108);
-    font: bold 12pt "Helvetica Neue", Helvetica;
-    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-#jqt > * form h3 {
-    padding-left: 15px;
-    padding-right: 5px;
-    font: bold 10pt "Helvetica Neue", Helvetica;
-    color: rgb(63,63,63);
-    text-shadow: rgba(255,255,255,1) 0pt 1pt 1pt, rgba(127,127,127,1) -1pt 0pt 1pt;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#jqt > * form h4 {
-    margin: 0;
-    padding-left: 5px;
-    padding-right: 5px;
-    font: 8.5pt "Helvetica Neue", Helvetica;
-    padding-top: 7px;
-    color: grey;
-    text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
-}
-
-#jqt .left {
-    position: relative;
-    float: left;
-    margin-right: 15px;
-}
-
-#jqt .right {
-    position: relative;
-    float: right;
-    margin-left: 15px;
-}
-
-#jqt .center {
-    text-align: center;
 }
 
 /* @end */
 
 
 
-/* @group Toolbar */
+/* @group Toolbar & Tabbar */
 
-#jqt .toolbar {
+#jqt .toolbar, #jqt .tabbar {
     position: relative;
     -webkit-box-sizing: border-box;
     height: 44px;
     width: 100%;
-    padding: 6px 5px 6px 5px;
-    border-bottom: 1px solid #2d3642;
+    padding: 7px 5px 7px 5px;
+    text-align: center;
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
 }
 
-#jqt .toolbar .touch {
+#jqt .toolbar {
+    border-bottom: 1px solid #2d3642;
+}
+
+#jqt .tabbar {
+    bottom: 0px;
+    border-top: 1px solid #2d3642;
+}
+
+#jqt .toolbar > h1, #jqt .tabbar > h1,
+#jqt .toolbar > h2, #jqt .tabbar > h2,
+#jqt .toolbar > h3, #jqt .tabbar > h3 {
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    top: auto;
+    left: 0px;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 1px;
+    padding-left: 70px;
+    padding-right: 70px;
+    background-repeat: no-repeat;
+    background-position:center;
+    text-align: center;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+
+#jqt .toolbar > h1, #jqt .tabbar > h1 {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font: bold 13.5pt "Helvetica Neue", Helvetica;
+    color: white;
+    text-shadow: 0px -1px 0px #374683;
+}
+
+#jqt .toolbar > h2, #jqt .tabbar > h2 {
+    padding-top: 5px;
+    padding-bottom: 6px;
+    color: rgb(76, 86, 108);
+    font: bold 12pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+}
+
+#jqt .toolbar > h3, #jqt .tabbar > h3 {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: rgb(255, 255, 255);
+    font: bold 10pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(63,63,63,1) -0.5pt -0.5pt 1pt, rgba(63,63,63,1) 1pt 1pt 1pt;
+}
+
+#jqt .toolbar .left, #jqt .tabbar .left {
+    position: relative;
+    float: left;
+    margin-right: 15px;
+}
+
+#jqt .toolbar .right, #jqt .tabbar .right {
+    position: relative;
+    float: right;
+    margin-left: 15px;
+}
+
+#jqt .toolbar .center, #jqt .tabbar .center {
+    text-align: center;
+}
+
+#jqt .toolbar .touch, #jqt .tabbar .touch {
     color: #808080;
-}
-
-#jqt .toolbar h1 {
-    margin-top: 4px;
-}
-
-#jqt .black-translucent .toolbar {
-	margin-top: 20px;
 }
 
 #jqt .toolbar .button, #jqt .toolbar .add,
 #jqt .toolbar .actionButton, #jqt .toolbar .done, 
-#jqt .toolbar .back, #jqt .toolbar .cancel {
-    position: absolute;
-    overflow: hidden;
+#jqt .toolbar .back, #jqt .toolbar .cancel,
+#jqt .tabbar .button { /** tabbar **/
+    position: relative;
+    display: block;
     -webkit-box-sizing: border-box;
+    overflow: hidden;
+    line-height: 27px;
     height: 30px;
-    line-height: 30px;
+    min-height: 30px;
     min-width: 30px;
-    float: right;
-    top: 0px;
-    margin: 7px 0px 2px 0px;
-    padding-top: 0;
-    padding-bottom: 0;
+    color: #fff;
     font-family: inherit;
     font-weight: bold;
-    font-size: 9pt;
-    color: #fff;
+    font-size: 9.25pt;
     text-align: center;
     text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0;
     text-overflow: ellipsis;
@@ -159,8 +132,9 @@ body {
 }
 
 #jqt .toolbar .button, #jqt .toolbar .add {
-    right: 5px;
+    float: right;
     border:1px solid #45505d;
+    max-width: 95px;
     padding-left: 8px;
     padding-right: 8px;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
@@ -169,8 +143,9 @@ body {
 }
 
 #jqt .toolbar .actionButton, #jqt .toolbar .done {
-    right: 5px;
+    float: right;
     border:1px solid #55606d;
+    max-width: 95px;
     padding-left: 8px;
     padding-right: 8px;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #77A2F8), color-stop(0.5, #225FDA), color-stop(0.5, #1F55C3), color-stop(1, #1F57C6));
@@ -178,19 +153,26 @@ body {
     -webkit-border-radius:6px;
 }
 
+#jqt .toolbar .back, #jqt .toolbar .cancel {
+    float: left;
+    border-width: 1px 8px 2px 14px;
+    max-width: 95px;
+    -webkit-border-image: url(img/backButton.png) 0 8 0 14;
+}
+
+#jqt .tabbar .button {
+    border:1px solid #45505d;
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
+    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
+    -webkit-border-radius:6px;
+}
+
 #jqt .toolbar .button.active, #jqt .toolbar .add.active,
-#jqt .toolbar .actionButton.active, #jqt .toolbar .done.active {
+#jqt .toolbar .actionButton.active, #jqt .toolbar .done.active,
+#jqt .tabbar .button.active { /** tabbar **/
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
         color-stop(0.5, #3a4e78), color-stop(0.5, #273f6d), color-stop(1, #273f6d));
     color: #ddd;
-}
-
-#jqt .toolbar .back, #jqt .toolbar .cancel {
-    left: 6px;
-    right: auto;
-    max-width: 95px;
-    border-width: 0 8px 0 14px;
-    -webkit-border-image: url(img/backButton.png) 0 8 0 14;
 }
 
 #jqt .toolbar .back.active, #jqt .toolbar .cancel.active {
@@ -198,96 +180,16 @@ body {
     color: #ddd;
 }
 
-#jqt .toolbar .buttonicon {
-  color: #fff;
-  width: 40px;
-}
-
-
-@media only screen and (max-device-width: 320px) and (orientation:landscape) {
-  #jqt .toolbar {
-      padding: 2px 5px 2px 5px;
-      height: 32px;
-  }
-  
-  #jqt .toolbar h1 {
-      margin-top: 1px;
-  }
-  
-  #jqt .toolbar > h1 {
-      margin-left: auto;
-      width: 250px;
-  }
-  
-  #jqt .toolbar .button, #jqt .toolbar .actionButton, #jqt .toolbar .back, 
-  #jqt .toolbar .cancel, #jqt .toolbar .add, #jqt .toolbar .done {
-      height: 24px;
-      line-height: 24px;
-      margin: 4px 0px 2px 0px;
-      font-size: 8.5pt;
-      padding-top: 0;
-      padding-bottom: 0;
-      padding-left: 12px;
-      padding-right: 12px;
-  }
-}
-
-/* @end */
-
-
-
-/* @group Tabbar */
-
-#jqt .tabbar {
-    position: relative;
-    -webkit-box-sizing: border-box;
-    height: 44px;
-    line-height: 30px;
-    width: 100%;
-    bottom: 0px;
-    margin: 0;
-    padding: 8px 5px 8px 5px;
-    border-top: 1px solid #2d3642;
-    border-bottom: none;
-    background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
-}
-
-#jqt .tabbar .button {
-    display: block;
-    overflow: hidden;
-    -webkit-box-sizing: border-box;
-    line-height: 30px;
-    height: 30px;
-    min-height: 30px;
-    min-width: 30px;
-    padding-left: 8px;
-    padding-right: 8px;
-    font-family: inherit;
-    font-weight: bold;
-    font-size: 9pt;
-    color: #fff;
-    text-align: center;
-    text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0;
-    text-overflow: ellipsis;
-    text-decoration: none;
-    white-space: nowrap;
-    border:1px solid #45505d;
-    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
-    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
-    -webkit-border-radius:6px;
-}
-
-#jqt .tabbar .button.nopad {
+#jqt .toolbar .button.nopad, #jqt .tabbar .button.nopad {
     padding-left: 0px;
     padding-right: 0px;
 }
 
-#jqt .tabbar .buttonicon {
+#jqt .toolbar .buttonicon, #jqt .tabbar .buttonicon {
   color: #fff;
 }
 
-#jqt .tabbar .redbadge {
+#jqt .toolbar .button .redbadge, #jqt .tabbar .button .redbadge {
     position: relative;
     min-width: 16px;
     width: 16px;
@@ -308,53 +210,32 @@ body {
     text-align: center;
 }
 
-#jqt .tabbar .touch {
-    color: #808080;
-}
-
-#jqt .tabbar .button.active {
-    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #3a4e78), color-stop(0.5, #273f6d), color-stop(1, #273f6d));
-    color: #ddd;
-}
-
-#jqt .tabbar h3 {
-    padding-top: 4px;
-}
-
 @media only screen and (max-device-width: 320px) and (orientation:landscape) {
-  #jqt .tabbar {
+  #jqt .toolbar, #jqt .tabbar {
       padding: 2px 5px 2px 5px;
       height: 32px;
   }
 
-  #jqt .tabbar h3 {
-      padding-top: 1px;
+  #jqt .toolbar h1, #jqt .tabbar h1 {
+      margin-top: 1px;
   }
 
-  #jqt .tabbar .button {
+  #jqt .toolbar .button, #jqt .toolbar .actionButton, #jqt .toolbar .back, 
+  #jqt .toolbar .cancel, #jqt .toolbar .add, #jqt .toolbar .done,
+  #jqt .tabbar .button { /** tabbar */
       height: 24px;
       line-height: 24px;
-      margin: 2px 0px 2px 0px;
+      margin: 4px 0px 2px 0px;
       font-size: 8.5pt;
-      padding-top: 1x;
+      padding-top: 1px;
       padding-bottom: 1px;
       padding-left: 12px;
       padding-right: 12px;
   }
 
-  #jqt .tabbar .button.nopad {
-      padding-left: 12px;
-      padding-right: 12px;
-  }
-
-  #jqt .left {
-      top: 2px;
-      left: 5px;
-  }
-
-  #jqt .right {
-      top: 2px;
-      right: 5px;
+  #jqt .toolbar .button.nopad, #jqt .tabbar .button.nopad {
+      padding-left: 0px;
+      padding-right: 0px;
   }
 }
 
@@ -660,6 +541,50 @@ body {
 #jqt form {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+#jqt form h1 {
+    margin: 0;
+    padding: 10px 20px 2px 20px; 
+    color: rgb(76, 86, 108);
+    font: bold 13.5pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jqt form h2 {
+    margin: 0;
+    padding: 10px 20px 2px 20px; 
+    color: rgb(76, 86, 108);
+    font: bold 12pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+#jqt form h3 {
+    padding-left: 15px;
+    padding-right: 5px;
+    font: bold 10pt "Helvetica Neue", Helvetica;
+    color: rgb(63,63,63);
+    text-shadow: rgba(255,255,255,1) 0pt 1pt 1pt, rgba(127,127,127,1) -1pt 0pt 1pt;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jqt form h4 {
+    margin: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    font: 8.5pt "Helvetica Neue", Helvetica;
+    padding-top: 7px;
+    color: grey;
+    text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
 }
 
 #jqt ul.form li {
