@@ -58,7 +58,7 @@
 
                 // refresh scroll
                 var scroll = $item.data('iscroll_object');
-                if (scroll !== null) {
+                if (scroll !== undefined && scroll !== null) {
                   scroll.refresh();
                 }
               }
