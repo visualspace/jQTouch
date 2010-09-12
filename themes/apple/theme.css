@@ -180,8 +180,7 @@ body {
 #jqt .toolbar .actionButton.active, #jqt .toolbar .done.active,
 #jqt .tabbar .button.active { /** tabbar **/
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
-        color-stop(0.5, #3a4e78), color-stop(0.5, #273f6d), color-stop(1, #273f6d));
-    color: #ddd;
+        color-stop(0.5, #3a4e78), color-stop(0.5, #253C6A), color-stop(1, #273f6d));
 }
 
 #jqt .toolbar .back.active, #jqt .toolbar .cancel.active {
