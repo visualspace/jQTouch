@@ -5,7 +5,9 @@ body {
 /* @group general */
 
 #jqt > * {
-    -webkit-perspective: 1000;
+    /*
+    -webkit-perspective: 1000; */
+    -webkit-transform:translate3d(0,0,0);
     -webkit-backface-visibility: hidden;
     background: rgb(197,204,211) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);    
 }
@@ -427,6 +429,7 @@ body {
     border-top: 1px solid #B4B4B4;
     list-style-type: none;
     padding: 10px 10px 10px 10px;
+    -webkit-transform:translate3d(0,0,0);
 }
 
 /* when you have a first LI item on any list */
