@@ -178,14 +178,14 @@ body {
     -webkit-border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAeCAIAAAA6iHCJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAArFJREFUeNrF0mtPE2EQBeB5t9vSRqEUKiAFkasggmC5x3CRECHx8sH/qMHEoKkiMUQTNJIIaAjeiFGUcEsotN22u9vtOzMKogYL39rlyfkBk3NG3HsyC8dLJhOzM8+/fvkcjexAtghRXVN/dXCkvOIcAKhEDMdY+7ESejgeqKpv7x3J9/ogS5hoc33l0YPxju6+YFefSkRwlI311cnQRM/gbd+ZUpfb43CokD2nCv2lFbVvZib9JaUqMUEGTYtNPZ7oHLpZXBJQFIUYSCJkj3A4830lrd3Di2/nVcxYwTSMift3m4LXCovKCYGQIDe8vrJveNQfTE+Fys9f8pdVSSTILeFyF/z/B8uflnSLG+qakRlRQo45XO5DHejJxOtXLzsG7yA7ME2Qe0hw6A+mn4ZqLvY4XR6UCLZAxH8rfFx6Z6BaXVJlSQS7SKSDC+JabGFurrnvBvJ+NXZBYpX4oP9AQ5eietKSAMDuDt4vLkhHfr6/XCKCvZBIjezuLMzPN/XcIhIADPYiZPXFs8lAQ7dwOA8KsL8Dr7/CoDzSDDgJCT2ljI0OOzBGKMVJACGUXU2/3h/Uo5vMDCdBQSRLcn9nox7bEgLsDoDCDKYli4p89ZXFZjJ6Ah3wvlhcb2mqPa1a0jIBhJ1RiPl3wpH4QG+bTGwDo51DKPwHMccS5mBvSzyyCcB2rgB/k5aoqK72xgo9FrbxgsMSulkZOBvwu1O6BjnGhO48p8IZfj1EsPWCR+jSMiCX0pbh9xXsrZCZrW1toOcy6mFMpyA3mNnUwi2NtQoxZwaZwzF9bKhTpHaN+C7KNGQPobTMhBZe7Wyts1iox729RNyOJkeHOj4sf19Z3YgmsraI251X6ve2BYMEIqIlVebjd0rj2la0rrrySkuDU1UhSySiYVrbkbiZ2qv2J5+53J2yzo3SAAAAAElFTkSuQmCC) 0 8 0 14;
 }
 
-#jqt .toolbar .button.active, #jqt .toolbar .add.active,
-#jqt .toolbar .actionButton.active, #jqt .toolbar .done.active,
-#jqt .tabbar .button.active { /** tabbar **/
+#jqt .toolbar .button:active, #jqt .toolbar .add:active,
+#jqt .toolbar .actionButton:active, #jqt .toolbar .done:active,
+#jqt .tabbar .button:active { /** tabbar **/
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
         color-stop(0.5, #3a4e78), color-stop(0.5, #253C6A), color-stop(1, #273f6d));
 }
 
-#jqt .toolbar .back.active, #jqt .toolbar .cancel.active {
+#jqt .toolbar .back:active, #jqt .toolbar .cancel:active {
     -webkit-border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAeCAIAAAA6iHCJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAADTklEQVR42mJcvvU4A27w+fOnnVvWP3pw7/PH9wzUAoyMMnIKrh5+corKQB5AALH8+/cfl8o7N69tXLdcTFJB08Cam4+fWg74/+/f6xeP165aampubWXnBBBAQBf8w6ru3p2bWzas0Td15RMWZmHjYGZmZqAe4OITFJGUv3TusJiEJEAAsfz7j8UFb9++2bppjY6FM7+gOBMT0///DH/+/KOiCxgYWbl4hZV1zE8cOwQQQCx/MWLhx/fvK5fMV9K25OETAwYQrkCiHPDwij7+wwAQQFjSwfpVS0Sl1QREpP/+pZXdcMDKzgMQQOjp4NyZ499+/ZeTU/33//+//39p7QJmNg6AAEIJg8+fPp44eljL1OPff6Z/f2geAEAADGWAAEJJB5vXrpBWNmRh5fz75z8DXcDff/8AAggRCxfOnPj+j1VKSOb3378M9ALApAYQQFAXfPr44eTxYyrGzqAQ+fufbi4ApgGAAGKBRMLGNcvFFPUZmTh+//3HQEcAtA4ggEBhcPrYoX8svNxCEn/pGP7wMAAIIJbXr16cPXtGycAVbPt/+rsAIICYv3z/Jyijw8bF/38gwNdPbwECiEVQTO4rE/fHLz8YBgJ8+/4LIICYgoJ8Wf59+v/vL+NAAGBbASCAmN59+hbo6fDj02tgmAxIMAAEEBOwTPjx66+Ho+nPL2/AbqIvYmAACCBQ3f/rzz8BAT5lGZGf3z/RPwwAAogJmia//zYx0OJh/vX3908GkMvohwACiAlcC4PQ5++/XR0t/357y/D/Lz0jAiCAmOBZE+iIn38YvV2sv31+Tc+iCSCAQOkAjn7/+cvCzmljov3j83u6uQAggJjQCqkv337ISksqSAn8+v6F1nYDCyF2NhaAAGLCLCnffvhiaarHxfT972/aFpR/fv8U5OcBCCCUWICjV2+/eLna/fv+7u+fX7QKgP//f315b2VmBBBAiLyAjP7+///u848AL3umXx9+fP349+8fataHf4Ge//b1/XNHG+M/jCwAAcSCK9n/+fv34zcGXzeri1fv3H/49OM3qsUIOzubmIiArbPTPwbG95++AgQQC57a4Pfvv28//dNQU1JTlGJloVqv7c/ff3wCwm8/fv3x8zeQCxBgAORxR/jTseyRAAAAAElFTkSuQmCC) 0 8 0 14;
     color: #ddd;
 }
@@ -347,7 +347,7 @@ body {
     -webkit-box-shadow: rgba(0,0,0,0.5) 2pt 2pt 4pt;
 }
 
-#jqt .grid .row .item .icon.active {
+#jqt .grid .row .item .icon:active {
     background-color: #606070;
 }
 
@@ -379,7 +379,7 @@ body {
     color: inherit;
 }
 
-#jqt .whiteButton.active, #jqt .grayButton.active, #jqt .redButton.active, #jqt .blueButton.active, #jqt .greenButton.active,
+#jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active,
 #jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active {
     -webkit-border-image: url(img/activeButton.png) 0 12 0 12;
 }
@@ -477,13 +477,13 @@ body {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-#jqt ul li a.active {
+#jqt ul li a:active {
     color: #fff;
     background-color: #194fdb;
     background-color: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4286f5), to(#194fdb));
 }
 
-#jqt ul li.arrow a.active {
+#jqt ul li.arrow a:active {
     background-image: url(img/listArrowSel.png);
     background-position: right center;
     background-repeat: no-repeat;
