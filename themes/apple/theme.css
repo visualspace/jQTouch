@@ -182,12 +182,22 @@ body {
 }
 
 
-#jqt .toolbar .button:active, #jqt .toolbar .add:active, #jqt .toolbar .leftButton:active
+#jqt .toolbar .button:active, #jqt .toolbar .add:active, #jqt .toolbar .leftButton:active,
 #jqt .toolbar .actionButton:active, #jqt .toolbar .done:active,
 #jqt .tabbar .button:active { /** tabbar **/
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
         color-stop(0.5, #3a4e78), color-stop(0.5, #253C6A), color-stop(1, #273f6d));
     color: #fff;
+}
+#jqt .toolbar .button[disabled], #jqt .toolbar .add[disabled], #jqt .toolbar .leftButton[disabled],
+#jqt .toolbar .actionButton[disabled], #jqt .toolbar .done[disabled],
+#jqt .tabbar .button[disabled], /** tabbar **/
+#jqt .toolbar .button:disabled, #jqt .toolbar .add:disabled, #jqt .toolbar .leftButton:disabled,
+#jqt .toolbar .actionButton:disabled, #jqt .toolbar .done:disabled,
+#jqt .tabbar .button:disabled { /** tabbar **/
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #6d7895),
+        color-stop(0.5, #2a3e68), color-stop(0.5, #152C4A), color-stop(1, #173f5d));
+    color: #CCC;
 }
 
 #jqt .toolbar .back:active, #jqt .toolbar .cancel:active {
