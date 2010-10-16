@@ -28,7 +28,7 @@
 
         // Set support values
         $.support.WebKitCSSMatrix = (typeof WebKitCSSMatrix != "undefined");
-        $.support.touch = (typeof TouchEvent != "undefined");
+        $.support.touch = (typeof Touch != "undefined");
         $.support.WebKitAnimationEvent = (typeof WebKitTransitionEvent != "undefined");
         var START_EVENT = $.support.touch? 'touchstart' : 'mousedown';
         var MOVE_EVENT = $.support.touch? 'touchmove' : 'mousemove';
