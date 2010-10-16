@@ -33,6 +33,7 @@
         var START_EVENT = $.support.touch? 'touchstart' : 'mousedown';
         var MOVE_EVENT = $.support.touch? 'touchmove' : 'mousemove';
         var END_EVENT = $.support.touch? 'touchend' : 'mouseup';
+        var CANCEL_EVENT = $.support.touch? 'touchcancel' : 'mouseup';
 
         // Initialize internal variables
         var $body,
@@ -580,6 +581,9 @@
 
                 // Let's bind these after the fact, so we can keep some internal values
                 $el.bind(MOVE_EVENT, touchmove).bind(END_EVENT, touchend);
+                if (!!CANCEL_EVENT) {
+                  $el.bind(CANCEL_EVENT, touchcancel)
+                }
 
                 hoverTimeout = setTimeout(function() {
                     $el.makeActive();
@@ -587,6 +591,11 @@
             }
             
             // Private touch functions (TODO: insert dirty joke)
+            function touchcancel(e) {
+              clearTimeout(hoverTimeout);
+              $el.removeClass('active').unbind('touchmove',touchmove).unbind('touchend',touchend).unbind('touchcancel',touchcancel);;
+            }
+            
             function touchmove(e) {
 
                 updateChanges();
@@ -599,6 +608,9 @@
                     $el.trigger('swipe', {direction: (deltaX < 0) ? 'left' : 'right', deltaX: deltaX, deltaY: deltaY })
                         .unbind(MOVE_EVENT,touchmove)
                         .unbind(END_EVENT,touchend);
+                    if (!!CANCEL_EVENT) {
+                      $el.bind(CANCEL_EVENT, touchcancel)
+                    }
                 } else if (absY > 1) {
                     $el.removeClass('active');
                 }
@@ -615,6 +627,9 @@
                     $el.trigger('tap');
                 }
                 $el.unbind(MOVE_EVENT,touchmove).unbind(MOVE_EVENT,touchend);
+                if (!!CANCEL_EVENT) {
+                  $el.bind(CANCEL_EVENT, touchcancel)
+                }
                 clearTimeout(hoverTimeout);
             }
 
