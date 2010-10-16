@@ -28,7 +28,7 @@
 
         // Set support values
         $.support.WebKitCSSMatrix = (typeof WebKitCSSMatrix != "undefined");
-        $.support.touch = (typeof TouchEvent != "undefined");
+        $.support.touch = (typeof Touch != "undefined");
         $.support.WebKitAnimationEvent = (typeof WebKitTransitionEvent != "undefined");
         var START_EVENT = $.support.touch? 'touchstart' : 'mousedown';
         var MOVE_EVENT = $.support.touch? 'touchmove' : 'mousemove';
@@ -379,8 +379,10 @@
 
             // Define callback to run after animation completes
             var callback = function animationEnd(event) {
-                fromPage[0].removeEventListener('webkitTransitionEnd', callback, false);
-                fromPage[0].removeEventListener('webkitAnimationEnd', callback, false);
+                if($.support.WebKitAnimationEvent) {
+                    fromPage[0].removeEventListener('webkitTransitionEnd', callback);
+                    fromPage[0].removeEventListener('webkitAnimationEnd', callback);
+                }
 
                 if (animation) {
                         toPage.removeClass('start in ' + animation.name);
@@ -540,7 +542,11 @@
         function addAnimation(animation) {
             if (typeof(animation.selector) == 'string' && typeof(animation.name) == 'string') {
                 animations.push(animation);
-                $(animation.selector).tap(liveTap);
+                // $(animation.selector).tap(liveTap);
+                // ignore backSelector since they've already been attached
+                if(animation.selector != jQTSettings.backSelector) {
+                    $(animation.selector).tap(liveTap);
+                }
                 touchSelectors.push(animation.selector);
             }
         }
