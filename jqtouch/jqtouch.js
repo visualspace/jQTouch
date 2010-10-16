@@ -71,6 +71,7 @@
                 fullScreen: true,
                 fullScreenClass: 'fullscreen',
                 icon: null,
+                icon4: null, // experimental
                 touchSelector: 'a, .touch',
                 popSelector: '.pop',
                 preloadImages: false,
@@ -91,11 +92,20 @@
                     (new Image()).src = jQTSettings.preloadImages[i];
                 };
             }
-            // Set icon
-            if (jQTSettings.icon) {
-                var precomposed = (jQTSettings.addGlossToIcon) ? '' : '-precomposed';
-                hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" href="' + jQTSettings.icon + '" />';
+            // Set appropriate icon (retina display stuff is experimental)
+            if (jQTSettings.icon || jQTSettings.icon4) {
+                var precomposed, appropriateIcon;
+                if (jQTSettings.icon4 && window.devicePixelRatio && window.devicePixelRatio === 2) {
+                    appropriateIcon = jQTSettings.icon4;
+                } else if (jQTSettings.icon) {
+                    appropriateIcon = jQTSettings.icon;
+                }
+                if (appropriateIcon) {
+                    precomposed = (jQTSettings.addGlossToIcon) ? '' : '-precomposed';
+                    hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" href="' + appropriateIcon + '" />';
+                }
             }
+
             // Set startup screen
             if (jQTSettings.startupScreen) {
                 hairExtensions += '<link rel="apple-touch-startup-image" href="' + jQTSettings.startupScreen + '" />';
@@ -544,9 +554,9 @@
             
             // Only handle touchSelectors
             if (!$(e.target).is(touchSelectors.join(', '))) {
-                var $link = $(e.target).closest('a, area');
-                
-                if ($link.length && $link.is(touchSelectors.join(', '))) {
+                var $link = $(e.target).closest(touchSelectors.join(', '));
+
+                if ($link.length) {
                     $el = $link;
                 } else {
                     return;
