@@ -554,9 +554,9 @@
             
             // Only handle touchSelectors
             if (!$(e.target).is(touchSelectors.join(', '))) {
-                var $link = $(e.target).closest('a, area');
-                
-                if ($link.length && $link.is(touchSelectors.join(', '))) {
+                var $link = $(e.target).closest(touchSelectors.join(', '));
+
+                if ($link.length) {
                     $el = $link;
                 } else {
                     return;
