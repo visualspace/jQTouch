@@ -9,7 +9,8 @@ body {
     -webkit-perspective: 1000; */
     -webkit-transform:translate3d(0,0,0);
     -webkit-backface-visibility: hidden;
-    background: rgb(197,204,211) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);    
+    background: rgb(197,204,211) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);
+    -webkit-user-select: ignore;    
 }
 
 #jqt > * > h2 {
@@ -473,11 +474,25 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li {
-    /* color: #666; */
-    border-top: 1px solid #B4B4B4;
+    color: #222;
+    border-top: 1px solid #E0E0E0;
     list-style-type: none;
     padding: 10px 10px 10px 10px;
     -webkit-transform:translate3d(0,0,0);
+}
+
+#jqt ul li.active {
+    color: #fff;
+    font-color: #fff;
+    background-color: #4286f5;
+    background-image: none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left top;
+    background-repeat: no-repeat;
+}
+
+#jqt ul li.active > * {
+    color: #fff;
+    font-color: #fff;
 }
 
 /* when you have a first LI item on any list */
@@ -496,8 +511,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 /* universal arrows */
 
 #jqt ul li.arrow {
-    background-image: url(img/chevron.png);
-    background-position: right center;
+    background-image: url(img/chevron.png), none;
+    background-position: right center, left top;
     background-repeat: no-repeat;
 }
 
@@ -505,23 +520,25 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 	padding: 12px 22px 12px 10px;
 }
 
+#jqt ul li.arrow.active {
+    color: #fff;
+    font-color: #fff;
+    background-image: url(img/listArrowSel.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left top;
+    background-repeat: no-repeat;
+}
+
 #jqt #plastic ul li.arrow, #jqt #metal ul li.arrow {
-    background-image: url(img/chevron.png);
-    background-position: right center;
+    background-image: url(img/chevron.png), none;
+    background-position: right center, left top;
     background-repeat: no-repeat;
 }
 
 /* universal check */
 
 #jqt ul li.check {
-    background-image: url(img/check.png);
-    background-position: right center;
-    background-repeat: no-repeat;
-}
-
-#jqt #plastic ul li.check, #jqt #metal ul li.check {
-    background-image: url(img/check.png);
-    background-position: right center;
+    background-image: url(img/check.png), none;
+    background-position: right center, left top;
     background-repeat: no-repeat;
 }
 
@@ -529,10 +546,22 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding: 12px 22px 12px 10px;
 }
 
+#jqt ul li.check.active {
+    background-image: url(img/check_white.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left top;
+    background-repeat: no-repeat;
+}
+
+#jqt #plastic ul li.check, #jqt #metal ul li.check {
+    background-image: url(img/check.png), none;
+    background-position: right center, left top;
+    background-repeat: no-repeat;
+}
+
 /* universal links on list */
 
 #jqt ul li a, #jqt li.img a + a {
-    color: #000;
+    color: inherit;
     text-decoration: none;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -543,16 +572,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-#jqt ul li a:active {
+#jqt .active div {
     color: #fff;
-    background-color: #194fdb;
-    background-color: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4286f5), to(#194fdb));
-}
-
-#jqt ul li.arrow a:active {
-    background-image: url(img/listArrowSel.png);
-    background-position: right center;
-    background-repeat: no-repeat;
 }
 
 #jqt ul li a.button {
@@ -812,6 +833,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin: 1px 0 0 0;
     padding: 2px 10px;
     text-shadow: #636a6f 0 1px 0;
+}
+
+#jqt ul.edgetoedge li {
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 #jqt .edgetoedge h4 {
