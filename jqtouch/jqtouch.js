@@ -14,7 +14,8 @@
     Special thanks to Jonathan Stark <http://jonathanstark.com/>
     and pinch/zoom <http://www.pinchzoom.com/>
 
-    (c) 2009 by jQTouch project members.
+    Contributor: Thomas Yip <http://beedesk.com/>
+    (c) 2009-2010 by jQTouch project members and contributors
     See LICENSE.txt for license.
 
     $Revision: $
@@ -30,6 +31,7 @@
         $.support.WebKitCSSMatrix = (typeof WebKitCSSMatrix != "undefined");
         $.support.touch = (typeof Touch != "undefined");
         $.support.WebKitAnimationEvent = (typeof WebKitTransitionEvent != "undefined");
+        $.support.wide = (window.screen.width >= 768);
         var START_EVENT = $.support.touch? 'touchstart' : 'mousedown';
         var MOVE_EVENT = $.support.touch? 'touchmove' : 'mousemove';
         var END_EVENT = $.support.touch? 'touchend' : 'mouseup';
@@ -51,10 +53,11 @@
             publicObj={},
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
-            actionNodeTypes=['anchor', 'area', 'back', 'form', 'submit', 'input'];
+            actionNodeTypes=['anchor', 'area', 'back', 'toggle', 'submit'];
             defaultAnimations=['slide','flip','slideup','swap','cube','pop','dissolve','fade','back'],
             animations=[],
             fallbackAnimation=null,
+            splitscreenmode=false,
             hairExtensions='';
         // Get the party started
         init(options);
@@ -90,6 +93,7 @@
                 anchorSelector: '#jqt a',
                 areaSelector: '#jqt area',
                 backSelector: '#jqt .back, #jqt .cancel, #jqt .goback, #jqt .done',
+                toggleSelector: '#jqt .tog',
                 formSelector: '#jqt form',
                 submitSelector: '#jqt .submit',
                 inputSelector: '#jqt input',
@@ -239,6 +243,25 @@
                     });
                 }
 
+                // handling split screen for wider device (such as iPad)
+                var asidePage;
+                splitscreenmode = $.support.wide & $body.hasClass('splitscreen');
+                if (splitscreenmode) {
+                    var $aside = $('#jqt > [section="aside"]'); 
+                    if ($aside.length > 0) {
+                        if ($($aside.filter('.now').length != 0)) {
+                          asidePage = $($($aside.filter('.now:first')));
+                          $aside.removeClass('current').remove('now');
+                        } else {
+                          asidePage = $aside.filter(':first');
+                        }
+                        asidePage.addClass('now');
+                        addPageToHistory(asidePage);
+                    }
+                    $('#jqt > [section!="aside"]').attr("section", "main");
+                } else {
+                    $('#jqt > *').attr("section", "full");
+                }
                 // Make sure exactly one child of body has "current" class
                 if ($('#jqt > .current').length == 0) {
                     currentPage = $('#jqt > *:first');
@@ -249,7 +272,6 @@
 
                 // Go to the top of the "current" page
                 $(currentPage).addClass('current');
-                location.hash = '#' + $(currentPage).attr('id');
                 addPageToHistory(currentPage);
                 scrollTo(0, 0);
                 startHashCheck();
@@ -257,45 +279,39 @@
         }
 
         // PUBLIC FUNCTIONS
-        function goBack(to) {
+        function goBack(to, from) {
             // Init the param
-            if (hist.length <= 1)
-            {
+            if (hist.length <= 1) {
                 window.history.go(-2);
             }
             
-            var numberOfPages = Math.min(parseInt(to || 1, 10), hist.length-1),
-                curPage = hist[0];
-
-            // Search through the history for an ID
-            if(isNaN(numberOfPages) && typeof(to) === "string" && to != '#' ) {
-                for( var i=1, length=hist.length; i < length; i++ ) {
-                    if( '#' + hist[i].id === to ) {
-                        numberOfPages = i;
-                        break;
-                    }
-                }
-            }
-
-            // If still nothing, assume one
-            if(isNaN(numberOfPages) || numberOfPages < 1) {
-                numberOfPages = 1;
-            };
-
-            if (hist.length > 1) {
-                // Remove all pages in front of the target page
-                hist.splice(0, numberOfPages);
-                animatePages(curPage.page, hist[0].page, curPage.animation, curPage.reverse === false);
+            var fromPage;
+            var startPage;
+            if (!!from) {
+                fromPage = findPageFromHistory(from, 0);
+                startPage = fromPage.i;
             } else {
-                location.hash = '#' + curPage.id;
+                fromPage = $.extend({i: 0}, hist[0]);
+                }
+            if (hist.length > 1) {
+                if (!to) {
+                    to = {section: fromPage.section};
+            }
+                var histPage = findPageFromHistory(to, fromPage.i+1);
+
+                animatePages(histPage.page, fromPage.page, fromPage.animation, true);
+
+                // Remove all pages in front of the target page
+                removePageInHistory(histPage.i, fromPage.i, to);
+                var j = 1+2;
+            } else {
+                location.hash = '#' + hist[0].id;
             }
 
             return publicObj;
         }
 
         function goTo(toPage, animation, reverse) {
-            var fromPage = hist[0].page;
-
             if (typeof(animation) === 'string') {
                 for (var i = animations.length - 1; i >= 0; i--) {
                     if (animations[i].name === animation) {
@@ -306,21 +322,44 @@
             }
             if (typeof(toPage) === 'string') {
                 nextPage = $(toPage);
-                if (nextPage.length < 1)
-                {
+                if (nextPage.length < 1) {
                     showPageByHref(toPage, {
                         'animation': animation
                     });
                     return;
-                }
-                else
-                {
+                } else {
                     toPage = nextPage;
                 }
-                
             }
-            if (animatePages(fromPage, toPage, animation, reverse)) {
-                addPageToHistory(toPage, animation, reverse);
+                
+            var section = toPage.attr('section');
+            var criteria = !!section? {section: section}: {section: "main"}; 
+            var histPage = findPageFromHistory(criteria, 0);
+            var fromPage = !!histPage? histPage.page: null;
+            // adjust visibiliy of elements of toPage, before showing it
+            $.each(toPage.find('[section]'), function(widget, i) {
+                var allsections = $(this).attr('section');
+                if (!!allsections) {
+                    var sections = allsections.split(' ');
+                    var matched = false;
+                    for (var i=0, len=sections.length; i < len; i++) {
+                        if (sections[i] === section) {
+                            matched = true;
+            }
+                    }
+                    if (!matched) {
+                        $(this).addClass('missection');
+                    } else {
+                        $(this).removeClass('missection');
+                    }
+                }
+            });
+            if (animatePages(toPage, fromPage, animation, reverse)) {
+                if (!reverse) {
+                    addPageToHistory(toPage, animation);
+                } else {
+                    hist.shift();
+                }
                 return publicObj;
             } else {
                 console.error('Could not animate pages.');
@@ -372,10 +411,30 @@
                 }
             };
 
-            // User clicked a back button
             if ($el.is(jQTSettings.backSelector)) {
-                goBack(hash);
+                // User clicked a back button
+                // find out the from page 
+                var from;
+                var cur = e.currentTarget;
+                while (!!cur.parentNode) { 
+                    // $.parents('#jqt > *') matchs random, but parents: need to roll our own loop
+                    if (cur.parentNode.id === 'jqt') { // found
+                        from = cur.id;
+                        break;
+                    }
+                    cur = cur.parentNode;
+                }                
+                goBack(hash, from);
             
+            } else if ($el.is(jQTSettings.toggleSelector)) {
+                  // User clicked a toggle
+                  if (!!hash && hash.length > 1 && hash.indexOf('#') === 0) {
+                      if ($(hash).hasClass('current') || $(hash).hasClass('now')) {
+                          goBack(null, hash.substring(1));
+                      } else {
+                          goTo($(hash).data('referrer', $el), animation, $(this).hasClass('reverse'));
+                      }
+                  }
             } else if ($el.is(jQTSettings.submitSelector)) {
               // User clicked or tapped a submit element
                 submitParentForm(e);
@@ -407,18 +466,83 @@
             }
             return false;
         }
-        function addPageToHistory(page, animation, reverse) {
+        function addPageToHistory(page, animation) {
             // Grab some info
             var pageId = page.attr('id');
+            var section = page.attr('section');
             // Prepend info to page history
             hist.unshift({
                 page: page,
                 animation: animation,
-                reverse: reverse || false,
+                section: section,
                 id: pageId
             });
+            if (section === "main" || section === "full") {
+                location.hash = '#' + pageId;
+            }
+            startHashCheck();
         }
-        function animatePages(fromPage, toPage, animation, backwards) {
+        function findPageFromHistory(search, start) {
+            var result;
+            var matcher;
+            if (!start) {
+                start = 0;   
+            }
+            var number = Math.min(parseInt(search || start, 10), hist.length-1);          
+            if (!isNaN(number)) {
+                matcher = function(candidate, i) { return i === number; };
+            } else if (typeof(search) === 'string') {
+                if (search === '') {
+                    matcher = function(candidate) { return true; };
+                } else {
+                    matcher = function(candidate) { return candidate.id === search; };
+                }
+            } else if ($.isFunction(search)) {
+                matcher = function(candidate) { return search(candidate); };
+            } else {
+                matcher = function(candidate) {
+                    var matched = true;
+                    for (var key in search) {
+                        if (search[key] !== candidate[key]) {
+                           matched = false;
+                           break;  
+                        }
+                    }
+                    return matched;
+                };
+            }
+            for (var i=start, len=hist.length; i < len; i++) {
+                if (matcher(hist[i], i)) {
+                    result = $.extend({i: i}, hist[i]);
+                    break;
+                }
+            }
+            return result;
+        }
+        function removePageInHistory(to, from, cond) {
+            if (!from) {
+                from = 0;
+            }
+            var fromPage = hist[from];
+            var section = fromPage.section;
+            for (var i=(to-1); i >= 0; i--) {
+                var matched = true;
+                var candidate = hist[i];
+                if (!!cond) {
+                    for (var key in cond) {
+                        if (cond[key] !== candidate[key]) {
+                           matched = false;
+                           break;  
+                        }
+                    }
+                }
+                if (matched) {
+                    hist.splice(i, 1);
+                }
+            }
+            return result;
+        }
+        function animatePages(toPage, fromPage, animation, backwards) {
             // Error check for target page
             if (toPage.length === 0) {
                 $.fn.unselect();
@@ -455,7 +579,7 @@
                     }
                     toPage.css('top', 0);
                 } else {
-                    fromPage.removeClass('current');
+                    fromPage.removeClass('current active');
                 }
 
                 toPage.trigger('pageAnimationEnd', { direction: 'in', reverse: backwards });
@@ -463,8 +587,6 @@
 
                 clearInterval(hashCheckInterval);
                 currentPage = toPage;
-                location.hash = '#' + currentPage.attr('id');
-                startHashCheck();
 
                 var $originallink = toPage.data('referrer');
                 if ($originallink) {
@@ -494,7 +616,6 @@
 
                 toPage.delay(50).queue(function() { $(this).addClass('start');  $(this).dequeue(); });
                 fromPage.delay(50).queue(function() { $(this).addClass('start'); $(this).dequeue(); });
-
             } else {
                 toPage.addClass('current');
                 callback();
@@ -513,6 +634,7 @@
             } 
         }
         function startHashCheck() {
+            clearInterval(hashCheckInterval);
             hashCheckInterval = setInterval(hashCheck, 100);
         }
         function insertPages(nodes, animation) {
