@@ -1,15 +1,18 @@
 BeeDesk's fork. 
 =======
-Added 
+Added
+- iPad splitscreen layout,
+- Most accurate apple theme,
 - iScroll integration,
-- Grid layout with badge
+- Grid layout with badge,
 - Webkit gradient for buttons,
 - Fixes to landscape mode,
 - Tabbar,
 - etc.
 
 See the demo here:
-    [Demo](http://dev.beedesk.com/jqtouch_iscroll/demos/iscroll/).
+- [Demo](http://bit.ly/beedesk-jqt), The main demo with iPad split-screen support with automatically iPhone adaption. 
+- [Demo](http://bit.ly/beedesk-jqt), The most up-to-date integration with iScroll.
 
 
 jQTouch
