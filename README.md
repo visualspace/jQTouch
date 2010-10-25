@@ -1,6 +1,6 @@
 BeeDesk's fork. 
 =======
-Added
+
 - iPad splitscreen layout,
 - Most accurate apple theme,
 - iScroll integration,
