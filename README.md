@@ -10,7 +10,8 @@ Added
 - Tabbar,
 - etc.
 
-See the demo here:
+See the demo here
+
 - [Demo](http://bit.ly/beedesk-jqt), The main demo with iPad split-screen support with automatically iPhone adaption. 
 - [Demo](http://bit.ly/beedesk-jqt), The most up-to-date integration with iScroll.
 
