@@ -51,10 +51,9 @@ body {
     position: absolute;
     right: 0;
     min-height: 100%;
-    /* z-index: 1 !important; */
 }
 @media only screen and (min-device-width: 768px) {
-    body.splitscreen {
+    #jqt.splitscreen {
         width: 768px;
         margin-left: auto;
         margin-right: auto;
@@ -77,7 +76,7 @@ body {
 }
 @media only screen and (min-device-height: 768px) and (orientation:landscape), 
 only screen and (min-device-width: 1024px) {
-    body.splitscreen {
+    #jqt.splitscreen {
         width: 1024px;
     }
     #jqt.splitscreen > * {
@@ -89,8 +88,8 @@ only screen and (min-device-width: 1024px) {
 #jqt > .current {
     display: block !important;
 }
-#jqt > .now {
-    display: block !important;
+#jqt > .front {
+    z-index: 100;
 }
 #jqt > * .missection {
     display: none !important;

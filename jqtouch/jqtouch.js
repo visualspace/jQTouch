@@ -45,6 +45,7 @@
             jQTSettings={},
             hashCheckInterval,
             currentPage,
+            currentAside=$(''),
             orientation,
             isMobileWebKit = RegExp(" Mobile/").test(navigator.userAgent),
             tapReady=true,
@@ -54,9 +55,9 @@
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
             actionNodeTypes=['anchor', 'area', 'back', 'toggle', 'submit'];
-            defaultAnimations=['slide','flip','slideup','swap','cube','pop','dissolve','fade','back'],
+            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade'],
+            defaultSection=null,
             animations=[],
-            fallbackAnimation=null,
             splitscreenmode=false,
             hairExtensions='';
         // Get the party started
@@ -95,13 +96,13 @@
                 backSelector: '#jqt .back, #jqt .cancel, #jqt .goback, #jqt .done',
                 toggleSelector: '#jqt .tog',
                 formSelector: '#jqt form',
-                submitSelector: '#jqt .submit',
+                submitSelector: '#jqt .submit, input[type=\'submit\']',
                 inputSelector: '#jqt input',
 
                 // special selectors
-                activableSelector: '#jqt ul > li.arrow, #jqt ol > li.arrow',
-                swipeableSelector: '',
-                tapableSelector: ''
+                activableSelector: '#jqt ul > li, #jqt ol > li',
+                swipeableSelector: '#jqt .swipe',
+                tapableSelector: '#jqt .tap'
                 
             };
             jQTSettings = $.extend({}, defaults, options);
@@ -155,25 +156,9 @@
                         $.extend(publicObj, fn(publicObj));
                     }
                 }
-                
-                // Add animations and each selector
-                for (var i in defaultAnimations) {
-                    var name = defaultAnimations[i];
-                    var selector = jQTSettings[name + 'Selector'];
-                    if (typeof(selector) == 'string' && selector.length > 0) {
-                      var selector = jQTSettings[name + 'Selector'];
-                      animations.push({name: name, selector: selector});                      
-                    } else {
-                      console.warn('invalid selector for animation: ' + name);
-                    }
-                }
-                // prepare default animations
-                for (var i = animations.length - 1; i >= 0; i--) {
-                  if (animations[i].name === jQTSettings.defaultAnimation) {
-                    fallbackAnimation = animations[i];
-                      break;
-                  }
-                };
+
+                // initialize animations
+                initAnimations();
 
                 // node type selector
                 for (var i in actionNodeTypes) {
@@ -244,23 +229,23 @@
                 }
 
                 // handling split screen for wider device (such as iPad)
-                var asidePage;
                 splitscreenmode = $.support.wide & $body.hasClass('splitscreen');
                 if (splitscreenmode) {
                     var $aside = $('#jqt > [section="aside"]'); 
                     if ($aside.length > 0) {
-                        if ($($aside.filter('.now').length != 0)) {
-                          asidePage = $($($aside.filter('.now:first')));
-                          $aside.removeClass('current').remove('now');
+                        if ($($aside.filter('.current').length != 0)) {
+                          currentAside = $($($aside.filter('.current:first')));
+                          $aside.removeClass('current');
                         } else {
-                          asidePage = $aside.filter(':first');
+                          currentAside = $aside.filter(':first');
                         }
-                        asidePage.addClass('now');
-                        addPageToHistory(asidePage);
+                        addPageToHistory(currentAside);
                     }
-                    $('#jqt > [section!="aside"]').attr("section", "main");
+                    defaultSection = "main";
+                    $('#jqt > [section!="aside"]').attr("section", defaultSection);
                 } else {
-                    $('#jqt > *').attr("section", "full");
+                    defaultSection = "full";
+                    $('#jqt > *').attr("section", defaultSection);
                 }
                 // Make sure exactly one child of body has "current" class
                 if ($('#jqt > .current').length == 0) {
@@ -269,6 +254,15 @@
                     currentPage = $('#jqt > .current:first');
                     $('#jqt > .current').removeClass('current');
                 }
+                if (currentAside.length != 0) {
+                    currentAside.addClass('current');
+                }
+                // adjust visibiliy of elements
+                $.each(['full', 'main', 'aside'], function(i, section) {
+                    var $section = $('#jqt > [section="' + section + '"]');
+                    $section.children().find('[section~="' + section + '"]').removeClass('missection');
+                    $section.children().find('[section]:not([section~="' + section + '"])').addClass('missection');                  
+                });
 
                 // Go to the top of the "current" page
                 $(currentPage).addClass('current');
@@ -286,40 +280,47 @@
             }
             
             var fromPage;
-            var startPage;
+            var toPage;
             if (!!from) {
                 fromPage = findPageFromHistory(from, 0);
-                startPage = fromPage.i;
             } else {
                 fromPage = $.extend({i: 0}, hist[0]);
                 }
+            if (!fromPage) {
+                console.error('History in invalid state or goback is called at the home page.');
+                return false;
+            }
             if (hist.length > 1) {
+                if (!!to) {
+                    var myto = to.substring(1); // remove #
+                    toPage = findPageFromHistory(myto, fromPage.i+1);
+                    if (!toPage) {
+                        console.error('Cannot find page "' + myto + '" in the history.');
+                        to = null; // reset to to null, trying to recover
+                    }
+                }
                 if (!to) {
                     to = {section: fromPage.section};
+                    toPage = findPageFromHistory(to, fromPage.i+1);
+                    if (!toPage) {
+                        console.error('Cannot find history to go back to. The specified "from" or "to" parameters might be invalid. Or, it has already back to the beginning.');
+                        return false;
             }
-                var histPage = findPageFromHistory(to, fromPage.i+1);
-
-                animatePages(histPage.page, fromPage.page, fromPage.animation, true);
-
+                }
+                if (animatePages(toPage.page, fromPage.page, adjustAnimation(fromPage.animation, true))) {
                 // Remove all pages in front of the target page
-                removePageInHistory(histPage.i, fromPage.i, to);
-                var j = 1+2;
+                removePageInHistory(toPage.i, fromPage.i, {section: fromPage.section});
+                } else {
+                  console.error('Could not go back.');
+                  return;
+                }
             } else {
                 location.hash = '#' + hist[0].id;
             }
-
             return publicObj;
         }
 
         function goTo(toPage, animation, reverse) {
-            if (typeof(animation) === 'string') {
-                for (var i = animations.length - 1; i >= 0; i--) {
-                    if (animations[i].name === animation) {
-                        animation = animations[i];
-                        break;
-                    }
-                }
-            }
             if (typeof(toPage) === 'string') {
                 nextPage = $(toPage);
                 if (nextPage.length < 1) {
@@ -333,33 +334,16 @@
             }
                 
             var section = toPage.attr('section');
-            var criteria = !!section? {section: section}: {section: "main"}; 
+            var criteria = !!section? {section: section}: {section: defaultSection}; 
             var histPage = findPageFromHistory(criteria, 0);
-            var fromPage = !!histPage? histPage.page: null;
-            // adjust visibiliy of elements of toPage, before showing it
-            $.each(toPage.find('[section]'), function(widget, i) {
-                var allsections = $(this).attr('section');
-                if (!!allsections) {
-                    var sections = allsections.split(' ');
-                    var matched = false;
-                    for (var i=0, len=sections.length; i < len; i++) {
-                        if (sections[i] === section) {
-                            matched = true;
+            if (!histPage) {
+                console.error('Cannot find destination page.');
+                return false;
             }
-                    }
-                    if (!matched) {
-                        $(this).addClass('missection');
-                    } else {
-                        $(this).removeClass('missection');
-                    }
-                }
-            });
-            if (animatePages(toPage, fromPage, animation, reverse)) {
-                if (!reverse) {
-                    addPageToHistory(toPage, animation);
-                } else {
-                    hist.shift();
-                }
+
+            var adjustedName = adjustAnimation(animation, reverse);
+            if (animatePages(toPage, histPage.page, adjustedName)) {
+                addPageToHistory(toPage, adjustedName);
                 return publicObj;
             } else {
                 console.error('Could not animate pages.');
@@ -390,8 +374,7 @@
             }
 
             var target = $el.attr('target'),
-                hash = $el.attr('hash'),
-                animation=fallbackAnimation;
+                hash = $el.attr('hash');
 
             if (tapReady == false || !$el.length) {
                 console.warn('Not able to tap element.');
@@ -404,13 +387,12 @@
             }
 
             // Figure out the animation to use
-            for (var i = animations.length - 1; i >= 0; i--) {
-                if ($el.is(animations[i].selector)) {
-                    animation = animations[i];
-                    break;
-                }
-            };
+            var animation = findAnimation(function(candidate) {
+                return $el.is(candidate.selector);
+            }).name;
+            var reverse = $el.hasClass('reverse');
 
+            // Handle supported action type 
             if ($el.is(jQTSettings.backSelector)) {
                 // User clicked a back button
                 // find out the from page 
@@ -429,15 +411,15 @@
             } else if ($el.is(jQTSettings.toggleSelector)) {
                   // User clicked a toggle
                   if (!!hash && hash.length > 1 && hash.indexOf('#') === 0) {
-                      if ($(hash).hasClass('current') || $(hash).hasClass('now')) {
+                      if ($(hash).hasClass('current')) {
                           goBack(null, hash.substring(1));
                       } else {
-                          goTo($(hash).data('referrer', $el), animation, $(this).hasClass('reverse'));
+                          goTo($(hash).data('referrer', $el), animation, reverse);
                       }
                   }
             } else if ($el.is(jQTSettings.submitSelector)) {
               // User clicked or tapped a submit element
-                submitParentForm(e);
+                submitParentForm($el);
 
             } else if (target == '_webapp') {
                 // User clicked an internal link, fullscreen mode
@@ -450,7 +432,7 @@
 
             } else if (hash && hash!='#') {
                 // Branch on internal or external href
-                goTo($(hash).data('referrer', $el), animation, $(this).hasClass('reverse'));
+                goTo($(hash).data('referrer', $el), animation, reverse);
                 return false;
 
             } else {
@@ -469,6 +451,7 @@
         function addPageToHistory(page, animation) {
             // Grab some info
             var pageId = page.attr('id');
+            var page = $('#' + pageId); // normalize to actual page
             var section = page.attr('section');
             // Prepend info to page history
             hist.unshift({
@@ -477,7 +460,8 @@
                 section: section,
                 id: pageId
             });
-            if (section === "main" || section === "full") {
+            // update hash
+            if (section === defaultSection) {
                 location.hash = '#' + pageId;
             }
             startHashCheck();
@@ -498,7 +482,7 @@
                     matcher = function(candidate) { return candidate.id === search; };
                 }
             } else if ($.isFunction(search)) {
-                matcher = function(candidate) { return search(candidate); };
+                matcher = search;
             } else {
                 matcher = function(candidate) {
                     var matched = true;
@@ -540,13 +524,69 @@
                     hist.splice(i, 1);
                 }
             }
+        }
+        function initAnimations() {
+            // Add animations and each selector
+            for (var i in defaultAnimations) {
+                var name = defaultAnimations[i];
+                var selector = jQTSettings[name + 'Selector'];
+                if (typeof(selector) == 'string' && selector.length > 0) {
+                    var selector = jQTSettings[name + 'Selector'];
+                    animations.push({name: name, selector: selector});
+                } else {
+                    console.warn('invalid selector for animation: ' + name);
+                }
+            }
+        }
+        function findAnimation(search) {
+            var result = jQTSettings.defaultAnimation; 
+            var matcher = function(candidate) { return false; };
+            if (typeof(search) === 'string') {
+                if (!!search) {
+                    matcher = function(candidate) { return candidate.name === search; };
+                }
+            } else if ($.isFunction(search)) {
+                matcher = search;
+            }
+            for (var i = animations.length - 1; i >= 0; i--) {
+                if (matcher(animations[i]) === true) {
+                    result = animations[i];
+                    break;
+                }
+            }
             return result;
         }
-        function animatePages(toPage, fromPage, animation, backwards) {
+        function adjustAnimation(name, reverse) {
+            var result;
+            if (!name) {
+                name = jQTSettings.defaultAnimation;
+            }
+            if (reverse === true) {
+                var KEY = 'reverse';
+                var splitted = name.split(' ');
+                var i = $.inArray(KEY, splitted);
+                if (name.indexOf(KEY) >= 0 && i < 0) {
+                    console.error('check didn\'t work');
+                }
+                if (i >= 0) {
+                    splitted.splice(i, 1);
+                    result = splitted.join(' ');
+                } else {
+                    result = name + ' ' + KEY;
+                }
+                if (result === 'reverse') {
+                    console.error('check failed. input: ' + name + ' output: ' + result + 'i: ' + i + ' joined: ' + splitted.join('-'));
+                }
+            } else {
+                result = name;
+            }
+            return result;
+        }
+        function animatePages(toPage, fromPage, animation) {
             // Error check for target page
-            if (toPage.length === 0) {
+            if (!toPage || !fromPage || toPage.length == 0 || fromPage.length == 0) {
                 $.fn.unselect();
-                console.error('Target element is missing.');
+                console.error('Target element is missing. Dest: ' + toPage + ' Source: ' + fromPage);
                 return false;
             }
 
@@ -563,6 +603,10 @@
             // Make sure we are scrolled up to hide location bar
             toPage.css('top', window.pageYOffset);
 
+            // animation settings
+            var backwards = !!animation? $.inArray('reverse', animation.split(' ')) >= 0: false;
+            var animation = !backwards? animation: adjustAnimation(animation, true); 
+            var main = toPage.attr('section') === defaultSection; 
             // Define callback to run after animation completes
             var callback = function animationEnd(event) {
                 if($.support.WebKitAnimationEvent) {
@@ -571,8 +615,8 @@
                 }
 
                 if (animation) {
-                        toPage.removeClass('start in ' + animation.name);
-                        fromPage.removeClass('start out current ' + animation.name);
+                    toPage.removeClass('start in ' + animation);
+                    fromPage.removeClass('start out current ' + animation);
                     if (backwards) {
                         toPage.toggleClass('reverse');
                         fromPage.toggleClass('reverse');
@@ -586,7 +630,13 @@
                 fromPage.trigger('pageAnimationEnd', { direction: 'out', reverse: backwards });
 
                 clearInterval(hashCheckInterval);
+                if (main) {
                 currentPage = toPage;
+                    currentAside.removeClass('front');
+                } else {
+                    currentAside = toPage;
+                    currentPage.removeClass('front');
+                }
 
                 var $originallink = toPage.data('referrer');
                 if ($originallink) {
@@ -602,6 +652,11 @@
 
             if ($.support.WebKitAnimationEvent && animation && jQTSettings.useAnimations) {
                 tapReady = false;
+                if (main) {
+                    currentAside.addClass('front');
+                } else {
+                    currentPage.addClass('front');
+                }
                 if (backwards) {
                     toPage.toggleClass('reverse');
                     fromPage.toggleClass('reverse');
@@ -611,11 +666,17 @@
                 fromPage[0].addEventListener('webkitTransitionEnd', callback, false);
                 fromPage[0].addEventListener('webkitAnimationEnd', callback, false);
 
-                toPage.queue(function() { $(this).addClass(animation.name + ' in current'); $(this).dequeue(); });
-                fromPage.queue(function() { $(this).addClass(animation.name + ' out'); $(this).dequeue(); } );
+                toPage.queue(function() { 
+                    fromPage.addClass(animation + ' out');
+                    toPage.addClass(animation + ' in current');
+                    $(this).dequeue(); 
+                });
 
-                toPage.delay(50).queue(function() { $(this).addClass('start');  $(this).dequeue(); });
-                fromPage.delay(50).queue(function() { $(this).addClass('start'); $(this).dequeue(); });
+                toPage.delay(50).queue(function() { 
+                    fromPage.addClass('start');
+                    toPage.addClass('start');  
+                    $(this).dequeue(); 
+                });
             } else {
                 toPage.addClass('current');
                 callback();
@@ -644,6 +705,12 @@
                 if (!$node.attr('id')) {
                     $node.attr('id', 'page-' + (++newPageCount));
                 }
+                var section = $node.attr('section'); 
+                if (!section) {
+                    $node.attr('section', defaultSection);
+                }
+                $node.children().find('[section~="' + section + '"]').removeClass('missection');
+                $node.children().find('[section]:not([section~="' + section + '"])').addClass('missection');                  
 
             $body.trigger('pageInserted', {page: $node.appendTo($body)});
 
@@ -652,7 +719,7 @@
                 }
             });
             if (targetPage !== null) {
-                goTo(targetPage, animation);
+                goTo('#' + targetPage[0].id, animation);
                 return targetPage;
             } else {
                 return false;
@@ -713,8 +780,8 @@
             }
             return true;
         }
-        function submitParentForm(e) {
-            var $form = $(this).closest('form');
+        function submitParentForm($el) {
+            var $form = $el.closest('form');
             if ($form.length) {
                 var evt = $.Event("submit");
                 evt.preventDefault();
@@ -810,12 +877,15 @@
                 var absY = Math.abs(deltaY);
 
                 inprogress = false;
-                $el.removeClass('active');
                 unbindEvents($el);
                 if (!tapped && (absX <= 1 && absY <= 1)) {
                     tapped = true;
                     $el.trigger('tap');
+                    setTimeout(function() {
+                      $el.removeClass('active');
+                  }, 1000);
                 } else {
+                    $el.removeClass('active');
                     e.preventDefault();
                 }
             };
@@ -833,7 +903,7 @@
                     $el.addClass('active');
                     setTimeout(function() {
                         $el.removeClass('active');
-                    }, 250);
+                    }, 1000);
                 } else if (inprogress && !moved) {
                     $el.addClass('active');
                 }
