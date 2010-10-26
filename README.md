@@ -12,8 +12,7 @@ BeeDesk's fork.
 
 See the demo here
 
-- [Demo](http://bit.ly/beedesk-jqt), The main demo with iPad split-screen support with automatically iPhone adaption. 
-- [Demo](http://bit.ly/beedesk-jqt), The most up-to-date integration with iScroll.
+- [Demo](http://bit.ly/beedesk-jqt), The main demo with iPad split-screen support with automatically iPhone adaption, iscroll on apple theme. 
 
 
 jQTouch
