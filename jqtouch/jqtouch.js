@@ -247,6 +247,7 @@
                     defaultSection = "full";
                     $('#jqt > *').attr("section", defaultSection);
                 }
+
                 // Make sure exactly one child of body has "current" class
                 if ($('#jqt > .current').length == 0) {
                     currentPage = $('#jqt > *:first');
@@ -257,6 +258,7 @@
                 if (currentAside.length != 0) {
                     currentAside.addClass('current');
                 }
+
                 // adjust visibiliy of elements
                 $.each(['full', 'main', 'aside'], function(i, section) {
                     var $section = $('#jqt > [section="' + section + '"]');
@@ -395,6 +397,7 @@
             // Handle supported action type 
             if ($el.is(jQTSettings.backSelector)) {
                 // User clicked a back button
+                
                 // find out the from page 
                 var from;
                 var cur = e.currentTarget;
@@ -417,6 +420,7 @@
                           goTo($(hash).data('referrer', $el), animation, reverse);
                       }
                   }
+
             } else if ($el.is(jQTSettings.submitSelector)) {
               // User clicked or tapped a submit element
                 submitParentForm($el);

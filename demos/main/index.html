@@ -6,8 +6,55 @@
         <title>jQTouch &beta;</title>
         <style type="text/css" media="screen">@import "../../jqtouch/jqtouch.css";</style>
         <style type="text/css" media="screen">@import "../../themes/apple/theme.css";</style>
+        <style type="text/css" media="screen">
+            #jqt.fullscreen #home .info {
+                display: none;
+            }
+            div#jqt #about {
+                padding: 100px 10px 40px;
+                text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
+                font-size: 13px;
+                text-align: center;
+                background: #161618;
+            }
+            div#jqt #about p {
+                margin-bottom: 8px;
+            }
+            div#jqt #about a {
+                color: #fff;
+                font-weight: bold;
+                text-decoration: none;
+            }
+            
+            .s-scrollwrapper {
+              -webkit-box-sizing: border-box;
+              height: 416px;       
+              /* Of course you need to specify the object height */
+              position:relative;  /* On older OS versions "position" and "z-index" must be defined, */
+              z-index:1;          /* it seems that recent webkit is less picky and works anyway. */
+              width:100%;
+              margin-top: 0px;
+              padding-top: 0px;
+              overflow:hidden;
+            }
+      
+            .s-scrollpane {
+              -webkit-box-sizing: border-box;
+              position: relative;      
+              width:100%;
+              min-height: 100%;
+              padding-top: 0px;
+              padding-bottom: 0px;
+              -webkit-box-flex: 1;
+              -moz-box-flex: 1;
+              /*  -webkit-box-shadow:0 0 8px #555;    /* Don't use shadows in production, they slow down drastically CSS animations */
+              /*  -webkit-touch-callout:none;*/
+              /*  -webkit-tap-highlight-color:rgba(0,0,0,0);*/
+            }
+        </style>
         <script src="../../jqtouch/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../../jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="../iscroll/iscroll.js" type="application/x-javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
             var jQT = new $.jQTouch({
                 icon: 'jqtouch.png',
@@ -25,6 +72,102 @@
                     '../../themes/jqt/img/loading.gif'
                     ]
             });
+            
+            function setHeight($item) {
+              var $wrapper = $item.find('.s-scrollwrapper');
+              if ($wrapper.length > 0) {
+                var headerH = 0;
+                var footerH = 0;
+                var tabbarH = 0;
+                var wrapperH = 320;
+
+                var $header = $item.find('.toolbar');
+                headerH = $header.length > 0 ? ($header.outerHeight() > 0 ? $header.outerHeight() : 0) : 0;
+
+                var $footer = $item.find('.tabbar'); // page footer
+                var $tabbar = $('#tabbar'); // global tabbar
+                if ($footer.length > 0) {
+                  footerH = $footer.outerHeight();
+                } else if ($tabbar.length > 0) {
+                  tabbarH = $tabbar.outerHeight(); 
+                }
+
+                // workaround limitation on outerHeight (ie, returns zero until animation ended)
+                if (headerH > 0 || footerH > 0 || tabbarH > 0) {
+                  wrapperH = window.innerHeight - headerH - footerH - tabbarH;
+                  $wrapper.height(wrapperH);
+                }
+
+                // refresh scroll
+                var scroll = $item.data('iscroll_object');
+                if (scroll !== undefined && scroll !== null) {
+                  scroll.refresh();
+                }
+              }
+            }
+
+            function setCurrentHeight() {
+              setHeight($('.current'));
+            }
+
+            function loaded() {
+              $('#jqt').children().each(function () {
+                var $this = $(this);
+                var $wrapper = $this.find('.s-scrollwrapper');
+                var $pane = $wrapper.find('.s-scrollpane'); 
+                if ($pane.length > 0) {
+                  var paneid = $pane.attr('id');                     
+                  if (!!paneid && $('#' + paneid).parent()[0] === $wrapper[0]) {
+                    var scroll = new iScroll($pane[0].id, {
+                      desktopCompatibility: true,
+                      bounce: true,
+                      momentum: true,
+                      checkDOMChanges: false
+                    });
+                    $this.data('iscroll_object', scroll); 
+  
+                    // workaround limitation on outerHeight (ie, returns zero until animation ended)
+                    // set a default for most common case to avoid resize being seen
+                    wrapperH = window.innerHeight - 88;
+                    $wrapper.height(wrapperH);
+  
+                    scroll.refresh();
+  
+                    $this.bind('pageAnimationEnd', function(event, info) {
+                      if (info.direction == 'in') {
+                        setHeight($(this));
+                      }
+                    });
+                  } else {
+                    
+                    if (!!paneid) {
+                      console.warn('iScroll is not enabled for this <div>. <div id="' + paneid + '"> is not unique.');
+                    } else {
+                      console.warn('iScroll is not enabled for this <div>. An unique id must be specified.');  
+                    }
+                  }
+                }
+              });
+            }
+
+            document.addEventListener('touchmove', function(e) { e.preventDefault(); }, true);
+            $(window).resize(function() {
+                 $('#jqt').children().each(function () {
+                 setHeight($(this));
+              });
+            });
+
+            $(document).ready(function(){
+              setTimeout(function() {
+                loaded();
+                $(window).resize();
+        
+                setTimeout(function() {
+                  $(window).resize();
+                }, 1500);
+              }, 50);
+            });
+
             // Some sample Javascript functions:
             $(function(){
                 // Show a swipe event on swipe test
@@ -83,26 +226,6 @@
                 })
             });
         </script>
-        <style type="text/css" media="screen">
-            #jqt.fullscreen #home .info {
-                display: none;
-            }
-            div#jqt #about {
-                padding: 100px 10px 40px;
-                text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
-                font-size: 13px;
-                text-align: center;
-                background: #161618;
-            }
-            div#jqt #about p {
-                margin-bottom: 8px;
-            }
-            div#jqt #about a {
-                color: #fff;
-                font-weight: bold;
-                text-decoration: none;
-            }
-        </style>
     </head>
     <body>
         <div id="jqt" class="splitscreen">
@@ -121,31 +244,40 @@
                     <h1>AJAX</h1>
                     <a class="back" href="#home" section="full">Home</a>
                 </div>
-                <ul class="rounded">
-                    <li class="arrow"><a href="#ajax_post">POST Form Example</a></li>
-                    <li class="arrow"><a href="ajax.html">GET Example</a></li>
-                    <li class="arrow"><a href="ajax_long.html">Long GET Example</a></li>
-                    <li class="arrow"><a href="#callback">With Callback</a></li>
-                </ul>
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="ajaxpane">
+                    <!-- extra div here for workaround bug in ul css causes the last li to fill the page -->
+                    <ul class="rounded">
+                        <li class="arrow"><a href="#ajax_post">POST Form Example</a></li>
+                        <li class="arrow"><a href="ajax.html">GET Example</a></li>
+                        <li class="arrow"><a href="ajax_long.html">Long GET Example</a></li>
+                        <li class="arrow"><a href="#callback">With Callback</a></li>
+                    </ul>
+                  </div>
+                </div>
             </div>
             <div id="animations">
                 <div class="toolbar">
                     <h1>Animations</h1>
                     <a class="back" href="#" section="full">Home</a>
                 </div>
-                <ul class="rounded">
-                    <li><a href="#animdemo">Slide</a></li>
-                    <li><a class="slideup" href="#animdemo">Slide Up</a></li>
-                    <li><a class="dissolve" href="#animdemo">Dissolve</a></li>
-                    <li><a class="fade" href="#animdemo">Fade</a></li>
-                    <li><a class="flip" href="#animdemo">Flip</a></li>
-                    <li><a class="pop" href="#animdemo">Pop</a></li>
-                    <li><a class="swap" href="#animdemo">Swap</a></li>
-                    <li><a class="cube" href="#animdemo">Cube</a></li>
-                    <li><a href="#reversed">Reverse animations&hellip;</a></li>
-                </ul>
-                <div class="info">
-                    Custom animations are also <a href="http://code.google.com/p/jqtouch/wiki/Animations" target="_blank">easy to write</a>. <br />View the source in <code>demos/customanimation</code> to see how.
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="animationspane">
+                    <ul class="rounded">
+                      <li><a href="#animdemo">Slide</a></li>
+                      <li><a class="slideup" href="#animdemo">Slide Up</a></li>
+                      <li><a class="dissolve" href="#animdemo">Dissolve</a></li>
+                      <li><a class="fade" href="#animdemo">Fade</a></li>
+                      <li><a class="flip" href="#animdemo">Flip</a></li>
+                      <li><a class="pop" href="#animdemo">Pop</a></li>
+                      <li><a class="swap" href="#animdemo">Swap</a></li>
+                      <li><a class="cube" href="#animdemo">Cube</a></li>
+                      <li><a href="#reversed">Reverse animations&hellip;</a></li>
+                    </ul>
+                    <div class="info">
+                        Custom animations are also <a href="http://code.google.com/p/jqtouch/wiki/Animations" target="_blank">easy to write</a>. <br />View the source in <code>demos/customanimation</code> to see how.
+                    </div>
+                  </div>
                 </div>
             </div>
             <div id="animdemo">
@@ -154,24 +286,23 @@
                 </div>
                 <a style="margin:0 10px 120px;color:rgba(0,0,0,.9)" href="#" class="whiteButton goback">Go back</a>
             </div>
-            
             <div id="buttons">
                 <div class="toolbar">
                     <h1>Buttons!</h1>
                     <a href="#" class="back">Home</a>
                 </div>
-                <div style="margin: 10px;">
-                    <a href="#" class="whiteButton">White</a>
-                    <br />
-                    <a href="#" class="grayButton">Gray</a>
-                    <br />
-                    <a href="#" class="redButton">Red</a>
-                    <br />
-                    <a href="#" class="greenButton">Green</a>
-                </div>
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="buttonspane" style="margin: 10px;">
+                      <a href="#" class="whiteButton">White</a>
+                      <br />
+                      <a href="#" class="grayButton">Gray</a>
+                      <br />
+                      <a href="#" class="redButton">Red</a>
+                      <br />
+                      <a href="#" class="greenButton">Green</a>
+                  </div>
+                </div>                
             </div>
-            
-            
             <div id="callback">
                 <div class="toolbar">
                     <h1>AJAX w/Callback</h1>
@@ -183,12 +314,16 @@
                     <h1>Events</h1>
                     <a class="back" href="#home" section="full">Home</a>
                 </div>
-                <ul class="rounded">
-                    <li id="orient">Orientation: <strong>profile</strong></li>
-                    <li><a href="#pageevents">Page events</a></li>
-                    <li><a href="#" id="swipeme">Swipe me!</a></li>
-                    <li><a href="#" id="tapme">Tap me!</a></li>
-                </ul>
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="callbackspane">
+                    <ul class="rounded">
+                        <li id="orient">Orientation: <strong>profile</strong></li>
+                        <li><a href="#pageevents">Page events</a></li>
+                        <li><a href="#" id="swipeme">Swipe me!</a></li>
+                        <li><a href="#" id="tapme">Tap me!</a></li>
+                    </ul>
+                  </div>
+                </div>
             </div>
             <div id="demos">
                 <div class="toolbar">
@@ -208,21 +343,25 @@
                     <h1>Edge to Edge</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <ul class="edgetoedge">
-                    <li class="sep">F</li>
-                    <li><a href="#">Flintstone, <em>Fred</em></a></li>
-                    <li><a href="#">Flintstone, <em>Pebble</em></a></li>
-                    <li><a href="#">Flintstone, <em>Wilma</em></a></li>
-                    <li class="sep">J</li>
-                    <li><a href="#">Jetson, <em>Elroy</em></a></li>
-                    <li><a href="#">Jetson, <em>George</em></a></li>
-                    <li><a href="#">Jetson, <em>Jane</em></a></li>
-                    <li><a href="#">Jetson, <em>Judy</em></a></li>
-                    <li class="sep">R</li>
-                    <li><a href="#">Rubble, <em>Bambam</em></a></li>
-                    <li><a href="#">Rubble, <em>Barney</em></a></li>
-                    <li><a href="#">Rubble, <em>Betty</em></a></li>
-                </ul>
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="edgetoedgepane">
+                    <ul class="edgetoedge">
+                        <li class="sep">F</li>
+                        <li><a href="#">Flintstone, <em>Fred</em></a></li>
+                        <li><a href="#">Flintstone, <em>Pebble</em></a></li>
+                        <li><a href="#">Flintstone, <em>Wilma</em></a></li>
+                        <li class="sep">J</li>
+                        <li><a href="#">Jetson, <em>Elroy</em></a></li>
+                        <li><a href="#">Jetson, <em>George</em></a></li>
+                        <li><a href="#">Jetson, <em>Jane</em></a></li>
+                        <li><a href="#">Jetson, <em>Judy</em></a></li>
+                        <li class="sep">R</li>
+                        <li><a href="#">Rubble, <em>Bambam</em></a></li>
+                        <li><a href="#">Rubble, <em>Barney</em></a></li>
+                        <li><a href="#">Rubble, <em>Betty</em></a></li>
+                    </ul>
+                  </div>
+                </div>
             </div>
             <div id="extensions">
                 <div class="toolbar">
@@ -244,8 +383,9 @@
                     <h1>Forms</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <form>
-                    <ul class="edit rounded">
+                <div class="s-scrollwrapper">
+                  <form class="s-scrollpane" id="formspane">
+                      <ul class="edit rounded">
                         <li><input type="text" name="name" placeholder="Text" id="some_name" /></li>
                         <li><input type="search" name="search" placeholder="Search" id="some_name" /></li>
                         <li><input type="tel" name="phone" placeholder="Phone" id="some_name"  /></li>
@@ -273,33 +413,38 @@
                         <li><input type="radio" name="bag" value="plastic" title="Plastic" /></li>
                     </ul>
                 </form>
+              </div>
             </div>
             <div id="home" class="current" section="aside">
                 <div class="toolbar">
                     <h1>jQTouch</h1>
                     <a class="button slideup tog" id="infoButton" href="#about">About</a>
                 </div>
-                <ul class="rounded">
-                    <li class="arrow"><a href="#ui">User Interface</a> <small class="counter">4</small></li>
-                    <li class="arrow"><a href="#animations">Animations</a> <small class="counter">8</small></li>
-                    <li class="arrow"><a href="#ajax">AJAX</a> <small class="counter">3</small></li>
-                    <li class="arrow"><a href="#callbacks">Events</a> <small class="counter">3</small></li>
-                    <li class="arrow"><a href="#extensions">Extensions</a> <small class="counter">4</small></li>
-                    <li class="arrow"><a href="#video">Video</a></li>
-                    <li class="arrow"><a href="#demos">Demos</a> <small class="counter">2</small></li>
-                </ul>
-                <h2>External Links</h2>
-                <ul class="rounded">
-                    <li class="forward"><a href="http://www.jqtouch.com/" target="_blank">Homepage</a></li>
-                    <li class="forward"><a href="http://www.twitter.com/jqtouch" target="_blank">Twitter</a></li>
-                    <li class="forward"><a href="http://code.google.com/p/jqtouch/w/list" target="_blank">Google Code</a></li>
-                </ul>
-                <ul class="individual">
-                    <li><a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#100;&#107;&#064;&#109;&#111;&#114;&#102;&#117;&#110;&#107;&#046;&#099;&#111;&#109;">Email</a></li>
-                    <li><a href="http://tinyurl.com/support-jqt" target="_blank">Donate</a></li>
-                </ul>
-                <div class="info">
-                    <p>Add this page to your home screen to view the custom icon, startup screen, and full screen mode.</p>
+                <div class="s-scrollwrapper">
+                  <form class="s-scrollpane" id="homepane">
+                    <ul class="rounded">
+                        <li class="arrow"><a href="#ui">User Interface</a> <small class="counter">4</small></li>
+                        <li class="arrow"><a href="#animations">Animations</a> <small class="counter">8</small></li>
+                        <li class="arrow"><a href="#ajax">AJAX</a> <small class="counter">3</small></li>
+                        <li class="arrow"><a href="#callbacks">Events</a> <small class="counter">3</small></li>
+                        <li class="arrow"><a href="#extensions">Extensions</a> <small class="counter">4</small></li>
+                        <li class="arrow"><a href="#video">Video</a></li>
+                        <li class="arrow"><a href="#demos">Demos</a> <small class="counter">2</small></li>
+                    </ul>
+                    <h2>External Links</h2>
+                    <ul class="rounded">
+                        <li class="forward"><a href="http://www.jqtouch.com/" target="_blank">Homepage</a></li>
+                        <li class="forward"><a href="http://www.twitter.com/jqtouch" target="_blank">Twitter</a></li>
+                        <li class="forward"><a href="http://code.google.com/p/jqtouch/w/list" target="_blank">Google Code</a></li>
+                    </ul>
+                    <ul class="individual">
+                        <li><a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#100;&#107;&#064;&#109;&#111;&#114;&#102;&#117;&#110;&#107;&#046;&#099;&#111;&#109;">Email</a></li>
+                        <li><a href="http://tinyurl.com/support-jqt" target="_blank">Donate</a></li>
+                    </ul>
+                    <div class="info">
+                        <p>Add this page to your home screen to view the custom icon, startup screen, and full screen mode.</p>
+                    </div>
+                  </form>
                 </div>
             </div>
             <div id="metal">
