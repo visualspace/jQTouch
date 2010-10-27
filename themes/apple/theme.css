@@ -1,5 +1,4 @@
 body {
-    background: rgb(0,0,0);
 }
 
 /* @group general */
@@ -635,7 +634,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     color: gray;
     font-size: 9pt;
     font-weight: lighter;
-    line-height: 9pt;
+    line-height: 10pt;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

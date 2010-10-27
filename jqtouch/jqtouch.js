@@ -55,7 +55,7 @@
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
             actionNodeTypes=['anchor', 'area', 'back', 'toggle', 'submit'];
-            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade'],
+            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade', 'notransition'],
             defaultSection=null,
             animations=[],
             splitscreenmode=false,
@@ -81,6 +81,7 @@
                 useFastTouch: false, // Experimental.
                 
                 // animation selectors
+                notransitionSelector: '',
                 cubeSelector: '.cube',
                 dissolveSelector: '.dissolve',
                 fadeSelector: '.fade',
@@ -287,7 +288,7 @@
                 fromPage = findPageFromHistory(from, 0);
             } else {
                 fromPage = $.extend({i: 0}, hist[0]);
-                }
+            }
             if (!fromPage) {
                 console.error('History in invalid state or goback is called at the home page.');
                 return false;
@@ -307,11 +308,11 @@
                     if (!toPage) {
                         console.error('Cannot find history to go back to. The specified "from" or "to" parameters might be invalid. Or, it has already back to the beginning.');
                         return false;
-            }
+                    }
                 }
                 if (animatePages(toPage.page, fromPage.page, adjustAnimation(fromPage.animation, true))) {
-                // Remove all pages in front of the target page
-                removePageInHistory(toPage.i, fromPage.i, {section: fromPage.section});
+                    // Remove all pages in front of the target page
+                    removePageInHistory(toPage.i, fromPage.i, {section: fromPage.section});
                 } else {
                   console.error('Could not go back.');
                   return;
@@ -464,6 +465,7 @@
                 section: section,
                 id: pageId
             });
+            
             // update hash
             if (section === defaultSection) {
                 location.hash = '#' + pageId;
@@ -473,6 +475,7 @@
         function findPageFromHistory(search, start) {
             var result;
             var matcher;
+
             if (!start) {
                 start = 0;   
             }
@@ -544,6 +547,7 @@
         }
         function findAnimation(search) {
             var result = jQTSettings.defaultAnimation; 
+            
             var matcher = function(candidate) { return false; };
             if (typeof(search) === 'string') {
                 if (!!search) {
@@ -552,6 +556,7 @@
             } else if ($.isFunction(search)) {
                 matcher = search;
             }
+  
             for (var i = animations.length - 1; i >= 0; i--) {
                 if (matcher(animations[i]) === true) {
                     result = animations[i];
@@ -562,6 +567,7 @@
         }
         function adjustAnimation(name, reverse) {
             var result;
+            
             if (!name) {
                 name = jQTSettings.defaultAnimation;
             }
@@ -611,14 +617,15 @@
             var backwards = !!animation? $.inArray('reverse', animation.split(' ')) >= 0: false;
             var animation = !backwards? animation: adjustAnimation(animation, true); 
             var main = toPage.attr('section') === defaultSection; 
+              
             // Define callback to run after animation completes
             var callback = function animationEnd(event) {
-                if($.support.WebKitAnimationEvent) {
+                if($.support.WebKitAnimationEvent && animation !== 'notransition') {
                     fromPage[0].removeEventListener('webkitTransitionEnd', callback);
                     fromPage[0].removeEventListener('webkitAnimationEnd', callback);
                 }
 
-                if (animation) {
+                if (animation && animation !== 'notransition') {
                     toPage.removeClass('start in ' + animation);
                     fromPage.removeClass('start out current ' + animation);
                     if (backwards) {
@@ -635,7 +642,7 @@
 
                 clearInterval(hashCheckInterval);
                 if (main) {
-                currentPage = toPage;
+                    currentPage = toPage;
                     currentAside.removeClass('front');
                 } else {
                     currentAside = toPage;
@@ -654,7 +661,7 @@
             fromPage.trigger('pageAnimationStart', { direction: 'out' });
             toPage.trigger('pageAnimationStart', { direction: 'in' });
 
-            if ($.support.WebKitAnimationEvent && animation && jQTSettings.useAnimations) {
+            if ($.support.WebKitAnimationEvent && animation && jQTSettings.useAnimations && animation !== 'notransition') {
                 tapReady = false;
                 if (main) {
                     currentAside.addClass('front');
@@ -716,7 +723,7 @@
                 $node.children().find('[section~="' + section + '"]').removeClass('missection');
                 $node.children().find('[section]:not([section~="' + section + '"])').addClass('missection');                  
 
-            $body.trigger('pageInserted', {page: $node.appendTo($body)});
+                $body.trigger('pageInserted', {page: $node.appendTo($body)});
 
                 if ($node.hasClass('current') || !targetPage) {
                     targetPage = $node;
