@@ -462,49 +462,41 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul {
     color: black;
     background: #fff;
-    border: 1px solid #B4B4B4;
-    font: bold 17px "Helvetica Neue", Helvetica;
+    font: bold 13pt "Helvetica Neue", Helvetica;
+    line-height: 21pt;
     padding: 0;
     margin: 15px 10px 17px 10px;
+}
+
+#jqt ul.rounded {
     -webkit-border-radius: 8px;
+    -webkit-box-shadow: #999 0px 0px 2px;
 }
 
-#jqt ul li {
-    color: #222;
-    border-top: 1px solid #E0E0E0;
-    list-style-type: none;
-    padding: 10px 10px 10px 10px;
-    -webkit-transform:translate3d(0,0,0);
-}
-
-#jqt ul li.active {
-    color: #fff;
-    font-color: #fff;
-    background-color: #4286f5;
-    background-image: none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left top;
-    background-repeat: no-repeat;
-}
-
-#jqt ul li.active > * {
-    color: #fff;
-    font-color: #fff;
-}
-
-/* when you have a first LI item on any list */
-
-#jqt li:first-child, #jqt li:first-child a {
+#jqt ul.rounded li:first-child, #jqt ul.rounded li:first-child a {
     border-top: 0;
     -webkit-border-top-left-radius: 8px;
     -webkit-border-top-right-radius: 8px;
 }
 
-#jqt li:last-child, #jqt li:last-child a {
+#jqt ul.rounded li:last-child, #jqt ul.rounded li:last-child a {
     -webkit-border-bottom-left-radius: 8px;
     -webkit-border-bottom-right-radius: 8px;
 }
 
-/* universal arrows */
+#jqt ul li {
+    -webkit-box-sizing: border-box;
+    color: #222;
+    border-top: 1px solid #E0E0E0;
+    list-style-type: none;
+    padding: 10px 10px 10px 10px;
+    -webkit-transform: translate3d(0,0,0); /* expensive way to avoid flickr */
+    min-height: 44px;
+}
+
+#jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check {
+    padding-right: 22px;
+}
 
 #jqt ul li.arrow {
     background-image: url(img/chevron.png), none;
@@ -512,25 +504,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat;
 }
 
-#jqt ul li.arrow a { 
-	padding: 12px 22px 12px 10px;
-}
-
-#jqt ul li.arrow.active {
-    color: #fff;
-    font-color: #fff;
-    background-image: url(img/listArrowSel.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+#jqt ul li.forward {
+    background-image: url(img/chevron.png), none; /* @TODO@ - using only regular chervon now */
     background-position: right center, left top;
     background-repeat: no-repeat;
 }
-
-#jqt #plastic ul li.arrow, #jqt #metal ul li.arrow {
-    background-image: url(img/chevron.png), none;
-    background-position: right center, left top;
-    background-repeat: no-repeat;
-}
-
-/* universal check */
 
 #jqt ul li.check {
     background-image: url(img/check.png), none;
@@ -538,8 +516,29 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat;
 }
 
-#jqt ul li.check a { 
-    padding: 12px 22px 12px 10px;
+#jqt ul li a, #jqt li.img a + a {
+    /* universal links on list */
+    color: inherit;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+#jqt ul li.arrow.active, #jqt ul li.check.active {
+    color: #fff;
+}
+
+#jqt ul li.active *, #jqt ul li.forward * {
+    color: inherit;
+}
+
+#jqt ul li.arrow.active {
+    background-image: url(img/listArrowSel.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left top;
+    background-repeat: no-repeat;
 }
 
 #jqt ul li.check.active {
@@ -548,35 +547,19 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat;
 }
 
-#jqt #plastic ul li.check, #jqt #metal ul li.check {
-    background-image: url(img/check.png), none;
+#jqt ul li.forward.active {
+    background-image: url(img/chevron_circle.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
+#jqt ul li.check.active {
+    background-image: url(img/check_white.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
     background-position: right center, left top;
     background-repeat: no-repeat;
 }
 
-/* universal links on list */
-
-#jqt ul li a, #jqt li.img a + a {
-    color: inherit;
-    text-decoration: none;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: block;
-    padding: 12px 10px 12px 10px;
-    margin: -10px;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-#jqt .active div {
-    color: #fff;
-}
-
-#jqt ul li a.button {
-    background-color: #194fdb;
-    color: #fff;
-}
-
+/* items (.img) below does not seem to be used anywhere in the example. */
 #jqt ul li.img a + a {
     margin: -10px 10px -20px -5px;
     font-size: 17px;
@@ -608,17 +591,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin-bottom: 0;
 }
 
-#jqt ul li a + a {
-    color: #000;
-    font: 14px "Helvetica Neue", Helvetica;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: block;
-    margin: 0;
-    padding: 0;
-}
-
 #jqt ul li a + a + a, #jqt ul li.img a + a + a + a, #jqt ul li.img a + small + a + a + a {
     /* color: #666; */
     font: 13px "Helvetica Neue", Helvetica;
@@ -641,92 +613,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     /* -webkit-box-shadow: inset 0 0 2px #444; */
 }
 
-#jqt form > h1 {
-    margin: 0;
-    padding: 10px 20px 2px 20px; 
-    color: rgb(76, 86, 108);
-    font: bold 13.5pt "Helvetica Neue", Helvetica;
-    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#jqt form > h2 {
-    margin: 0;
-    padding: 10px 20px 2px 20px; 
-    color: rgb(76, 86, 108);
-    font: bold 12pt "Helvetica Neue", Helvetica;
-    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-#jqt form > h3 {
-    padding-left: 10px;
-    padding-right: 5px;
-    font: bold 10pt "Helvetica Neue", Helvetica;
-    color: rgb(63,63,63);
-    text-shadow: rgba(255,255,255,1) 0pt 1pt 1pt, rgba(127,127,127,1) -1pt 0pt 1pt;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#jqt form > h4 {
-    padding-left: 10px;
-    padding-right: 5px;
-    font: 8.5pt "Helvetica Neue", Helvetica;
-    padding-top: 7px;
-    color: grey;
-    text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
-}
-
 #jqt ul.form li {
     padding: 7px 10px;
-}
-
-#jqt ul li .name {
-    width: auto;
-    color: 0;
-    font-weight: bold;
-    font-size: 17px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-#jqt ul li.value:first-child {
-    padding-top: 6px;
-}
-
-#jqt ul li.value {
-    width: auto;
-    color: 0;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    font-weight: bold;
-    font-size: 11pt;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-#jqt ul li.value:last-child {
-    padding-bottom: 6px;
-}
-
-#jqt ul li p {
-    position: relative;
-    width: 100%;
-    color: grey;
-    font-weight: 400;
-    font-size: 9pt;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
 }
 
 #jqt ul.form li.error {
@@ -741,6 +629,32 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background: #fff;
 }
 
+#jqt ul li p {
+    position: relative;
+    width: 100%;
+    color: gray;
+    font-size: 9pt;
+    font-weight: lighter;
+    line-height: 9pt;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#jqt ul li label {
+    position: relative;
+    float: left;
+    width: auto;
+    /* font-weight: bold;
+    font-size: 13.5pt; */
+    text-overflow: ellipsis;
+    text-align: left;
+    /* padding-right: 15px; */
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-user-select: auto;
+}
+
 #jqt ul li input[type="text"],
 #jqt ul li input[type="password"],
 #jqt ul li input[type="tel"],
@@ -751,40 +665,29 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul li textarea,
 #jqt ul li select {
     position: relative;
-    float: right;
-    background: #fff url('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
-    border: 0;
-    font: normal 17px "Helvetica Neue", Helvetica;
-    padding: 0;
-    display: inline-block;
-    margin-left: 0px;
-    margin-right: 20px;
-    -webkit-appearance: textfield; 
+    font: normal 13pt Helvetica;
+    font-color: #385487;
+    line-height: 21pt;
     color: #385487;
-    font-weight: 500;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));    
+    border: 0;
+    padding: 0;
+    padding-right: 20px;
+    width: auto;
+    -webkit-appearance: textfield; 
+    -webkit-user-select: auto;
+}
+
+#jqt ul li label + input {
     text-align: right;
-    -webkit-user-select: auto;
+    float: right;
+    max-width: 180px;
 }
-
-#jqt ul li .name + input[type="text"],
-#jqt ul li .name + input[type="password"],
-#jqt ul li .name + input[type="tel"],
-#jqt ul li .name + input[type="number"],
-#jqt ul li .name + input[type="search"],
-#jqt ul li .name + input[type="email"],
-#jqt ul li .name + input[type="url"],
-#jqt ul li .name + textarea,
-#jqt ul li .name + select {
-    min-width: 50%;
-    max-width: 160px;
-    -webkit-user-select: auto;
-}
-
 
 #jqt ul li textarea {
-    height: 120px;
-    padding: 0;
-    text-indent: -2px;
+    width: 100%;
+    padding: 0px;
+    min-height: 120px;
     -webkit-user-select: auto;
 }
 
@@ -811,6 +714,48 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin: -12px 0 0 17px;
 }
 
+
+#jqt form > h1, #jqt form > :not(.toolbar) h1 {
+    margin: 0;
+    padding: 10px 20px 2px 20px; 
+    color: rgb(76, 86, 108);
+    font: bold 13.5pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jqt form > h2, #jqt form > :not(.toolbar) h2 {
+    margin: 0;
+    padding: 10px 20px 2px 20px; 
+    color: rgb(76, 86, 108);
+    font: bold 12pt "Helvetica Neue", Helvetica;
+    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jqt form > h3, #jqt form > :not(.toolbar) h3 {
+    padding-left: 10px;
+    padding-right: 5px;
+    font: bold 10pt "Helvetica Neue", Helvetica;
+    color: rgb(63,63,63);
+    text-shadow: rgba(255,255,255,1) 0pt 1pt 1pt, rgba(127,127,127,1) -1pt 0pt 1pt;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#jqt form > h4, #jqt form > :not(.toolbar) h4 {
+    padding-left: 10px;
+    padding-right: 5px;
+    font: 8.5pt "Helvetica Neue", Helvetica;
+    padding-top: 7px;
+    color: grey;
+    text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
+}
 /* @end */
 
 
@@ -821,14 +766,18 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 	
 #jqt ul.edgetoedge li.sep {
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 159, 171, 1)), to(rgba(181, 193, 201, 1.0)));
+    -webkit-box-sizing: border-box;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 159, 171, 1)), to(rgba(181, 193, 201, 1.0)));
     border-bottom: 1px solid #b5c1c9;
     border-top: 1px solid #b5c1c9;
     color: #fff;
-    font-size: 16px;
+    font-size: 13pt;
+    line-height: 13pt;
     margin: 1px 0 0 0;
-    padding: 2px 10px;
+    padding: 3px 10px;
     text-shadow: #636a6f 0 1px 0;
+    min-height: 22px !important;
+    height: 22px !important;
 }
 
 #jqt ul.edgetoedge li {
@@ -858,6 +807,13 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-right: 0;
     border-top: 0;
 }
+
+#jqt #plastic ul li.check, #jqt #metal ul li.check {
+    background-image: url(img/check.png), none;
+    background-position: right center, left top;
+    background-repeat: no-repeat;
+}
+
 
 #jqt .metal ul {
     border-top: 0;
@@ -926,7 +882,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding: 4px 10px 5px 10px;
     display: inline !important;
     width: auto;
-    margin-top: -22px;
+    top: 0px;
+    margin-top: -25px;
 }
 
 #jqt ul li.arrow small.counter {
@@ -938,20 +895,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 
 /* @group Plastic */
-
-#jqt #plastic ul li.arrow, #jqt #metal ul li.arrow {
-    background-image: url(img/chevron.png);
-    background-position: right center;
-    background-repeat: no-repeat;
-}
-
-#jqt .edgetoedge ul, #jqt .metal ul, #jqt .plastic ul {
-    -webkit-border-radius: 0;
-    margin: 0;
-    border-left: 0;
-    border-right: 0;
-    border-top: 0;
-}
 
 #jqt .metal ul li {
     border-top: 1px solid rgb(238,238,238);
@@ -1003,6 +946,20 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin: 0;
     padding: 0;
     background: rgb(173,173,173);
+}
+
+#jqt #plastic ul li.arrow, #jqt #metal ul li.arrow {
+    background-image: url(img/chevron.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
+#jqt .edgetoedge ul, #jqt .metal ul, #jqt .plastic ul {
+    -webkit-border-radius: 0;
+    margin: 0;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
 }
 
 #jqt .plastic ul {

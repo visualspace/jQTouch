@@ -800,6 +800,7 @@
         }
 
         function touchstart(e) {
+            var $el = null;
             var startX, startY, startTime;
             var deltaX, deltaY, deltaT;
             var endX, endY, endTime;
@@ -840,6 +841,9 @@
                 deltaY = 0;
                 deltaT = 0;
 
+                if (!!$el) {
+                    $el.removeClass('active');
+                }
                 $el = $(e.currentTarget);
 
                 // Let's bind these after the fact, so we can keep some internal values
