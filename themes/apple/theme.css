@@ -27,9 +27,9 @@ body {
 
 
 
-/* @group Toolbar & Tabbar */
+/* @group Toolbar & Navibar */
 
-#jqt .toolbar, #jqt .tabbar {
+#jqt .toolbar, #jqt .navibar {
     position: relative;
     -webkit-box-sizing: border-box;
     height: 44px;
@@ -45,12 +45,12 @@ body {
     border-bottom: 1px solid #2d3642;
 }
 
-#jqt .tabbar {
+#jqt .navibar {
     bottom: 0px;
     border-top: 1px solid #2d3642;
 }
 
-#jqt .toolbar h1, #jqt .tabbar h1 {
+#jqt .toolbar h1, #jqt .navibar h1 {
     position: absolute;
     -webkit-box-sizing: border-box;
     top: auto;
@@ -75,30 +75,31 @@ body {
     text-shadow: 0px -1px 0px #374683;
 }
 
-#jqt .toolbar .left, #jqt .tabbar .left {
+#jqt .toolbar .left, #jqt .navibar .left {
     position: relative;
     float: left;
     margin-right: 15px;
 }
 
-#jqt .toolbar .right, #jqt .tabbar .right {
+#jqt .toolbar .right, #jqt .navibar .right {
     position: relative;
     float: right;
     margin-left: 15px;
 }
 
-#jqt .toolbar .center, #jqt .tabbar .center {
+#jqt .toolbar .center, #jqt .navibar .center {
     text-align: center;
 }
 
-#jqt .toolbar .touch, #jqt .tabbar .touch {
+#jqt .toolbar .touch, #jqt .navibar .touch {
     color: #808080;
 }
 
 #jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
 #jqt .toolbar .actionButton, #jqt .toolbar .done, 
 #jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .tog,
-#jqt .tabbar .button, #jqt .tabbar .tog { /** tabbar **/
+#jqt .toolbar input[type='submit'], #jqt .toolbar input[type='reset'],
+#jqt .navibar .button, #jqt .navibar .tog { /** navibar **/
     position: relative;
     display: block;
     -webkit-box-sizing: border-box;
@@ -124,8 +125,8 @@ body {
     line-height: 30px;
 }
 
-#jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, 
-#jqt .toolbar .tog {
+#jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
+#jqt .toolbar input[type='reset'] {
     border:1px solid #45505d;
     max-width: 95px;
     padding-left: 8px;
@@ -135,7 +136,8 @@ body {
     -webkit-border-radius:6px;
 }
 
-#jqt .toolbar .actionButton, #jqt .toolbar .done {
+#jqt .toolbar .actionButton, #jqt .toolbar .done,
+#jqt .toolbar input[type='submit'] {
     border:1px solid #55606d;
     max-width: 95px;
     padding-left: 8px;
@@ -156,11 +158,12 @@ body {
     float: right;
 }
 
-#jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .leftButton {
+#jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .leftButton,
+#jqt .toolbar input[type='reset'] {
     float: left;
 }
 
-#jqt .tabbar .button, #jqt .tabbar .tog {
+#jqt .navibar .button, #jqt .navibar .tog {
     border:1px solid #45505d;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
     -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
@@ -169,22 +172,31 @@ body {
 
 #jqt .toolbar .button:active, #jqt .toolbar .add:active, #jqt .toolbar .leftButton:active, #jqt .toolbar .tog:active,
 #jqt .toolbar .actionButton:active, #jqt .toolbar .done:active,
-#jqt .tabbar .button:active, #jqt .tabbar .tog:active { /** tabbar **/
+#jqt .navibar .button:active, #jqt .navibar .tog:active, /** navibar **/
+#jqt .toolbar input[type='submit']:active, #jqt .toolbar input[type='reset']:active { 
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
         color-stop(0.5, #3a4e78), color-stop(0.5, #253C6A), color-stop(1, #273f6d));
     color: #fff;
 }
 
 #jqt .toolbar .button[disabled], #jqt .toolbar .add[disabled], #jqt .toolbar .leftButton[disabled], #jqt .toolbar .tog[disabled],
-#jqt .toolbar .actionButton[disabled], #jqt .toolbar .done[disabled],
-#jqt .tabbar .button[disabled], #jqt .tabbar .tog[disable], /** tabbar **/
 #jqt .toolbar .button:disabled, #jqt .toolbar .add:disabled, #jqt .toolbar .leftButton:disabled, #jqt .toolbar .tog:disabled,
+#jqt .toolbar .actionButton[disabled], #jqt .toolbar .done[disabled],
 #jqt .toolbar .actionButton:disabled, #jqt .toolbar .done:disabled,
-#jqt .tabbar .button:disabled, #jqt .tabbar .tog:disable { /** tabbar **/
+#jqt .navibar .button[disabled], #jqt .navibar .tog[disable], /** navibar **/
+#jqt .navibar .button:disabled, #jqt .navibar .tog:disable { /** navibar **/
     background-image:-webkit-gradient(linear, left top, left bottom, 
       color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)), 
       color-stop(0.5, rgba(71, 105, 153, 0.8)), color-stop(1, rgba(74, 108, 155, 0.8)));
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(192, 192, 192, 0.8) !important;
+}
+
+#jqt .toolbar input[type='submit'][disabled], #jqt .toolbar input[type='submit']:disabled,
+#jqt .toolbar input[type='reset'][disabled], #jqt .toolbar input[type='reset']:disabled { 
+    background-image:-webkit-gradient(linear, left top, left bottom, 
+      color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)), 
+      color-stop(0.5, rgba(71, 105, 153, 0.8)), color-stop(1, rgba(74, 108, 155, 0.8)));
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
 #jqt .toolbar .back:active, #jqt .toolbar .cancel:active {
@@ -192,16 +204,16 @@ body {
     color: #fff;
 }
 
-#jqt .toolbar .button.nopad, #jqt .tabbar .button.nopad, #jqt .tabbar .tog.nopad {
+#jqt .toolbar .button.nopad, #jqt .navibar .button.nopad, #jqt .navibar .tog.nopad {
     padding-left: 0px;
     padding-right: 0px;
 }
 
-#jqt .toolbar .buttonicon, #jqt .tabbar .buttonicon {
+#jqt .toolbar .buttonicon, #jqt .navibar .buttonicon {
   color: #fff;
 }
 
-#jqt .toolbar .button .redbadge, #jqt .tabbar .button .redbadge {
+#jqt .toolbar .button .redbadge, #jqt .navibar .button .redbadge {
     position: relative;
     min-width: 16px;
     width: 16px;
@@ -223,19 +235,19 @@ body {
 }
 
 @media only screen and (max-device-width: 320px) and (orientation:landscape) {
-  #jqt .toolbar, #jqt .tabbar {
+  #jqt .toolbar, #jqt .navibar {
       padding: 3px 5px 3px 5px;
       height: 32px;
   }
 
-  #jqt .toolbar > h1, #jqt .tabbar > h1 {
+  #jqt .toolbar > h1, #jqt .navibar > h1 {
       margin-top: 0px;
   }
 
   #jqt .toolbar .button, #jqt .toolbar .add,
   #jqt .toolbar .actionButton, #jqt .toolbar .done, #jqt .toolbar .tog, 
   #jqt .toolbar .back, #jqt .toolbar .cancel,
-  #jqt .tabbar .button, #jqt .tabbar .tog { /** tabbar **/
+  #jqt .navibar .button, #jqt .navibar .tog { /** navibar **/
       height: 24px;
       line-height: 24px;
       min-height: 24px;
@@ -461,7 +473,9 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul {
     color: black;
     background: #fff;
-    font: bold 13pt "Helvetica Neue", Helvetica;
+    /* font: bold 13pt "Helvetica Neue", Helvetica; */
+    font-weight: bold;
+    font-size: 13pt;
     line-height: 21pt;
     padding: 0;
     margin: 15px 10px 17px 10px;
@@ -491,6 +505,15 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding: 10px 10px 10px 10px;
     -webkit-transform: translate3d(0,0,0); /* expensive way to avoid flickr */
     min-height: 44px;
+}
+
+#jqt ul li:empty {
+    min-height: 0px;
+    height: 0px;
+    border: 0px solid;
+    padding: 0;
+    margin: 0;
+    outline: 0;
 }
 
 #jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check {
@@ -528,16 +551,18 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt ul li.arrow.active, #jqt ul li.check.active {
     color: #fff;
+    text-shadow: none;
 }
 
 #jqt ul li.active *, #jqt ul li.forward * {
     color: inherit;
+    text-shadow: none;
 }
 
 #jqt ul li.arrow.active {
-    background-image: url(img/listArrowSel.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left top;
-    background-repeat: no-repeat;
+    background-image: url(img/listArrowSel.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
+    background-position: right center, left top !important;
+    background-repeat: no-repeat !important;
 }
 
 #jqt ul li.check.active {
@@ -671,7 +696,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));    
     border: 0;
     padding: 0;
-    padding-right: 20px;
     width: auto;
     -webkit-appearance: textfield; 
     -webkit-user-select: auto;
@@ -799,7 +823,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-color: rgb(255,255,255);
 }
 
-#jqt .edgetoedge ul, #jqt .metal ul, #jqt .plastic ul {
+#jqt ul.edgetoedge, #jqt ul.metal, #jqt .plastic ul {
     -webkit-border-radius: 0;
     margin: 0;
     border-left: 0;
@@ -807,29 +831,30 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-top: 0;
 }
 
+/*
 #jqt #plastic ul li.check, #jqt #metal ul li.check {
     background-image: url(img/check.png), none;
     background-position: right center, left top;
     background-repeat: no-repeat;
-}
+}*/
 
 
-#jqt .metal ul {
+#jqt ul.metal {
     border-top: 0;
     border-bottom: 0;
     background: rgb(180,180,180);
 }
 
-#jqt .edgetoedge ul li:first-child,
-#jqt .edgetoedge ul li:first-child a,
-#jqt .edgetoedge ul li:last-child,
-#jqt .edgetoedge ul li:last-child a,
-#jqt .metal ul li:first-child a,
-#jqt .metal ul li:last-child a {
+#jqt ul.edgetoedge li:first-child,
+#jqt ul.edgetoedge li:first-child a,
+#jqt ul.edgetoedge li:last-child,
+#jqt ul.edgetoedge li:last-child a,
+#jqt ul.metal li:first-child a,
+#jqt ul.metal li:last-child a {
     -webkit-border-radius: 0;
 }
 
-#jqt .edgetoedge ul li small {
+#jqt ul.edgetoedge li small {
     font-size: 16px;
     line-height: 28px;
 }
@@ -893,30 +918,25 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 
 
-/* @group Plastic */
+/* @group Metal */
 
-#jqt .metal ul li {
+#jqt ul.metal li {
     border-top: 1px solid rgb(238,238,238);
     border-bottom: 1px solid rgb(156,158,165);
     font-size: 26px;
     text-shadow: #fff 0 1px 0;
+    background-image: none, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#dadadc), to(#b4b3b8));
+    background-position: right center, left top;
+    background-repeat: no-repeat;
 }
 
-#jqt .metal ul li a {
+#jqt ul.metal li a {
     line-height: 26px;
     margin: 0;
     padding: 13px 0;
 }
 
-#jqt .metal ul li a:hover {
-    color: rgb(0,0,0);
-}
-
-#jqt .metal ul li:hover small {
-    color: inherit;
-}
-
-#jqt .metal ul li a em {
+#jqt ul.metal li a em {
     display: block;
     font-size: 14px;
     font-style: normal;
@@ -925,20 +945,28 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     line-height: 14px;
 }
 
-#jqt .metal ul li small {
+#jqt ul.metal li.active a em {
+    color: inherit;
+}
+
+#jqt ul.metal li small {
     float: right;
+    right: 25px;
+    color: inherit;
     position: relative;
     margin-top: 10px;
     font-weight: bold;
 }
 
-#jqt .metal ul li.arrow a small {
+#jqt ul.metal li.arrow a small {
     padding-right: 0;
     line-height: 17px;
 }
 
-#jqt .metal ul li.arrow {
-    background:  url(img/chevron.png) right center no-repeat;
+#jqt ul.metal li.arrow {
+    background-image: url(img/chevron.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#dadadc), to(#b4b3b8));
+    background-position: right center, left top;
+    background-repeat: no-repeat;
 }
 
 #jqt .plastic {
@@ -947,13 +975,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background: rgb(173,173,173);
 }
 
-#jqt #plastic ul li.arrow, #jqt #metal ul li.arrow {
-    background-image: url(img/chevron.png);
-    background-position: right center;
-    background-repeat: no-repeat;
-}
-
-#jqt .edgetoedge ul, #jqt .metal ul, #jqt .plastic ul {
+#jqt ul.edgetoedge, #jqt ul.metal, #jqt .plastic ul {
     -webkit-border-radius: 0;
     margin: 0;
     border-left: 0;
@@ -1159,12 +1181,3 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     font-weight: bold;
 }
 
-input[type='submit'] {
-    -webkit-border-radius: 4px;
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(238,238,238,1)), to(rgba(156,158,160,1)));
-    border: 1px outset #aaa;
-    display: block;
-    font-size: inherit;
-    font-weight: inherit;
-    padding: 10px;
-}

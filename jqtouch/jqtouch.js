@@ -55,7 +55,7 @@
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
             actionNodeTypes=['anchor', 'area', 'back', 'toggle', 'submit'];
-            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade', 'notransition'],
+            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade'],
             defaultSection=null,
             animations=[],
             splitscreenmode=false,
@@ -94,7 +94,7 @@
                 // node type selectors
                 anchorSelector: '#jqt a',
                 areaSelector: '#jqt area',
-                backSelector: '#jqt .back, #jqt .cancel, #jqt .goback, #jqt .done',
+                backSelector: '#jqt .back, #jqt .cancel, #jqt .goback, #jqt .done, #jqt .toolbar input[type=\'reset\']',
                 toggleSelector: '#jqt .tog',
                 formSelector: '#jqt form',
                 submitSelector: '#jqt .submit, input[type=\'submit\']',

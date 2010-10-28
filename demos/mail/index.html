@@ -15,24 +15,137 @@
                 color: #000;
                 font-size: 14px;
             }
+            
+            .s-scrollwrapper {
+              -webkit-box-sizing: border-box;
+              height: 416px;       
+              /* Of course you need to specify the object height */
+              position:relative;  /* On older OS versions "position" and "z-index" must be defined, */
+              z-index:1;          /* it seems that recent webkit is less picky and works anyway. */
+              width:100%;
+              margin-top: 0px;
+              padding-top: 0px;
+              overflow:hidden;
+            }
+      
+            .s-scrollpane {
+              -webkit-box-sizing: border-box;
+              position: relative;      
+              min-height: 100%;
+              padding-top: 0px;
+              padding-bottom: 0px;
+              -webkit-box-flex: 1;
+              -moz-box-flex: 1;
+              /*  -webkit-box-shadow:0 0 8px #555;    /* Don't use shadows in production, they slow down drastically CSS animations */
+              /*  -webkit-touch-callout:none;*/
+              /*  -webkit-tap-highlight-color:rgba(0,0,0,0);*/
+            }
         </style>
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-        <script type="text/javascript">google.load("jquery", "1"); </script>
+        <script src="../../jqtouch/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../../jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
-        <script src="../../jqtouch/jqtouch.events.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="../iscroll/iscroll.js" type="application/x-javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
             var jqtouch = $.jQTouch({
-                icon: 'mail.png',
-                preloadImages: [
-                    'themes/jqt/img/chevron_white.png',
-                    'themes/jqt/img/bg_row_select.gif',
-                    'themes/jqt/img/back_button.png',
-                    'themes/jqt/img/back_button_clicked.png',
-                    'themes/jqt/img/button_clicked.png',
-                    'themes/jqt/img/grayButton.png',
-                    'themes/jqt/img/whiteButton.png'
-                    ]
+              activableSelector: '#jqt ul > li.arrow, #jqt ol > li.arrow',
+              icon: 'mail.png'
             });
+
+            function setHeight($item) {
+              var $wrapper = $item.find('.s-scrollwrapper');
+              if ($wrapper.length > 0) {
+                var headerH = 0;
+                var footerH = 0;
+                var tabbarH = 0;
+                var wrapperH = 320;
+
+                var $header = $item.find('.toolbar');
+                headerH = $header.length > 0 ? ($header.outerHeight() > 0 ? $header.outerHeight() : 0) : 0;
+
+                var $footer = $item.find('.navibar'); // page footer
+                var $tabbar = $('#tabbar'); // global tabbar
+                if ($footer.length > 0) {
+                  footerH = $footer.outerHeight();
+                }
+                if ($tabbar.length > 0) {
+                  tabbarH = $tabbar.outerHeight(); 
+                }
+
+                // workaround limitation on outerHeight (ie, returns zero until animation ended)
+                if (headerH > 0 || footerH > 0 || tabbarH > 0) {
+                  wrapperH = window.innerHeight - headerH - footerH - tabbarH;
+                  $wrapper.height(wrapperH);
+                }
+
+                // refresh scroll
+                var scroll = $item.data('iscroll_object');
+                if (scroll !== undefined && scroll !== null) {
+                  scroll.refresh();
+                }
+              }
+            }
+
+            function setCurrentHeight() {
+              setHeight($('.current'));
+            }
+
+            function loaded() {
+              $('#jqt').children().each(function () {
+                var $this = $(this);
+                var $wrapper = $this.find('.s-scrollwrapper');
+                var $pane = $wrapper.find('.s-scrollpane'); 
+                if ($pane.length > 0) {
+                  var paneid = $pane.attr('id');                     
+                  if (!!paneid && $('#' + paneid).parent()[0] === $wrapper[0]) {
+                    var scroll = new iScroll($pane[0].id, {
+                      desktopCompatibility: true,
+                      bounce: true,
+                      momentum: true,
+                      checkDOMChanges: false
+                    });
+                    $this.data('iscroll_object', scroll); 
+
+                    // workaround limitation on outerHeight (ie, returns zero until animation ended)
+                    // set a default for most common case to avoid resize being seen
+                    wrapperH = window.innerHeight - 88;
+                    $wrapper.height(wrapperH);
+
+                    scroll.refresh();
+
+                    $this.bind('pageAnimationEnd', function(event, info) {
+                      if (info.direction == 'in') {
+                        setHeight($(this));
+                      }
+                    });
+                  } else {
+                    
+                    if (!!paneid) {
+                      console.warn('iScroll is not enabled for this <div>. <div id="' + paneid + '"> is not unique.');
+                    } else {
+                      console.warn('iScroll is not enabled for this <div>. An unique id must be specified.');  
+                    }
+                  }
+                }
+              });
+            }
+
+            document.addEventListener('touchmove', function(e) { e.preventDefault(); }, true);
+            $(window).resize(function() {
+                 $('#jqt').children().each(function () {
+                 setHeight($(this));
+              });
+            });
+
+            $(document).ready(function(){
+              setTimeout(function() {
+                loaded();
+                $(window).resize();
+        
+                setTimeout(function() {
+                  $(window).resize();
+                }, 1500);
+              }, 50);
+            });
+
             // Add an onload function
             $(function(){
                 // Dynamically set next page titles after clicking certain links
@@ -40,66 +153,121 @@
                     $( $(this).attr('href') + ' h1' ).html($(this).html());
                 });
             });
+            
+            // Add an onload function
+            $(function(){
+                // Dynamically set next page titles after clicking certain links
+                /*
+                $('#messages ul li a').click(function(){
+                    $($(this).attr('href') + ' h1').text($(this).text());
+                }); */
+                $('.pane ul li a').click(function(){
+                  var $autotitle = $('.autotitle', this);
+                  var t = $autotitle.text(); 
+                  if (!!t && t.length > 0) {
+                    $($(this).attr('href') + ' h1').text(t);
+                  }
+                });
+                
+                $('.pane ul li a').click(function(){
+                  var $pane = $(this).parents('.pane');
+                  var $h1 = $pane.find('.toolbar h1');
+                  
+                  var $next = $($(this).attr('href')); 
+                  var $back = $next.find('.toolbar .back.autotext');
+
+                  var h1 = $h1.text();
+                  if (!!h1 && h1.length > 0) {
+                    $back.text(h1);
+                  } else {
+                    $back.text('Back');
+                  }
+                });
+            });
         </script>
     </head>
     <body>
         <div id="jqt">
-            <div id="home" class="edgetoedge">
+            <div id="home" class="pane" class="current">
                 <div class="toolbar">
                     <h1>Accounts</h1>
                     <!-- <a class="button slideup" id="infoButton" href="#about">About</a> -->
                 </div>
-                <ul class="edgetoedge">
-                    <li><a href="#mailbox">Home</a></li>
-                    <li><a href="#mailbox">Work</a></li>
-                    <li><a href="#mailbox">MobileMe</a></li>
-                </ul>
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="homepane">
+                    <ul class="rounded">
+                      <li class="arrow"><a href="#mailbox" class="autotitle">Home</a></li>
+                      <li class="arrow"><a href="#mailbox" class="autotitle">Work</a></li>
+                      <li class="arrow"><a href="#mailbox" class="autotitle">MobileMe</a></li>
+                    </ul>
+                  </div>
+                </div>
             </div>
-            <div id="mailbox" class="edgetoedge">
+            <div id="mailbox" class="pane">
                 <div class="toolbar">
-                    <a href="#" class="back button">Accounts</a>
-                    <h1>Work</h1>
+                    <h1>Mailbox</h1>
+                    <a class="back autotext" href="#"></a>
                     <a class="add slideup" id="newMessageLink" href="#new" name="newMessageLink">+</a>
                 </div>
-                <ul class="edgetoedge">
-                    <li><a href="#messages">Inbox</a></li>
-                    <li><a href="#messages">Drafts</a></li>
-                    <li><a href="#messages">Sent</a></li>
-                    <li><a href="#messages">Trash</a></li>
-                </ul>
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="mailboxpane">
+                    <ul class="rounded">
+                        <li class="arrow"><a href="#messages" class="autotitle">Inbox</a></li>
+                        <li class="arrow"><a href="#messages" class="autotitle">Drafts</a></li>
+                        <li class="arrow"><a href="#messages" class="autotitle">Sent</a></li>
+                        <li class="arrow"><a href="#messages" class="autotitle">Trash</a></li>
+                    </ul>
+                  </div>
+                </div>
             </div>
-            <div id="messages">
+            <div id="messages" class="pane">
                 <div class="toolbar">
-                    <a href="#" class="back button">Accounts</a>
                     <h1>Messages</h1>
+                    <a href="#" class="back autotext"></a>
                     <a class="button" id="editLink" href="#" name="editLink">Edit</a>
                 </div>
-                <ul class="edgetoedge">
-                    <li><a href="#message">David Kaneda <span class="subject">Re: jQTouch Alpha 2</span> <span class="preview">This is another span</span></a></li>
-                    <li><a href="#message">John Doe <span class="subject">Your account</span> <span class="preview">This is probably spam.</span></a></li>
-                    <li><a href="#message">Bank of America <span class="subject">Your account</span> <span class="preview">Sample something</span></a></li>
-                    <li><a href="#message">Trash</a></li>
-                </ul>
+                <div class="s-scrollwrapper">
+                  <div class="s-scrollpane" id="messagespane">
+                    <ul class="edgetoedge">
+                        <li><a href="#message">David Kaneda <span class="subject autotitle">Re: jQTouch Alpha 2</span> <span class="preview">This is another span</span></a></li>
+                        <li><a href="#message">John Doe <span class="subject autotitle">Your account</span> <span class="preview">This is probably spam.</span></a></li>
+                        <li><a href="#message">Bank of America <span class="subject autotitle">Your account</span> <span class="preview">Sample something</span></a></li>
+                        <li><a href="#message">Trash</a></li>
+                    </ul>
+                  </div>
+                </div>
             </div>
-            <div id="new" class="edgetoedge">
-                <form>
-                    <div class="toolbar">
-                        <h1>New Message</h1>
-                        <a class="cancel" href="#home">Cancel</a> <a class="button disabled blueButton" href="#">Send</a>
-                    </div>
-                    <fieldset>
-                        <ul class="rounded">
-                            <li><label>To: <input type="text" name="name" value=""></label></li>
-                            <li><label>Cc/Bcc, From:</label> <input type="text" name="bcc" placeholder="you@email.com"></li>
-                            <li><label>Subject:</label> <input type="text" name="subject" placeholder="you@email.com"></li>
-                            <li><textarea>My email</textarea></li>
-                        </ul>
-                    </fieldset>
-                    <input type="submit" />
-                </form>
-            </div>
-            <div id="message"></div>
-            <div id="features">
+            <form id="new" class="edgetoedge" class="pane">
+                <div class="toolbar">
+                    <h1>New Message</h1>
+                    <input type='reset' value="Cancel"></input>
+                    <input class="button disabled" type="submit" value="Send" disabled></input>
+                </div>
+                <fieldset>
+                    <ul class="rounded">
+                        <li><label for="newname">To: <input type="text" name="name" id="newname" value=""></label></li>
+                        <li><label for="newfrom">Cc/Bcc, From:</label> <input type="text" id="newfrom"  name="bcc" placeholder="you@email.com"></li>
+                        <li><label for="newsubject">Subject:</label> <input type="text" id="newsubject" name="subject" placeholder="you@email.com"></li>
+                        <li><textarea>My email</textarea></li>
+                    </ul>
+                </fieldset>
+            </form>
+            <form id="message" class="edgetoedge" class="pane">
+                <div class="toolbar">
+                    <h1>Read Message</h1>
+                    <a class="back autotext" href="#"></a>
+                    <a class="button" href="#">Next</a><a class="button disabled" href="#">Prev</a>
+                </div>
+                <fieldset>
+                    <ul class="rounded">
+                        <li><label for="messagename">To: <input type="text" name="name" id="messagename" value=""></label></li>
+                        <li><label for="messagefrom">Cc/Bcc, From:</label> <input type="text" id="messagefrom"  name="bcc" placeholder="you@email.com"></li>
+                        <li><label for="messagesubject">Subject:</label> <input type="text" id="messagesubject" name="subject" placeholder="you@email.com"></li>
+                        <li><textarea>My email</textarea></li>
+                    </ul>
+                </fieldset>
+            </form>
+            <div id="features" class="pane">
                 <div class="toolbar">
                     <h1>Features</h1>
                     <a class="back button" href="#home">jQTouch</a>
@@ -117,14 +285,14 @@
                     </ul>
                 </div>
             </div>
-            <div id="flipdemo">
+            <div id="flipdemo" class="pane">
                 <div class="pad">
                     <div style="font-size: 1.5em; text-align: center; margin: 160px 0 160px; font-family: Marker felt;">
                         Pretty smooth, eh?
                     </div><a href="#" class="back whiteButton">Go back</a>
                 </div>
             </div>
-            <form id="formdemo" title="Movie Search" action="search.php" method="post" name="formdemo">
+            <form id="formdemo" title="Movie Search" action="search.php" method="post" name="formdemo" class="pane">
                 <div class="toolbar">
                     <h1>
                         Demos
@@ -141,20 +309,20 @@
                     </fieldset><input type="submit">
                 </div>
             </form>
-            <form id="searchForm" class="dialog" action="search.php" name="searchForm">
+            <form id="searchForm" class="dialog" action="search.php" name="searchForm" class="pane">
                 <fieldset>
                     <h1>Music Search</h1>
                     <a class="button leftButton" type="cancel">Cancel</a> <a class="button blueButton" type="submit">Search</a> <label>Artist:</label> <input id="artist" type="text" name="artist"> <label>Song:</label> <input type="text" name="song">
                     <p>This form retrieves the next page with Ajax via a POST request.</p>
                 </fieldset>
             </form>
-            <div id="license">
+            <div id="license" class="pane">
                 <div class="pad">
                     <p><strong>The MIT License</strong></p>
                     <p>Copyright © 2009 David Kaneda</p>
                     <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
                     <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-                    <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+                    <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
                     <a href="#" class="grayButton back">Return</a>
                 </div>
             </div>
