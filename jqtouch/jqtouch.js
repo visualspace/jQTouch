@@ -39,6 +39,7 @@
             $head=$('head'),
             hist=[],
             newPageCount=0,
+            bogomark=1,
             jQTSettings={},
             hashCheckInterval,
             currentPage,
@@ -51,7 +52,8 @@
             publicObj={},
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
-            actionNodeTypes=['anchor', 'area', 'back', 'toggle', 'submit'];
+            actionNodeTypes=['anchor', 'area', 'back', 'submit'];
+            behaviorModifier=['toggle'];
             defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade'],
             defaultSection=null,
             animations=[],
@@ -88,10 +90,11 @@
             anchorSelector: '#jqt a',
             areaSelector: '#jqt area',
             backSelector: '#jqt .back, #jqt .cancel, #jqt .goback, #jqt .done, #jqt .toolbar input[type=\'reset\']',
-            toggleSelector: '#jqt .tog',
             formSelector: '#jqt form',
             submitSelector: '#jqt .submit, input[type=\'submit\']',
-            inputSelector: '#jqt input',
+
+            // behaviour selectors (experimental)
+            toggleSelector: '#jqt .tog',
 
             // special selectors
             activableSelector: '#jqt ul > li, #jqt ol > li',
@@ -165,7 +168,7 @@
             return result;
         }
 
-        function addPageToHistory(page, animation) {
+        function addPageToHistory(page, search, animation) {
             // Grab some info
             var pageId = page.attr('id');
             var page = $('#' + pageId); // normalize to actual page
@@ -173,6 +176,7 @@
             // Prepend info to page history
             hist.unshift({
                 page: page,
+                search: search,
                 animation: animation,
                 section: section,
                 id: pageId
@@ -180,7 +184,7 @@
 
             // update hash
             if (section === defaultSection) {
-                location.hash = '#' + pageId;
+                location.hash = '#' + pageId + getSearchString(search);
             }
             startHashCheck();
         }
@@ -230,7 +234,7 @@
             }
             var fromPage = hist[from];
             var section = fromPage.section;
-            for (var i=(to-1); i >= 0; i--) {
+            for (var i=(to-1); i >= from; i--) {
                 var matched = true;
                 var candidate = hist[i];
                 if (!!cond) {
@@ -247,10 +251,44 @@
             }
         }
 
+        function parseSearch(q) {
+          // Andy E and community @ http://stackoverflow.com/posts/2880929/revisions
+          var results = {};
+          var e,
+              a = /\+/g,  // Regex for replacing addition symbol with a space
+              r = /([^&=]+)=?([^&]*)/g,
+              d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
+
+          while (e = r.exec(q)) {
+             results[d(e[1])] = d(e[2]);
+          }
+          return results;
+        };
+
+        function getSearchString(search) {
+            var result = '';
+            for (var item in search) {
+                if (result.length === 0) {
+                    result += '&';
+                }
+                result += item + '=' + encodeURIComponent(search[item]);
+            }
+            if (result.legnth > 0) {
+                result += '?';
+            }
+            return result;
+        };
+
         /* -- tag for code merge --
         function doNavigation(fromPage, toPage, animation, backwards) {
         */
-        function animatePages(toPage, fromPage, animation) {
+        function animatePages(params) {
+            var toPage, fromPage, animation, pagecallback;
+            toPage = params.to;
+            fromPage = params.from;
+            animation = params.animation;
+            pagecallback = params.pagecallback;
+
             // Error check for target page
             if (!toPage || !fromPage || toPage.length == 0 || fromPage.length == 0) {
                 $.fn.unselect();
@@ -295,20 +333,30 @@
                 fromPage[0].addEventListener('webkitTransitionEnd', callback, false);
                 fromPage[0].addEventListener('webkitAnimationEnd', callback, false);
 
-                toPage.queue(function() {
-                    fromPage.addClass(animation + ' out');
-                    toPage.addClass(animation + ' in current');
-                    $(this).dequeue();
-                });
+                fromPage.addClass(animation + ' out');
+                toPage.addClass(animation + ' in current');
 
-                toPage.delay(50).queue(function() {
+                var darkart = 30;
+                if (params.heavy && bogomark > 0.1) {
+                    darkart = Math.floor(300 * bogomark);
+                }
+                setTimeout(function() {
                     fromPage.addClass('start');
                     toPage.addClass('start');
-                    $(this).dequeue();
-                });
+
+                    setTimeout(function() {
+                        if ($.isFunction(pagecallback)) {
+                            pagecallback();
+                        }
+                    }, 10);
+                }, darkart);
             } else {
                 toPage.addClass('current');
                 callback();
+
+                if ($.isFunction(pagecallback)) {
+                    pagecallback();
+                }
             }
 
             // Define callback to run after animation completes
@@ -358,8 +406,18 @@
             return orientation;
         }
 
-        function goBack(to, from) {
-            // Init the param
+        function goBack(param) {
+            var to, from;
+            if (typeof(param) === 'string' || param instanceof jQuery) {
+                /* back compat param */
+                to = param;
+                from = null;
+            } else if (!!param) {
+                to = param.to;
+                from = param.from;
+            }
+
+            // init the param
             if (hist.length <= 1) {
                 window.history.go(-2);
             }
@@ -392,20 +450,57 @@
                         return false;
                     }
                 }
-                if (animatePages(toPage.page, fromPage.page, adjustAnimation(fromPage.animation, true))) {
-                    // Remove all pages in front of the target page
-                    removePageInHistory(toPage.i, fromPage.i, {section: fromPage.section});
+                if (toPage.id !== fromPage.id) {
+                    var adjustedName = adjustAnimation(fromPage.animation, true);
+                    var animationstarted = animatePages({
+                        to: toPage.page,
+                        from: fromPage.page,
+                        animation: adjustedName,
+                        pagecallback: function() {
+                        $('#' + fromPage.id).trigger('pageout', {hash: '#' + fromPage.id, search: fromPage.search});
+                        $('#' + toPage.id).trigger('pageresume', {hash: '#' + toPage.id, search: toPage.search});
+                    }});
+                    if (animationstarted) {
+                        // Remove all pages in front of the target page
+                        removePageInHistory(toPage.i, fromPage.i, {section: fromPage.section});
+                        $(toPage.id).trigger('pagein', {});
+                        $(fromPage.id).trigger('pagesuspense', {});
+                    } else {
+                        console.error('Could not go back.');
+                        return;
+                    }
                 } else {
-                  console.error('Could not go back.');
-                  return;
+                    // branch on href.search (ie, ..?abc=1&ijk=2)
+                    if (!match(fromPage.search, toPage.search)) {
+                        $('#' + fromPage.id).trigger('pageout', {hash: '#' + fromPage.id, search: fromPage.search});
+                        $('#' + toPage.id).trigger('pagein', {hash: '#' + toPage.id, search: toPage.search});
+                        removePageInHistory(toPage.i, fromPage.i, {section: fromPage.section});
+                    } else {
+                        $.fn.unselect();
+                        console.error('Target element is the current page.');
+                        return false;
+                    }
                 }
             } else {
-                location.hash = '#' + hist[0].id;
+                location.hash = '#' + hist[0].id + getSearchString(param.search);
             }
             return publicObj;
         }
 
-        function goTo(toPage, animation, reverse) {
+        function goTo(param, p2, p3) {
+            var toPage, search, animation, reverse;
+            if (typeof(param) === 'string' || param instanceof jQuery) { /* back compt hack */
+                /* back compat param */
+                toPage = param;
+                animation = p2;
+                reverse = p3;
+            } else {
+                toPage = param.to;
+                search = param.search;
+                animation = param.animation;
+                reverse = param.reverse;
+            }
+
             if (typeof(toPage) === 'string') {
                 nextPage = $(toPage);
                 if (nextPage.length < 1) {
@@ -420,20 +515,68 @@
 
             var section = toPage.attr('section');
             var criteria = !!section? {section: section}: {section: defaultSection};
-            var histPage = findPageFromHistory(criteria, 0);
-            if (!histPage) {
-                console.error('Cannot find destination page.');
+            var fromPage = findPageFromHistory(criteria, 0);
+            if (!fromPage) {
+                console.error('Cannot find source page.');
                 return false;
-            }
+            } else if (toPage[0].id !== fromPage.id) {
+                var adjustedName = adjustAnimation(animation, reverse);
+                var animationstarted = animatePages({
+                  to: toPage,
+                  from: fromPage.page,
+                  animation: adjustedName,
+                  heavy: param.heavy,
+                  pagecallback: function() {
+                    $('#' + fromPage.id).trigger('pagesuspense', {hash: '#' + fromPage.id, search: fromPage.search});
+                    toPage.trigger('pagein', {hash: '#' + toPage.attr('id'), search: param.search});
+                }});
+                if (animationstarted) {
+                    addPageToHistory(toPage, search, adjustedName);
 
-            var adjustedName = adjustAnimation(animation, reverse);
-            if (animatePages(toPage, histPage.page, adjustedName)) {
-                addPageToHistory(toPage, adjustedName);
-                return publicObj;
+                    return publicObj;
+                } else {
+                    console.error('Could not animate pages.');
+                    return false;
+                }
             } else {
-                console.error('Could not animate pages.');
-                return false;
+                // branch on href.search (ie, ..?abc=1&ijk=2)
+                if (!match(fromPage.search, search)) {
+                    $('#' + fromPage.id).trigger('pageout', {hash: '#' + fromPage.id, search: fromPage.search});
+                    toPage.trigger('pagein', {hash: '#' + toPage.attr('id'), search: param.search});
+                    removePageInHistory(fromPage.i, 0, {section: fromPage.section});
+                    addPageToHistory(toPage, search, adjustedName);
+                } else {
+                    $.fn.unselect();
+                    console.error('Target element is the current page.');
+                    return false;
+                }
             }
+        }
+
+        function match(apple, orange) {
+            var matched = true;
+            for(var field in apple) {
+                if (apple[field] !== null) {
+                    if (apple[field] !== orange[field]) {
+                        matched = false;
+                        break;
+                    }
+                } else {
+                    if (orange[field] !== null) {
+                        matched = false;
+                        break;
+                    }
+                }
+            }
+            if (matched) {
+                for(var field in orange) {
+                    if(orange[field] === undefined) {
+                        matched = false;
+                        break;
+                    }
+                }
+            }
+            return matched; // debugger friendliness: give a single exit
         }
 
         function hashCheck() {
@@ -521,7 +664,10 @@
                 }
             });
             if (targetPage !== null) {
-                goTo('#' + targetPage[0].id, animation);
+                goTo({ /* do i need to set referrer? */
+                    to: '#' + targetPage[0].id,
+                    animation: animation
+                });
                 return targetPage;
             } else {
                 return false;
@@ -626,7 +772,8 @@
             }
 
             var target = $el.attr('target'),
-                hash = $el.attr('hash');
+                hash = $el.attr('hash'),
+                search = parseSearch($el.attr('search'));
 
             if (tapReady == false || !$el.length) {
                 console.warn('Not able to tap element.');
@@ -659,34 +806,47 @@
                     }
                     cur = cur.parentNode;
                 }
-                goBack(hash, from);
-
-            } else if ($el.is(jQTSettings.toggleSelector)) {
-                  // User clicked a toggle
-                  if (!!hash && hash.length > 1 && hash.indexOf('#') === 0) {
-                      if ($(hash).hasClass('current')) {
-                          goBack(null, hash.substring(1));
-                      } else {
-                          goTo($(hash).data('referrer', $el), animation, reverse);
-                      }
-                  }
-
+                goBack({
+                  to: hash,
+                  from: from
+                });
             } else if ($el.is(jQTSettings.submitSelector)) {
                 // User clicked or tapped a submit element
                 submitParentForm($el);
 
-            } else if (target == '_webapp') {
+            } else if (target === '_webapp') {
                 // User clicked an internal link, fullscreen mode
                 window.location = $el.attr('href');
 
-            } else if ($el.attr('href') == '#') {
+            } else if ($el.attr('href') === '#') {
                 // Allow tap on item with no href
                 $el.unselect();
                 return true;
 
-            } else if (hash && hash!='#') {
-                // Branch on internal or external href
-                goTo($(hash).data('referrer', $el), animation, reverse);
+            } else if (hash && hash !== '#') {
+                if ($el.is(jQTSettings.toggleSelector)) {
+                    if ($(hash).hasClass('current')) {
+                        goBack({
+                            to: null,
+                            from: hash.substring(1)
+                        });
+                    } else {
+                        goTo({
+                            to: $(hash).data('referrer', $el),
+                            search: search,
+                            animation: animation,
+                            reverse: reverse
+                        });
+                    }
+                } else {
+                    // Branch on internal or external href
+                    goTo({
+                        to: $(hash).data('referrer', $el),
+                        search: search,
+                        animation: animation,
+                        reverse: reverse
+                    });
+                }
                 return false;
 
             } else {
@@ -758,7 +918,7 @@
 
                 setTimeout(function() {
                     handlehover(e);
-                }, 150);
+                }, 50);
             };
 
             function handlemove(e) {
@@ -795,7 +955,9 @@
                 unbindEvents($el);
                 if (!tapped && (absX <= 1 && absY <= 1)) {
                     tapped = true;
-                    $el.trigger('tap');
+                    setTimeout(function() {
+                      $el.trigger('tap');
+                    }, 10); /* give a chance other touch to end */
                     setTimeout(function() {
                       $el.removeClass('active');
                   }, 1000);
@@ -827,6 +989,20 @@
             handlestart(e);
 
         }; // End touch handler
+
+        // Utility
+        var BogoMips = new function() {
+          this.benchmark = function() {
+              var start = new Date().getTime();
+              for (var i=0; i<= 200000; i++) {
+                  var a = 1000 / 7 * 11 / 13;
+              }
+              var end = new Date().getTime();
+              var result = (end - start) / 50;
+              return result;
+          }; /* iPhone 3GS ~1, iPad G1 ~0.4 */
+          return this;
+        };
 
         // Get the party started
         init(options);
@@ -989,6 +1165,8 @@
                 $section.children().find('[section~="' + section + '"]').removeClass('missection');
                 $section.children().find('[section]:not([section~="' + section + '"])').addClass('missection');
             });
+
+            bogomark = Math.max(0.1, Math.min(1, BogoMips.benchmark()));
 
             // Go to the top of the "current" page
             $(currentPage).addClass('current');
