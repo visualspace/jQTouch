@@ -726,7 +726,7 @@
                 showPageByHref($form.attr('action'), {
                     data: $form.serialize(),
                     method: $form.attr('method') || "POST",
-                    animation: animations[0] || null,
+                    animation: defaultAnimations[0] || null,
                     callback: callback
                 });
                 return false;
