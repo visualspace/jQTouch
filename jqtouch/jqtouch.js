@@ -338,7 +338,7 @@
 
                 var darkart = 30;
                 if (params.heavy && bogomark > 0.1) {
-                    darkart = Math.floor(300 * bogomark);
+                    darkart = Math.floor(350 * bogomark);
                 }
                 setTimeout(function() {
                     fromPage.addClass('start');
@@ -818,7 +818,7 @@
                 // User clicked an internal link, fullscreen mode
                 window.location = $el.attr('href');
 
-            } else if ($el.attr('href') === '#') {
+            } else if ($el.attr('href') === '#' || !$el.attr('href')) {
                 // Allow tap on item with no href
                 $el.unselect();
                 return true;
@@ -847,7 +847,7 @@
                         reverse: reverse
                     });
                 }
-                return false;
+                e.preventDefault();
 
             } else {
                 // External href
@@ -868,6 +868,7 @@
         */
         function touchstart(e) {
             var $el = null;
+            var hovertimeout = null;
             var startX, startY, startTime;
             var deltaX, deltaY, deltaT;
             var endX, endY, endTime;
@@ -910,6 +911,7 @@
 
                 if (!!$el) {
                     $el.removeClass('active');
+                    clearTimeout(hovertimeout);
                 }
                 $el = $(e.currentTarget);
 
@@ -978,7 +980,7 @@
                 if (tapped) {
                     // flash the selection
                     $el.addClass('active');
-                    setTimeout(function() {
+                    hovertimeout = setTimeout(function() {
                         $el.removeClass('active');
                     }, 1000);
                 } else if (inprogress && !moved) {
