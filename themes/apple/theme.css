@@ -34,25 +34,31 @@ body {
     -webkit-box-sizing: border-box;
     height: 44px;
     width: 100%;
-    padding: 7px 5px 7px 5px;
     text-align: center;
     overflow: hidden;
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
 }
 
 #jqt .toolbar {
+    border-top: 1px solid #CDD5DF;
     border-bottom: 1px solid #2d3642;
+    padding: 6px 5px 6px 5px;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
 }
 
 #jqt .navibar {
     bottom: 0px;
     border-top: 1px solid #2d3642;
+    padding: 7px 5px 9px 5px;
+    /* background-color: #D8DEE6; */
+    background-color: black;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#D8DEE6), color-stop(0.03, #b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
 }
 
 #jqt .toolbar h1, #jqt .navibar h1 {
     position: absolute;
     -webkit-box-sizing: border-box;
+    -webkit-box-flex: 1;
     top: auto;
     left: 0px;
     overflow: hidden;
@@ -60,8 +66,8 @@ body {
     height: 29px;
     line-height: 29px;
     margin-top: 1px;
-    padding-left: 70px;
-    padding-right: 70px;
+    padding-left: 85px;
+    padding-right: 85px;
     background-repeat: no-repeat;
     background-position:center;
     text-align: center;
@@ -103,6 +109,7 @@ body {
     position: relative;
     display: block;
     -webkit-box-sizing: border-box;
+    padding: 0;
     overflow: hidden;
     line-height: 28px;
     height: 30px;
@@ -502,9 +509,20 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     color: #222;
     border-top: 1px solid #E0E0E0;
     list-style-type: none;
-    padding: 10px 10px 10px 10px;
+    padding: 10px;
     -webkit-transform: translate3d(0,0,0); /* expensive way to avoid flickr */
     min-height: 44px;
+}
+
+#jqt ul li > a {
+    margin: -10px;
+    padding: 10px;
+}
+
+#jqt ul.mail li {
+    height: 78px;
+    color: #000;
+    overflow: hidden;
 }
 
 #jqt ul li:empty {
@@ -517,6 +535,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check {
+    padding-right: 22px;
+}
+
+#jqt ul li.arrow > a, #jqt ul li.forward > a, #jqt ul li.check > a {
+    margin-right: -22px;
     padding-right: 22px;
 }
 
@@ -538,7 +561,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat;
 }
 
-#jqt ul li a, #jqt li.img a + a {
+#jqt ul li a {
     /* universal links on list */
     color: inherit;
     text-decoration: none;
@@ -584,6 +607,17 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 /* items (.img) below does not seem to be used anywhere in the example. */
+#jqt li.img a + a {
+    /* universal links on list */
+    color: inherit;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
 #jqt ul li.img a + a {
     margin: -10px 10px -20px -5px;
     font-size: 17px;
@@ -687,6 +721,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul li textarea,
 #jqt ul li select {
     position: relative;
+    display: block;
     font: normal 13pt Helvetica;
     font-color: #385487;
     line-height: 21pt;
@@ -694,9 +729,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));    
     border: 0;
     padding: 0;
-    width: auto;
-    -webkit-appearance: textfield; 
-    -webkit-user-select: auto;
+    -webkit-box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -webkit-appearance: none;
+    -webkit-box-flex: 1;
+    -webkit-user-select: text;
 }
 
 #jqt ul li label + input {
@@ -709,6 +746,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     width: 100%;
     padding: 0px;
     min-height: 120px;
+    font-size: inherited;
     -webkit-user-select: auto;
 }
 
@@ -777,6 +815,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     color: grey;
     text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
 }
+
 /* @end */
 
 

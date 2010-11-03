@@ -869,10 +869,11 @@
         function touchstart(e) {
             var $el = null;
             var hovertimeout = null;
+            var presstimeout = null;
             var startX, startY, startTime;
             var deltaX, deltaY, deltaT;
             var endX, endY, endTime;
-            var swipped = false, tapped = false, moved = false, inprogress = false;
+            var swipped = false, tapped = false, moved = false, inprogress = false, pressed = false;
 
             function bindEvents($el) {
                 $el.bind(MOVE_EVENT, handlemove).bind(END_EVENT, handleend);
@@ -900,7 +901,8 @@
             }
 
             function handlestart(e) {
-                inprogress = true, swipped = false, tapped = false, moved = false, timed = false;
+                inprogress = true, swipped = false, tapped = false,
+                moved = false, timed = false, pressed = false;
                 startX = $.support.touch? event.changedTouches[0].clientX: event.clientX;
                 startY = $.support.touch? event.changedTouches[0].clientY: event.clientY;
                 startTime = (new Date).getTime();
@@ -912,6 +914,7 @@
                 if (!!$el) {
                     $el.removeClass('active');
                     clearTimeout(hovertimeout);
+                    pressTimeout(presstimeout);
                 }
                 $el = $(e.currentTarget);
 
@@ -921,10 +924,19 @@
                 setTimeout(function() {
                     handlehover(e);
                 }, 50);
+
+                setTimeout(function() {
+                  handlepress(e);
+                }, 1000);
+
             };
 
             function handlemove(e) {
                 updateChanges();
+
+                if (!inprogress)
+                  return;
+
                 var absX = Math.abs(deltaX);
                 var absY = Math.abs(deltaY);
 
@@ -932,7 +944,7 @@
                     moved = true;
                 }
                 if (absY <= 5) {
-                    if (absX > absY && (absX > 35) && deltaT < 1000) {
+                    if (absX > (3 * absY) && (absX > 10) && deltaT < 1000) {
                         inprogress = false;
                         $el.removeClass('active');
                         unbindEvents($el);
@@ -987,6 +999,14 @@
                     $el.addClass('active');
                 }
             };
+
+            function handlepress(e) {
+              if (inprogress && !tapped && !moved) {
+                pressed = true;
+                tapped = true;
+                $el.trigger('press');
+              }
+            }
 
             handlestart(e);
 
