@@ -9,12 +9,12 @@ body {
     -webkit-transform:translate3d(0,0,0);
     -webkit-backface-visibility: hidden;
     background: rgb(197,204,211) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);
-    -webkit-user-select: ignore;    
+    -webkit-user-select: ignore;
 }
 
 #jqt > * > h2 {
     margin: 0;
-    padding: 10px 20px 2px 20px; 
+    padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
     font: bold 12pt "Helvetica Neue", Helvetica;
     text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
@@ -30,8 +30,11 @@ body {
 /* @group Toolbar & Navibar */
 
 #jqt .toolbar, #jqt .navibar {
-    position: relative;
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: justify;
     -webkit-box-sizing: border-box;
+    position: relative;
     height: 44px;
     width: 100%;
     text-align: center;
@@ -66,8 +69,6 @@ body {
     height: 29px;
     line-height: 29px;
     margin-top: 1px;
-    padding-left: 85px;
-    padding-right: 85px;
     background-repeat: no-repeat;
     background-position:center;
     text-align: center;
@@ -102,7 +103,7 @@ body {
 }
 
 #jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
-#jqt .toolbar .actionButton, #jqt .toolbar .done, 
+#jqt .toolbar .actionButton, #jqt .toolbar .done,
 #jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .tog,
 #jqt .toolbar input[type='submit'], #jqt .toolbar input[type='reset'],
 #jqt .navibar .button, #jqt .navibar .tog { /** navibar **/
@@ -111,7 +112,7 @@ body {
     -webkit-box-sizing: border-box;
     padding: 0;
     overflow: hidden;
-    line-height: 28px;
+    line-height: 29px;
     height: 30px;
     min-height: 30px;
     min-width: 30px;
@@ -160,7 +161,7 @@ body {
     -webkit-border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAeCAYAAAC16ufeAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAPpSURBVHjaYvz//z8DIbBi2wmmr1+//Dp+aB/z3ds3GD68f8tAc8DIyKCopMpg4+C6TVFFLSLQyeAzQAAxEnLssi3HRZ88vH9p84aVEtLyqgxSssoMvPyCNHfr/3//GJ4/vc9w68o5BhNzq1/GZlZqAAHEQkjTk8cPFm3bvF7CwsGfQVBUnIGNg5OBmZmFgR6AW0CEQVxGmeHUoW1sAkLCuwACCG/ITlm8pXrdikUtxnY+DMJi0gxMTEwM9AYg971+8Zjhya3z/wECCGcQTV+202b9qmWNmsZODAJCUgz//jIA8T+GgQD8ghIM9/4yMAIEEFbHzl17UHTPjs2rpRR0mEUk5Bn+DJAjkXIbMPnxMQAEEFbHXr96cdG3X/8l1FS0Gf4Co+Hv3z8MAw2Y2TgYAAIIw7H98zZVHzty2MPEIRjoUGaGv7//MQwGAIpcgABCcey05Xtt9mzf3KikZcHAysbJ8PfPX4bBAv7+/csAEEBwx05Zulv02uXzq7//ZWFWFJNn+DWIHAoCoHwDEEBwx3788H7R2dOnJbStfIDRDw33QQT+/vvPABBAYMdOWLSzGhj9HtJqZgxMLJwMv/8MLofCQhYggFj6Fmy3uXLxbOMfZl4GXhEpoOBfhsEI/gKrX4AAYnn/7u3qs2fOMGta+DH8+8cIqjMGpWP/AdMmQACx7N+1TUJazZyBkZl10IYqLGQBAoiFX0SG4fs/doZ/n74zDGbw5dtPBoAAYvL0cGZg/vsRGMx/gE1IxkGLQe1bgABievfpm6S7nTHDtw/PGYhpiA8kAAggps+f/7389ef/JjtTDYZvH18wQD0x+DDQsQABxNRdHvz/x68/EUJCgqdUZYUZfnz9MGhDFiCAwK3pprzg7x8/f/PR1VS+w8Pyi+HPrx8MEL8MLgwQQPCmf3N+yOs37z/721safPzz5TWwuP076JICQACh9FNaCkKvffzyI8jBUvfX5/fPB10FARBAGJ0qYJLYx8TClmioIQPMcG8GlWMBAghrD7Am03+ZrLRkk7QIB8PPb58G3JH/gR1ADnZWBoAAwtldLU32rjfWU1/GyfgNmOEGtnb7DbRfRJCPASCA8PatX7z+lGhvob/v77c3wO7Nz4EJVWBF9ePTGwZdDeWXAAGE17GdpRG/3nz8FuTpaHqT8ec7hu+f3wG7Or/p1Mr6w/DrxxeGT28eMZjqqXz/9Z/RCSCAGImpYiv6VqpIivAdu3rzgej9R88YPn+hfbLg4GBnEBfhZzDQVgM2uxmDqjP8NwEEECOx7YHSruUaokK85/h4ODlZWWg/fARqrn7/8Yvh9fvPpq0FoWdAYgABBgDDnYD+KxtqGwAAAABJRU5ErkJggg==) 0 8 0 14;
 }
 
-#jqt .toolbar .button, #jqt .toolbar .add, 
+#jqt .toolbar .button, #jqt .toolbar .add,
 #jqt .toolbar .actionButton, #jqt .toolbar .done {
     float: right;
 }
@@ -180,7 +181,7 @@ body {
 #jqt .toolbar .button:active, #jqt .toolbar .add:active, #jqt .toolbar .leftButton:active, #jqt .toolbar .tog:active,
 #jqt .toolbar .actionButton:active, #jqt .toolbar .done:active,
 #jqt .navibar .button:active, #jqt .navibar .tog:active, /** navibar **/
-#jqt .toolbar input[type='submit']:active, #jqt .toolbar input[type='reset']:active { 
+#jqt .toolbar input[type='submit']:active, #jqt .toolbar input[type='reset']:active {
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
         color-stop(0.5, #3a4e78), color-stop(0.5, #253C6A), color-stop(1, #273f6d));
     color: #fff;
@@ -192,16 +193,16 @@ body {
 #jqt .toolbar .actionButton:disabled, #jqt .toolbar .done:disabled,
 #jqt .navibar .button[disabled], #jqt .navibar .tog[disable], /** navibar **/
 #jqt .navibar .button:disabled, #jqt .navibar .tog:disable { /** navibar **/
-    background-image:-webkit-gradient(linear, left top, left bottom, 
-      color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)), 
+    background-image:-webkit-gradient(linear, left top, left bottom,
+      color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)),
       color-stop(0.5, rgba(71, 105, 153, 0.8)), color-stop(1, rgba(74, 108, 155, 0.8)));
     color: rgba(192, 192, 192, 0.8) !important;
 }
 
 #jqt .toolbar input[type='submit'][disabled], #jqt .toolbar input[type='submit']:disabled,
-#jqt .toolbar input[type='reset'][disabled], #jqt .toolbar input[type='reset']:disabled { 
-    background-image:-webkit-gradient(linear, left top, left bottom, 
-      color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)), 
+#jqt .toolbar input[type='reset'][disabled], #jqt .toolbar input[type='reset']:disabled {
+    background-image:-webkit-gradient(linear, left top, left bottom,
+      color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)),
       color-stop(0.5, rgba(71, 105, 153, 0.8)), color-stop(1, rgba(74, 108, 155, 0.8)));
     color: rgba(255, 255, 255, 0.8) !important;
 }
@@ -234,7 +235,7 @@ body {
     color: white;
     font-weight: bold;
     text-shadow: none;
-    background-image: -webkit-gradient(radial, 50% -130%, 25, 50% 0, 54, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)), 
+    background-image: -webkit-gradient(radial, 50% -130%, 25, 50% 0, 54, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)),
       color-stop(2%, rgba(255,255,255,0.3)),
       color-stop(4%, rgba(31,31,31,0.1)),
       color-stop(38%, rgba(239,239,239,0.1)));
@@ -252,7 +253,7 @@ body {
   }
 
   #jqt .toolbar .button, #jqt .toolbar .add,
-  #jqt .toolbar .actionButton, #jqt .toolbar .done, #jqt .toolbar .tog, 
+  #jqt .toolbar .actionButton, #jqt .toolbar .done, #jqt .toolbar .tog,
   #jqt .toolbar .back, #jqt .toolbar .cancel,
   #jqt .navibar .button, #jqt .navibar .tog { /** navibar **/
       height: 24px;
@@ -297,7 +298,7 @@ div.spinner.animate div {
   -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
 }
 
-div.spinner div.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}    
+div.spinner div.bar1 {-webkit-transform:rotate(0deg) translate(0, -142%); -webkit-animation-delay: 0s;}
 div.spinner div.bar2 {-webkit-transform:rotate(30deg) translate(0, -142%); -webkit-animation-delay: -0.9167s;}
 div.spinner div.bar3 {-webkit-transform:rotate(60deg) translate(0, -142%); -webkit-animation-delay: -0.833s;}
 div.spinner div.bar4 {-webkit-transform:rotate(90deg) translate(0, -142%); -webkit-animation-delay: -0.75s;}
@@ -321,78 +322,103 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 /* @group Gridview */
 
-#jqt .grid {
-}
-
-#jqt .grid .row { 
-    margin-top: 100px;
+#jqt ul.grid {
     margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 8px;
+    margin-top: 0px;
+    background-color: transparent;
 }
 
-#jqt .grid .row:first-child {
+#jqt ul.grid:first-child {
     margin-top: 10px;
 }
 
-#jqt .grid .row .item {
-    position: relative; 
-    float:left;
-    margin:9px 11px; 
+#jqt ul.grid li {
+    display: inline-block;
+    position: relative;
+    margin: 7px 9px;
+    text-align:center;
+    list-stype-type: none;
+    min-height: none;
+    padding: 0px;
+    border: 0px;
+    border-top: 0px none;
 }
 
-#jqt .grid .row h3 {
-    position: relative; 
+#jqt ul.grid li a {
+    color: inherit;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+    text-align:center;
+    vertical-align: bottom;
+    font-weight: bold;
+    font-size: 8pt;
+    color: #FFFFFF;
+    text-shadow: 1pt 1pt 1.5pt #000, 0pt 0pt 1pt #808080;
+    padding-top: 3pt;
+    overflow: visible;
+}
+
+#jqt ul.grid h4 {
+    position: relative;
     margin-left:5px;
     color: grey;
     text-shadow: -0.5pt -0.5pt 1.5pt white;
 }
 
-#jqt .grid .row .item .badge {
+#jqt ul.grid li small.light {
     position: absolute;
     font-size: 8.5pt;
     min-width: 1.2em;
-    height: 1.2em;
+    height: 8.5pt;
+    line-height: 8.5pt;
     border-radius: 1.2em;
     text-align: center;
     top: -6px;
     right: -7px;
     padding: 1px 2px 2px 2px;
-    vertical-align: 50%;
     background-color: #303080;
     border: 2pt solid white;
     color: white;
     font-weight: bold;
-    background-image: -webkit-gradient(radial, 50% -130%, 24, 50% 0, 54, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)), 
+    background-image: -webkit-gradient(radial, 50% -130%, 24, 50% 0, 54, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)),
       color-stop(4%, rgba(255,255,255,0.3)),
       color-stop(8%, rgba(31,31,31,0.1)),
       color-stop(38%, rgba(239,239,239,0.1)));
 }
 
-#jqt .grid .row .item .redbadge {
+#jqt ul.grid li small {
     position: absolute;
     font-size: 10pt;
+    line-height: 1.2em;
     min-width: 1.2em;
     height: 1.2em;
     border-radius: 1.2em;
     text-align: center;
-    bottom: 14px;
+    bottom: 22px;
     right: -7px;
+    width: auto;
     padding: 1px;
     background-color: #C02020;
     border: 2pt solid white;
     color: white;
     font-weight: bold;
     -webkit-box-shadow: rgba(0,0,0,0.5) 1pt 1pt 3pt;
-    background-image: -webkit-gradient(radial, 50% -130%, 28, 50% 0, 56, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)), 
+    background-image: -webkit-gradient(radial, 50% -130%, 28, 50% 0, 56, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)),
       color-stop(4%, rgba(255,255,255,0.3)),
       color-stop(8%, rgba(31,31,31,0.1)),
       color-stop(38%, rgba(239,239,239,0.1)));
 }
 
-#jqt .grid .row .item .icon .mask {
+#jqt ul.grid li .icon .mask {
     width: 57px;
     height: 57px;
     -webkit-border-radius: 8.5px;
-    background-image: -webkit-gradient(radial, 50% -58%, 40, 50% -35%, 135, from(rgba(255,255,255,0.35)), to(rgba(255,255,255,0)), 
+    background-image: -webkit-gradient(radial, 50% -58%, 40, 50% -35%, 135, from(rgba(255,255,255,0.35)), to(rgba(255,255,255,0)),
       color-stop(3%, rgba(255,255,255,0.3)),
       color-stop(22%, rgba(239,239,239,0)),
       color-stop(22%, rgba(31,31,31,0.2)),
@@ -400,7 +426,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
       color-stop(38%, rgba(239,239,239,0.1)));
 }
 
-#jqt .grid .row .item .icon {
+#jqt ul.grid li .icon {
     display: block;
     width: 57px;
     height: 57px;
@@ -410,18 +436,60 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-box-shadow: rgba(0,0,0,0.5) 2pt 2pt 4pt;
 }
 
-#jqt .grid .row .item .icon:active {
+#jqt ul.grid li .icon:active {
     background-color: #606070;
 }
 
-#jqt .grid .row .item .ico_txt {
-    text-align:center;
-    font-weight: bold;
-    font-size: 8pt; 
-    color: #FFFFFF; 
-    text-shadow: 1pt 1pt 1.5pt #000, 0pt 0pt 1pt #808080;
-    padding-top: 3pt;
-    
+/* @end */
+
+
+
+/* @group Button */
+
+#jqt ul.row {
+  position: absolute;
+  -webkit-box-sizing: border-box;
+  z-index: 99;
+  height: 78px;
+  width: 100%;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+  padding: 0 10px;
+  margin: auto;
+  text-align: right;
+  font-size: 7pt;
+  background-color: rgba(255, 255, 255, 0.5);
+  -webkit-box-shadow: 0 0 16px #BBB;
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: 500ms;
+  -webkit-transition-timing-function: linear;
+  opacity: 1;
+  overflow: hidden;
+  z-index: 999;
+}
+
+#jqt ul.row.t-hide {
+  opacity: 0;
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: 175ms;
+  -webkit-transition-timing-function: linear;
+}
+
+#jqt ul.row li {
+  display: inline-block;
+  font: 7pt;
+  line-height: 8pt;
+  float: left;
+  width: 60px;
+  border: 0px transparent;
+  background: transparent;
+  padding: 3px 12px 3px 12px;
+  margin: 0;
+  font-size: 8pt;
+  background-repeat: no-repeat;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1pt 1pt 1.5pt #000;
 }
 
 /* @end */
@@ -532,6 +600,28 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding: 0;
     margin: 0;
     outline: 0;
+}
+
+#jqt ul.mail li .subject {
+    display: block;
+    color: #999;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#jqt ul.mail li .preview {
+    display: -webkit-box;
+    font-size: 1.25em;
+    height: 2.5em;
+    line-height: 1.25em;
+    color: #444;
+    font-size: 10pt;
+    font-weight: normal;
+    padding-right: 25px;
+    white-space: normal;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 #jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check {
@@ -705,7 +795,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     width: auto;
     text-overflow: ellipsis;
     text-align: left;
-    padding-right: 10px;    
+    padding-right: 10px;
     overflow: hidden;
     white-space: nowrap;
     -webkit-user-select: auto;
@@ -726,7 +816,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     font-color: #385487;
     line-height: 21pt;
     color: #385487;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));    
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));
     border: 0;
     padding: 0;
     -webkit-box-sizing: border-box;
@@ -776,7 +866,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt form > h1, #jqt form > :not(.toolbar) h1 {
     margin: 0;
-    padding: 10px 20px 2px 20px; 
+    padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
     font: bold 13.5pt "Helvetica Neue", Helvetica;
     text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
@@ -787,7 +877,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt form > h2, #jqt form > :not(.toolbar) h2 {
     margin: 0;
-    padding: 10px 20px 2px 20px; 
+    padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
     font: bold 12pt "Helvetica Neue", Helvetica;
     text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
@@ -824,7 +914,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul.edgetoedge, #jqt ul.edgetoedge * {
     -webkit-border-radius: 0 !important;
 }
-	
+
 #jqt ul.edgetoedge li.sep {
     -webkit-box-sizing: border-box;
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 159, 171, 1)), to(rgba(181, 193, 201, 1.0)));
@@ -1217,4 +1307,16 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-top: 1px solid rgba(76, 86, 108, .3);
     font-weight: bold;
 }
+
+#jqt .caption {
+    postion: relative;
+    font-size: 9pt;
+    line-height: 9pt;
+    text-shadow: rgba(255,255,255,.8) 0 1px 0;
+    color: #444;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
 
