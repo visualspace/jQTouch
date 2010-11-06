@@ -996,14 +996,16 @@
 
             function handlehover(e) {
                 timed = true;
-                if (tapped) {
-                    // flash the selection
-                    $el.addClass('active');
-                    hovertimeout = setTimeout(function() {
-                        $el.removeClass('active');
-                    }, 1000);
-                } else if (inprogress && !moved) {
-                    $el.addClass('active');
+                if (tapReady) {
+                    if (tapped) {
+                        // flash the selection
+                        $el.addClass('active');
+                        hovertimeout = setTimeout(function() {
+                            $el.removeClass('active');
+                        }, 1000);
+                    } else if (inprogress && !moved) {
+                        $el.addClass('active');
+                    }
                 }
             };
 
