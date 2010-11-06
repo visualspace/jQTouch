@@ -671,7 +671,9 @@
             $el.bind(MOVE_EVENT, touchmove).bind(END_EVENT, touchend).bind(CANCEL_EVENT, touchcancel);
 
             hoverTimeout = setTimeout(function() {
-                $el.makeActive();
+                if (tapReady) {
+                    $el.makeActive();
+                }
             }, jQTSettings.hoverDelay);
 
             pressTimeout = setTimeout(function() {
