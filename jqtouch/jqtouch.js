@@ -293,6 +293,7 @@
             if (!toPage || !fromPage || toPage.length == 0 || fromPage.length == 0) {
                 $.fn.unselect();
                 console.error('Target element is missing. Dest: ' + toPage + ' Source: ' + fromPage);
+                tapReady = true;
                 return false;
             }
 
@@ -300,6 +301,7 @@
             if (toPage.hasClass('current')) {
                 $.fn.unselect();
                 console.error('Target element is the current page.');
+                tapReady = true;
                 return false;
             }
 
@@ -691,6 +693,8 @@
             var settings = $.extend({}, defaults, options);
 
             if (href != '#') {
+                tapReady = false;
+
                 $.ajax({
                     url: href,
                     data: settings.data,
@@ -704,6 +708,8 @@
                             if (settings.callback) {
                                 settings.callback(true);
                             }
+                        } else {
+                            tapReady = true;
                         }
                     },
                     error: function (data) {
@@ -713,6 +719,7 @@
                         if (settings.callback) {
                             settings.callback(false);
                         }
+                        tapReady = true;
                     }
                 });
             } else if (settings.$referrer) {
