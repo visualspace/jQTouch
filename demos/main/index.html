@@ -105,11 +105,11 @@
                 var tabbarH = 0;
                 var wrapperH = 320;
 
-                var $header = $item.find('.toolbar');
+                var $header = $item.find('.toolbar:visible');
                 headerH = $header.length > 0 ? ($header.outerHeight() > 0 ? $header.outerHeight() : 0) : 0;
 
-                var $footer = $item.find('.navibar'); // page footer
-                var $tabbar = $('#tabbar'); // global tabbar
+                var $footer = $item.find('.navibar:visible'); // page footer
+                var $tabbar = $('#tabbar:visible'); // global tabbar
                 if ($footer.length > 0) {
                   footerH = $footer.outerHeight();
                 } else if ($tabbar.length > 0) {
@@ -360,6 +360,7 @@
                 <ul class="rounded">
                     <li class="forward"><a target="_webapp" href="../todo/index.html">To-Do app</a></li>
                     <li class="forward"><a target="_webapp" href="../clock/index.html">Clock app</a></li>
+                    <li class="forward"><a target="_webapp" href="../mail/index.html">Mail app</a></li>
                 </ul>
             </div>
             <div id="edge">
@@ -436,9 +437,10 @@
                         <li><input type="password" name="some_name" value="iphonedelcopon" id="some_name" /></li>
                     </ul>
                     <h2>Select one of these:</h2>
-                    <fieldset>
+                    <fieldset class="rounded">
                         <input type="radio" name="bag" value="paper" title="Paper"></input>
                         <input type="radio" name="bag" value="plastic" title="Plastic" checked></input>
+                        <input type="radio" name="bag" value="hybird" title="Hybird"></input>
                     </fieldset>
                 </div>
               </div>

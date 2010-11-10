@@ -31,18 +31,30 @@ body {
 
 /* @group Toolbar & Navibar */
 
-#jqt .toolbar, #jqt .navibar {
+#jqt .toolbar, #jqt .navibar, #jqt .bar {
+    display: block;
     display: -webkit-box;
+    -webkit-box-pack: justify;
+    -webkit-box-orient: horizontal;
     -webkit-box-flex: 0;
+    border: none;
     height: 44px;
     width: 100%;
     text-align: center;
     overflow: hidden;
-    -webkit-box-pack: justify;
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
 }
 
 #jqt .toolbar {
+    -webkit-box-flex: 0;
+    border-top: 1px solid #CDD5DF;
+    border-bottom: 1px solid #2d3642;
+    padding: 6px 5px 6px 5px;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
+}
+
+#jqt .bar {
+    -webkit-box-flex: 0;
     border-top: 1px solid #CDD5DF;
     border-bottom: 1px solid #2d3642;
     padding: 6px 5px 6px 5px;
@@ -59,7 +71,7 @@ body {
     background-image: -webkit-gradient(linear, left top, left bottom, from(#D8DEE6), color-stop(0.03, #b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
 }
 
-#jqt .toolbar > *, #jqt .navibar > * {
+#jqt .toolbar > *, #jqt .navibar > *, #jqt .bar > * {
     position: relative;
     display: block;
     -webkit-box-sizing: border-box;
@@ -100,10 +112,13 @@ body {
 #jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
 #jqt .toolbar .actionButton, #jqt .toolbar .done,
 #jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .tog,
-#jqt .toolbar input[type='submit'], #jqt .toolbar input[type='reset'],
-#jqt .navibar .button, #jqt .navibar .tog { /** navibar **/
+#jqt .toolbar input[type="submit"], #jqt .toolbar input[type="reset"],
+#jqt .navibar .button, #jqt .navibar .tog, /** navibar **/
+#jqt .bar input[type="radio"], #jqt .bar .button {
     display: block;
     -webkit-box-sizing: border-box;
+    border: 0px none transparent;
+    -webkit-border-radius: 0;
     padding: 0;
     overflow: hidden;
     line-height: 28px;
@@ -123,18 +138,18 @@ body {
 
 #jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
 #jqt .navibar .button, #jqt .navibar .tog,
-#jqt .toolbar input[type='reset'] {
-    border:1px solid #45505d;
+#jqt .toolbar input[type="reset"] {
+    border: 1px solid #45505d;
     max-width: 95px;
     padding-left: 8px;
     padding-right: 8px;
-    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
-    -webkit-box-shadow:inset 0 1px 1px rgba(127, 127, 127, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
-    -webkit-border-radius:6px;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
+    -webkit-box-shadow: inset 0 1px 1px rgba(127, 127, 127, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
+    -webkit-border-radius: 6px;
 }
 
 #jqt .toolbar .actionButton, #jqt .toolbar .done,
-#jqt .toolbar input[type='submit'] {
+#jqt .toolbar input[type="submit"] {
     float: right;
     border: 1px solid #55606d;
     max-width: 95px;
@@ -162,7 +177,7 @@ body {
 }
 
 #jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .leftButton,
-#jqt .toolbar input[type='reset'] {
+#jqt .toolbar input[type="reset"] {
     float: left;
 }
 
@@ -190,29 +205,78 @@ body {
     max-width: none;
 }
 
+#jqt .buttonset .button {
+    border: 0px none transparent;
+    -webkit-border-radius: 0;
+}
+
+#jqt .bar input[type="radio"], #jqt .bar .button, #jqt .buttonset .button {
+    border-top: 1px solid #45505d;
+    border-bottom: 1px solid #45505d;
+    border-left: 1px solid #45505d;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.25);
+    -webkit-appearance: none;
+    -webkit-box-flex: 1;
+    -webkit-text-decorations-in-effect: none;
+}
+
+#jqt .bar input[type="radio"]:first-child, #jqt .bar .button:first-child, #jqt .buttonset .button:last-child {
+    /* bug! can't figure out why the order of buttonset is reversed */
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+}
+
+#jqt .bar input[type="radio"]:last-child, #jqt .bar .button:last-child, #jqt .buttonset .button:first-child {
+    border-right: 1px solid #45505d;
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+}
+
+#jqt .bar input[type="radio"]:after, #jqt .bar .button:after {
+    content: attr(title);
+}
+
 #jqt .toolbar .button:active, #jqt .toolbar .add:active, #jqt .toolbar .leftButton:active, #jqt .toolbar .tog:active,
-#jqt .toolbar .actionButton:active, #jqt .toolbar .done:active,
-#jqt .navibar .button:active, #jqt .navibar .tog:active, /** navibar **/
-#jqt .toolbar input[type='submit']:active, #jqt .toolbar input[type='reset']:active {
+#jqt .toolbar .button.active, #jqt .toolbar .add.active, #jqt .toolbar .leftButton.active, #jqt .toolbar .tog.active,
+#jqt .toolbar .actionButton:active, #jqt .toolbar .done:active, #jqt .toolbar .actionButton.active, #jqt .toolbar .done.active,
+#jqt .navibar .button:active, #jqt .navibar .tog:active, #jqt .navibar .button.active, #jqt .navibar .tog.active, /** navibar **/
+#jqt .toolbar input[type="submit"]:active, #jqt .toolbar input[type="submit"].active, #jqt .toolbar input[type="reset"]:active, #jqt .toolbar input[type="reset"].active {
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
         color-stop(0.5, #3a4e78), color-stop(0.5, #253C6A), color-stop(1, #273f6d));
     color: #fff;
+    text-shadow: none;
+}
+
+#jqt .bar input[type="radio"]:active, #jqt .bar input[type="radio"].active, #jqt .bar .button:active {
+    /* workaround the flicker between deactived and checked using in-between color*/
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
+        color-stop(0.5, #49628D), color-stop(0.5, #365281), color-stop(1, #385584));
+}
+
+#jqt .bar input[type="radio"]:checked, #jqt .bar .button:checked {
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
+        color-stop(0.5, #3a4e78), color-stop(0.5, #253C6A), color-stop(1, #273f6d));
+    color: #fff;
+    text-shadow: none;
 }
 
 #jqt .toolbar .button[disabled], #jqt .toolbar .add[disabled], #jqt .toolbar .leftButton[disabled], #jqt .toolbar .tog[disabled],
 #jqt .toolbar .button:disabled, #jqt .toolbar .add:disabled, #jqt .toolbar .leftButton:disabled, #jqt .toolbar .tog:disabled,
 #jqt .toolbar .actionButton[disabled], #jqt .toolbar .done[disabled],
 #jqt .toolbar .actionButton:disabled, #jqt .toolbar .done:disabled,
-#jqt .navibar .button[disabled], #jqt .navibar .tog[disable], /** navibar **/
-#jqt .navibar .button:disabled, #jqt .navibar .tog:disable { /** navibar **/
+#jqt .navibar .button[disabled], #jqt .navibar .tog[disabled], /** navibar **/
+#jqt .navibar .button:disabled, #jqt .navibar .tog:disabled,
+#jqt .bar input[type="radio"][disabled], #jqt .bar .button[disabled], /** bar **/
+#jqt .bar input[type="radio"]:disabled, #jqt .bar .button:disabled {
     background-image:-webkit-gradient(linear, left top, left bottom,
       color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)),
       color-stop(0.5, rgba(71, 105, 153, 0.8)), color-stop(1, rgba(74, 108, 155, 0.8)));
     color: rgba(192, 192, 192, 0.8) !important;
 }
 
-#jqt .toolbar input[type='submit'][disabled], #jqt .toolbar input[type='submit']:disabled,
-#jqt .toolbar input[type='reset'][disabled], #jqt .toolbar input[type='reset']:disabled {
+#jqt .toolbar input[type="submit"][disabled], #jqt .toolbar input[type="submit"]:disabled,
+#jqt .toolbar input[type="reset"][disabled], #jqt .toolbar input[type="reset"]:disabled {
     background-image:-webkit-gradient(linear, left top, left bottom,
       color-stop(0, rgba(125, 136, 165, 0.8)), color-stop(0.5, rgba(88, 119, 162, 0.8)),
       color-stop(0.5, rgba(71, 105, 153, 0.8)), color-stop(1, rgba(74, 108, 155, 0.8)));
@@ -240,7 +304,6 @@ body {
     min-height: 16px;
     padding: 0 4px 0 4px;
     background-color: #C02020;
-    /* border: 2pt solid white; */
     font-size: 10pt;
     border-radius: 9pt;
     border: 2pt solid white;
@@ -255,25 +318,27 @@ body {
 }
 
 @media only screen and (max-device-width: 320px) and (orientation:landscape) {
-  #jqt .toolbar, #jqt .navibar {
+  #jqt .toolbar, #jqt .navibar, #jqt .bar {
       padding: 3px 5px 3px 5px;
       height: 32px;
   }
 
   #jqt .toolbar > h1, #jqt .navibar > h1 {
-      margin-top: 0px;
+      margin-top: -1px;
   }
 
   #jqt .toolbar .button, #jqt .toolbar .add,
   #jqt .toolbar .actionButton, #jqt .toolbar .done, #jqt .toolbar .tog,
   #jqt .toolbar .back, #jqt .toolbar .cancel,
-  #jqt .navibar .button, #jqt .navibar .tog { /** navibar **/
+  #jqt .navibar .button, #jqt .navibar .tog, /** navibar **/
+  #jqt .bar input[type="radio"], #jqt .bar .button { /** bar **/
       height: 24px;
-      line-height: 24px;
+      line-height: 23px;
       min-height: 24px;
       padding-left: 10px;
       padding-right: 10px;
-      font-size: 8.5pt;
+      font-size: 8.75pt;
+      font-weight: 200;
   }
 
   #jqt .toolbar .back, #jqt .toolbar .cancel {
@@ -594,7 +659,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin-top: 0;
 }
 
-#jqt ul, #jqt fieldset {
+#jqt ul, #jqt fieldset.rounded {
     color: black;
     font-weight: bold;
     font-size: 13pt;
@@ -603,13 +668,17 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin: 15px 10px 17px 10px;
 }
 
-#jqt ul.rounded, #jqt fieldset {
+#jqt ul.rounded, #jqt fieldset.rounded {
     background-color: #fff;
     -webkit-border-radius: 8px;
     -webkit-box-shadow: #999 0px 0px 2px;
 }
 
-#jqt fieldset input[type="radio"] {
+#jqt fieldset.rounded ul.rounded {
+    margin: -15px -10px -17px -10px;
+}
+
+#jqt fieldset.rounded input[type="radio"] {
     border-style: none;
     border-width: 0;
     -webkit-border-top-left-radius: 0;
@@ -619,19 +688,19 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.rounded li:first-child, #jqt ul.rounded li:first-child a,
-#jqt fieldset input[type="radio"]:first-child, #jqt fieldset input[type="radio"]:first-child a {
+#jqt fieldset.rounded input[type="radio"]:first-child, #jqt fieldset.rounded input[type="radio"]:first-child a {
     border-top: 0;
     -webkit-border-top-left-radius: 8px;
     -webkit-border-top-right-radius: 8px;
 }
 
 #jqt ul.rounded li:last-child, #jqt ul.rounded li:last-child a,
-#jqt fieldset input[type="radio"]:last-child, #jqt fieldset input[type="radio"]:last-child a {
+#jqt fieldset.rounded input[type="radio"]:last-child, #jqt fieldset.rounded input[type="radio"]:last-child a {
     -webkit-border-bottom-left-radius: 8px;
     -webkit-border-bottom-right-radius: 8px;
 }
 
-#jqt ul li, #jqt fieldset input[type="radio"] {
+#jqt ul li, #jqt fieldset.rounded input[type="radio"] {
     -webkit-box-sizing: border-box;
     font-size: inherit;
     color: #222;
@@ -642,7 +711,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     min-height: 44px;
 }
 
-#jqt ul li > a, #jqt fieldset input[type="radio"] > a {
+#jqt ul li > a, #jqt fieldset.rounded input[type="radio"] > a {
     margin: -10px;
     padding: 10px;
 }
@@ -653,6 +722,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
     padding-left: 30px;
     padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -693,7 +764,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
 }
 
-#jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check, #jqt fieldset input[type="radio"] {
+#jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check, #jqt fieldset.rounded input[type="radio"] {
     padding-right: 35px;
 }
 
@@ -714,7 +785,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat;
 }
 
-#jqt ul li.check, #jqt fieldset input[type="radio"]:checked {
+#jqt ul li.check, #jqt fieldset.rounded input[type="radio"]:checked {
     background-image: url(img/check.png), none;
     background-position: right center, left top;
     background-repeat: no-repeat;
@@ -748,16 +819,27 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat !important;
 }
 
-#jqt ul li.check.active, #jqt fieldset input[type="radio"]:active:checked {
+#jqt ul li.check.active, #jqt fieldset.rounded input[type="radio"]:checked:active {
     background-image: url(img/check_white.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
     background-position: right center, left top;
     background-repeat: no-repeat;
 }
 
-#jqt ul li.check.active, #jqt fieldset input[type="radio"]:active:not(checked) {
+#jqt ul li.check.active, #jqt fieldset.rounded input[type="radio"]:not(:checked):active {
     background-image: none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
     background-position: right center, left top;
     background-repeat: no-repeat;
+}
+
+#jqt fieldset.rounded input[type="radio"]:not(:active) {
+    -webkit-transition-property: background-color, color;
+    -webkit-transition-duration: 350ms, 200ms;
+    -webkit-transition-timing-function: linear, linear;
+}
+
+#jqt fieldset.rounded input[type="radio"]:active {
+    background-color: #194fdb;
+    color: white;
 }
 
 #jqt ul li.forward.active {
@@ -835,7 +917,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     /* -webkit-box-shadow: inset 0 0 2px #444; */
 }
 
-#jqt ul.form li, #jqt fieldset input[type="radio"] {
+#jqt ul.form li, #jqt fieldset.rounded input[type="radio"] {
     padding: 7px 10px;
 }
 
@@ -916,6 +998,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     min-height: 120px;
     font-size: inherited;
     -webkit-user-select: auto;
+    -webkit-box-flex: 1;
 }
 
 #jqt form ul li select, #jqt ul.form li select {
@@ -927,8 +1010,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-user-select: auto;
 }
 
-#jqt form ul li input[type="checkbox"], #jqt fieldset input[type="radio"],
-#jqt ul.form li input[type="checkbox"], #jqt fieldset input[type="radio"] {
+#jqt form ul li input[type="checkbox"], #jqt fieldset.rounded input[type="radio"],
+#jqt ul.form li input[type="checkbox"], #jqt fieldset.rounded input[type="radio"] {
     margin: 0;
     color: rgb(50,79,133);
     padding: 10px 10px;
@@ -944,7 +1027,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     width: 246px;
 }
 
-#jqt fieldset input[type="radio"]:before, #jqt fieldset input[type="radio"]:before {
+#jqt fieldset.rounded input[type="radio"]:before, #jqt fieldset.rounded input[type="radio"]:before {
     display: block;
     content: attr(title);
     font: 17px "Helvetica Neue", Helvetica;
@@ -1021,11 +1104,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-transition: background-position .15s;
 }
 
-#jqt fieldset {
+#jqt fieldset.rounded {
     border: none;
 }
 
-#jqt fieldset input[type="radio"] {
+#jqt fieldset.rounded input[type="radio"] {
     display: block;
     min-height: 44px;
     -webkit-appearance: none;
@@ -1037,11 +1120,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     font-weight: bold;
 }
 
-#jqt fieldset input[type="radio"]:checked {
+#jqt fieldset.rounded input[type="radio"]:checked {
     color: #324F85;
 }
 
-#jqt fieldset input[type="radio"]:active {
+#jqt fieldset.rounded input[type="radio"]:active {
     color: #fff;
 }
 
@@ -1070,8 +1153,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.edgetoedge li {
-    padding-top: 3px;
-    padding-bottom: 3px;
 }
 
 #jqt .edgetoedge h4 {
@@ -1089,7 +1170,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-color: rgb(255,255,255);
 }
 
-#jqt ul.edgetoedge, #jqt ul.metal, #jqt .plastic ul {
+#jqt ul.edgetoedge, #jqt ul.metal, #jqt ul.plastic, #jqt ul.mail {
     -webkit-border-radius: 0;
     margin: 0;
     border-left: 0;
@@ -1101,6 +1182,10 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-top: 0;
     border-bottom: 0;
     background: rgb(180,180,180);
+}
+
+#jqt ul.mail {
+    background: white; 
 }
 
 #jqt ul.edgetoedge li:first-child,
