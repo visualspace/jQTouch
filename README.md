@@ -5,9 +5,10 @@ BeeDesk's fork.
 - Most accurate apple theme,
 - iScroll integration,
 - Grid layout with badge,
+- Radio button (Check group, and toolbar radio) with no js,
+- Mail layout css and example,
 - Webkit gradient for buttons,
-- Fixes to landscape mode,
-- Tabbar,
+- Working landscape mode with toolbar width,
 - etc.
 
 See the demo here
