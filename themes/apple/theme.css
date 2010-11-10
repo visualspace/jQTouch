@@ -4,8 +4,6 @@ body {
 /* @group general */
 
 #jqt > * {
-    /*
-    -webkit-perspective: 1000; */
     -webkit-transform:translate3d(0,0,0);
     -webkit-backface-visibility: hidden;
     background: rgb(197,204,211) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);
@@ -23,6 +21,10 @@ body {
     white-space: nowrap;
 }
 
+#jqt > * > * {
+    -webkit-box-sizing: border-box;
+}
+
 /* @end */
 
 
@@ -31,14 +33,12 @@ body {
 
 #jqt .toolbar, #jqt .navibar {
     display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-box-pack: justify;
-    -webkit-box-sizing: border-box;
-    position: relative;
+    -webkit-box-flex: 0;
     height: 44px;
     width: 100%;
     text-align: center;
     overflow: hidden;
+    -webkit-box-pack: justify;
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
 }
 
@@ -50,6 +50,7 @@ body {
 }
 
 #jqt .navibar {
+    -webkit-box-flex: 0;
     bottom: 0px;
     border-top: 1px solid #2d3642;
     padding: 7px 5px 9px 5px;
@@ -58,17 +59,27 @@ body {
     background-image: -webkit-gradient(linear, left top, left bottom, from(#D8DEE6), color-stop(0.03, #b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
 }
 
-#jqt .toolbar h1, #jqt .navibar h1 {
-    position: absolute;
+#jqt .toolbar > *, #jqt .navibar > * {
+    position: relative;
+    display: block;
     -webkit-box-sizing: border-box;
-    -webkit-box-flex: 1;
+    -webkit-box-flex: 0;
+}
+
+#jqt .toolbar > h1, #jqt .navibar > h1 {
+    display: block;
+    position: absolute;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    -webkit-box-sizing: border-box;
     top: auto;
-    left: 0px;
     overflow: hidden;
     width: 100%;
     height: 29px;
     line-height: 29px;
     margin-top: 1px;
+    margin-left: -5px;
+    margin-right: -5px;
     background-repeat: no-repeat;
     background-position:center;
     text-align: center;
@@ -82,22 +93,6 @@ body {
     text-shadow: 0px -1px 0px #374683;
 }
 
-#jqt .toolbar .left, #jqt .navibar .left {
-    position: relative;
-    float: left;
-    margin-right: 15px;
-}
-
-#jqt .toolbar .right, #jqt .navibar .right {
-    position: relative;
-    float: right;
-    margin-left: 15px;
-}
-
-#jqt .toolbar .center, #jqt .navibar .center {
-    text-align: center;
-}
-
 #jqt .toolbar .touch, #jqt .navibar .touch {
     color: #808080;
 }
@@ -107,14 +102,13 @@ body {
 #jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .tog,
 #jqt .toolbar input[type='submit'], #jqt .toolbar input[type='reset'],
 #jqt .navibar .button, #jqt .navibar .tog { /** navibar **/
-    position: relative;
     display: block;
     -webkit-box-sizing: border-box;
     padding: 0;
     overflow: hidden;
-    line-height: 29px;
-    height: 30px;
-    min-height: 30px;
+    line-height: 28px;
+    height: 29px;
+    min-height: 29px;
     min-width: 30px;
     color: #fff;
     font-family: inherit;
@@ -127,13 +121,8 @@ body {
     white-space: nowrap;
 }
 
-#jqt .toolbar .back, #jqt .toolbar .cancel {
-    min-height: 33px;
-    height: 33px;
-    line-height: 30px;
-}
-
 #jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
+#jqt .navibar .button, #jqt .navibar .tog,
 #jqt .toolbar input[type='reset'] {
     border:1px solid #45505d;
     max-width: 95px;
@@ -146,7 +135,8 @@ body {
 
 #jqt .toolbar .actionButton, #jqt .toolbar .done,
 #jqt .toolbar input[type='submit'] {
-    border:1px solid #55606d;
+    float: right;
+    border: 1px solid #55606d;
     max-width: 95px;
     padding-left: 8px;
     padding-right: 8px;
@@ -156,6 +146,11 @@ body {
 }
 
 #jqt .toolbar .back, #jqt .toolbar .cancel {
+    float: left;
+    min-height: 33px;
+    height: 33px;
+    line-height: 30px;
+    margin-top: -1px;
     border-width: 1px 8px 2px 14px;
     max-width: 95px;
     -webkit-border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAeCAYAAAC16ufeAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAPpSURBVHjaYvz//z8DIbBi2wmmr1+//Dp+aB/z3ds3GD68f8tAc8DIyKCopMpg4+C6TVFFLSLQyeAzQAAxEnLssi3HRZ88vH9p84aVEtLyqgxSssoMvPyCNHfr/3//GJ4/vc9w68o5BhNzq1/GZlZqAAHEQkjTk8cPFm3bvF7CwsGfQVBUnIGNg5OBmZmFgR6AW0CEQVxGmeHUoW1sAkLCuwACCG/ITlm8pXrdikUtxnY+DMJi0gxMTEwM9AYg971+8Zjhya3z/wECCGcQTV+202b9qmWNmsZODAJCUgz//jIA8T+GgQD8ghIM9/4yMAIEEFbHzl17UHTPjs2rpRR0mEUk5Bn+DJAjkXIbMPnxMQAEEFbHXr96cdG3X/8l1FS0Gf4Co+Hv3z8MAw2Y2TgYAAIIw7H98zZVHzty2MPEIRjoUGaGv7//MQwGAIpcgABCcey05Xtt9mzf3KikZcHAysbJ8PfPX4bBAv7+/csAEEBwx05Zulv02uXzq7//ZWFWFJNn+DWIHAoCoHwDEEBwx3788H7R2dOnJbStfIDRDw33QQT+/vvPABBAYMdOWLSzGhj9HtJqZgxMLJwMv/8MLofCQhYggFj6Fmy3uXLxbOMfZl4GXhEpoOBfhsEI/gKrX4AAYnn/7u3qs2fOMGta+DH8+8cIqjMGpWP/AdMmQACx7N+1TUJazZyBkZl10IYqLGQBAoiFX0SG4fs/doZ/n74zDGbw5dtPBoAAYvL0cGZg/vsRGMx/gE1IxkGLQe1bgABievfpm6S7nTHDtw/PGYhpiA8kAAggps+f/7389ef/JjtTDYZvH18wQD0x+DDQsQABxNRdHvz/x68/EUJCgqdUZYUZfnz9MGhDFiCAwK3pprzg7x8/f/PR1VS+w8Pyi+HPrx8MEL8MLgwQQPCmf3N+yOs37z/721safPzz5TWwuP076JICQACh9FNaCkKvffzyI8jBUvfX5/fPB10FARBAGJ0qYJLYx8TClmioIQPMcG8GlWMBAghrD7Am03+ZrLRkk7QIB8PPb58G3JH/gR1ADnZWBoAAwtldLU32rjfWU1/GyfgNmOEGtnb7DbRfRJCPASCA8PatX7z+lGhvob/v77c3wO7Nz4EJVWBF9ePTGwZdDeWXAAGE17GdpRG/3nz8FuTpaHqT8ec7hu+f3wG7Or/p1Mr6w/DrxxeGT28eMZjqqXz/9Z/RCSCAGImpYiv6VqpIivAdu3rzgej9R88YPn+hfbLg4GBnEBfhZzDQVgM2uxmDqjP8NwEEECOx7YHSruUaokK85/h4ODlZWWg/fARqrn7/8Yvh9fvPpq0FoWdAYgABBgDDnYD+KxtqGwAAAABJRU5ErkJggg==) 0 8 0 14;
@@ -174,8 +169,25 @@ body {
 #jqt .navibar .button, #jqt .navibar .tog {
     border:1px solid #45505d;
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
-    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.25);
     -webkit-border-radius:6px;
+}
+
+#jqt .toolbar .left, #jqt .navibar .left {
+    float: left;
+}
+
+#jqt .toolbar .right, #jqt .navibar .right {
+    float: right;
+}
+
+#jqt .toolbar .center, #jqt .navibar .center {
+    float: none;
+}
+
+#jqt .toolbar .span, #jqt .navibar .span {
+    -webkit-box-flex: 10;
+    max-width: none;
 }
 
 #jqt .toolbar .button:active, #jqt .toolbar .add:active, #jqt .toolbar .leftButton:active, #jqt .toolbar .tog:active,
@@ -322,28 +334,52 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 /* @group Gridview */
 
-#jqt ul.grid {
+#jqt ul.grid, #jqt ul.smallgrid {
     margin-left: 0px;
     margin-right: 0px;
-    margin-bottom: 8px;
     margin-top: 0px;
-    background-color: transparent;
+    margin-bottom: 0px;
+}
+
+#jqt ul.grid {
+    margin-bottom: 8px;
+}
+
+#jqt ul.smallgrid {
+	padding: 0px 3px;
 }
 
 #jqt ul.grid:first-child {
     margin-top: 10px;
 }
 
-#jqt ul.grid li {
+#jqt ul.grid li, #jqt ul.smallgrid li {
     display: inline-block;
+    -webkit-box-pack: center;
     position: relative;
-    margin: 7px 9px;
     text-align:center;
     list-stype-type: none;
     min-height: none;
     padding: 0px;
     border: 0px;
     border-top: 0px none;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    text-shadow: 1pt 1pt 1.5pt #000, 0pt 0pt 1pt #808080;
+}
+
+#jqt ul.grid li {
+    font-size: 8pt;
+    margin: 7px 9px;
+}
+
+#jqt ul.smallgrid li {
+	-webkit-box-sizing: border-box;
+    font-size: 6.5pt;
+    margin: 9px 1px 0px;
+    padding: 0px 0px;
+    width: 44px;
 }
 
 #jqt ul.grid li a {
@@ -352,25 +388,28 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     text-overflow: ellipsis;
     white-space: nowrap;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
-
-    text-align:center;
     vertical-align: bottom;
-    font-weight: bold;
-    font-size: 8pt;
-    color: #FFFFFF;
-    text-shadow: 1pt 1pt 1.5pt #000, 0pt 0pt 1pt #808080;
-    padding-top: 3pt;
-    overflow: visible;
+
 }
 
-#jqt ul.grid h4 {
+#jqt ul.grid li a {
+    padding-top: 3pt;
+}
+
+#jqt ul.smallgrid li a {
+    padding-top: 2pt;
+}
+
+#jqt ul.grid h4,
+#jqt ul.smallgrid h4 {
     position: relative;
     margin-left:5px;
     color: grey;
     text-shadow: -0.5pt -0.5pt 1.5pt white;
 }
 
-#jqt ul.grid li small.light {
+#jqt ul.grid li small.light,
+#jqt ul.smallgrid li small.light {
     position: absolute;
     font-size: 8.5pt;
     min-width: 1.2em;
@@ -391,7 +430,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
       color-stop(38%, rgba(239,239,239,0.1)));
 }
 
-#jqt ul.grid li small {
+#jqt ul.grid li small,
+#jqt ul.smallgrid li small {
     position: absolute;
     font-size: 10pt;
     line-height: 1.2em;
@@ -407,6 +447,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border: 2pt solid white;
     color: white;
     font-weight: bold;
+    text-shadow: none;
     -webkit-box-shadow: rgba(0,0,0,0.5) 1pt 1pt 3pt;
     background-image: -webkit-gradient(radial, 50% -130%, 28, 50% 0, 56, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)),
       color-stop(4%, rgba(255,255,255,0.3)),
@@ -414,7 +455,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
       color-stop(38%, rgba(239,239,239,0.1)));
 }
 
-#jqt ul.grid li .icon .mask {
+#jqt ul.grid li .icon .mask,
+#jqt ul.smallgrid li .icon .mask {
     width: 57px;
     height: 57px;
     -webkit-border-radius: 8.5px;
@@ -426,7 +468,13 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
       color-stop(38%, rgba(239,239,239,0.1)));
 }
 
-#jqt ul.grid li .icon {
+#jqt ul.smallgrid li .icon38 .mask {
+    width: 38px;
+    height: 38px;
+}
+
+#jqt ul.grid li .icon,
+#jqt ul.smallgrid li .icon {
     display: block;
     width: 57px;
     height: 57px;
@@ -436,7 +484,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-box-shadow: rgba(0,0,0,0.5) 2pt 2pt 4pt;
 }
 
-#jqt ul.grid li .icon:active {
+#jqt ul.grid li .icon:active,
+#jqt ul.smallgrid li .icon:active {
     background-color: #606070;
 }
 
@@ -479,7 +528,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
   display: inline-block;
   font: 7pt;
   line-height: 8pt;
-  float: left;
   width: 60px;
   border: 0px transparent;
   background: transparent;
@@ -502,6 +550,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt .grayButton, #jqt .redButton, #jqt .blueButton, #jqt .greenButton {
     display: block;
     border-width: 0 12px;
+    margin: 0 10px;
     padding: 10px;
     text-align: center;
     font-size: 20px;
@@ -545,10 +594,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin-top: 0;
 }
 
-#jqt ul {
+#jqt ul, #jqt fieldset {
     color: black;
-    background: #fff;
-    /* font: bold 13pt "Helvetica Neue", Helvetica; */
     font-weight: bold;
     font-size: 13pt;
     line-height: 21pt;
@@ -556,24 +603,37 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin: 15px 10px 17px 10px;
 }
 
-#jqt ul.rounded {
+#jqt ul.rounded, #jqt fieldset {
+    background-color: #fff;
     -webkit-border-radius: 8px;
     -webkit-box-shadow: #999 0px 0px 2px;
 }
 
-#jqt ul.rounded li:first-child, #jqt ul.rounded li:first-child a {
+#jqt fieldset input[type="radio"] {
+    border-style: none;
+    border-width: 0;
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+}
+
+#jqt ul.rounded li:first-child, #jqt ul.rounded li:first-child a,
+#jqt fieldset input[type="radio"]:first-child, #jqt fieldset input[type="radio"]:first-child a {
     border-top: 0;
     -webkit-border-top-left-radius: 8px;
     -webkit-border-top-right-radius: 8px;
 }
 
-#jqt ul.rounded li:last-child, #jqt ul.rounded li:last-child a {
+#jqt ul.rounded li:last-child, #jqt ul.rounded li:last-child a,
+#jqt fieldset input[type="radio"]:last-child, #jqt fieldset input[type="radio"]:last-child a {
     -webkit-border-bottom-left-radius: 8px;
     -webkit-border-bottom-right-radius: 8px;
 }
 
-#jqt ul li {
+#jqt ul li, #jqt fieldset input[type="radio"] {
     -webkit-box-sizing: border-box;
+    font-size: inherit;
     color: #222;
     border-top: 1px solid #E0E0E0;
     list-style-type: none;
@@ -582,7 +642,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     min-height: 44px;
 }
 
-#jqt ul li > a {
+#jqt ul li > a, #jqt fieldset input[type="radio"] > a {
     margin: -10px;
     padding: 10px;
 }
@@ -591,6 +651,15 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     height: 78px;
     color: #000;
     overflow: hidden;
+    padding-left: 30px;
+    padding-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#jqt ul.mail li > a {
+    margin: -15px;
+    padding: 15px;
 }
 
 #jqt ul li:empty {
@@ -624,13 +693,13 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
 }
 
-#jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check {
-    padding-right: 22px;
+#jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check, #jqt fieldset input[type="radio"] {
+    padding-right: 35px;
 }
 
 #jqt ul li.arrow > a, #jqt ul li.forward > a, #jqt ul li.check > a {
-    margin-right: -22px;
-    padding-right: 22px;
+    margin-right: -35px;
+    padding-right: 35px;
 }
 
 #jqt ul li.arrow {
@@ -645,7 +714,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat;
 }
 
-#jqt ul li.check {
+#jqt ul li.check, #jqt fieldset input[type="radio"]:checked {
     background-image: url(img/check.png), none;
     background-position: right center, left top;
     background-repeat: no-repeat;
@@ -659,6 +728,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
     overflow: hidden;
     display: block;
+    width: 100%;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
@@ -668,8 +738,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li.active *, #jqt ul li.forward * {
-    color: inherit;
-    text-shadow: none;
+    color: inherit !important;
+    text-shadow: none !important;
 }
 
 #jqt ul li.arrow.active {
@@ -678,8 +748,14 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat !important;
 }
 
-#jqt ul li.check.active {
+#jqt ul li.check.active, #jqt fieldset input[type="radio"]:active:checked {
     background-image: url(img/check_white.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left top;
+    background-repeat: no-repeat;
+}
+
+#jqt ul li.check.active, #jqt fieldset input[type="radio"]:active:not(checked) {
+    background-image: none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
     background-position: right center, left top;
     background-repeat: no-repeat;
 }
@@ -756,12 +832,10 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 /* @group Forms */
 #jqt form {
-    padding-top: 10px;
-    padding-bottom: 10px;
     /* -webkit-box-shadow: inset 0 0 2px #444; */
 }
 
-#jqt ul.form li {
+#jqt ul.form li, #jqt fieldset input[type="radio"] {
     padding: 7px 10px;
 }
 
@@ -789,7 +863,37 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
 }
 
-#jqt ul li label {
+#jqt ul li input[type="text"],
+#jqt ul li input[type="password"],
+#jqt ul li input[type="tel"],
+#jqt ul li input[type="number"],
+#jqt ul li input[type="search"],
+#jqt ul li input[type="email"],
+#jqt ul li input[type="url"],
+#jqt ul li textarea,
+#jqt ul li select {
+    position: relative;
+    display: -webkit-box;
+    font: normal 13pt Helvetica;
+    font-color: #385487;
+    line-height: 21pt;
+    color: #385487;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));
+    border: 0;
+    padding: 0;
+    -webkit-box-flex: 10;
+    -webkit-box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -webkit-appearance: none;
+    -webkit-user-select: text;
+}
+
+#jqt form ul li, #jqt ul.form li {
+    display: -webkit-box;
+    -webkit-box-pack: justify;
+}
+
+#jqt form ul li label, #jqt ul.form li label {
     position: relative;
     float: left;
     width: auto;
@@ -801,38 +905,12 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-user-select: auto;
 }
 
-#jqt ul li input[type="text"],
-#jqt ul li input[type="password"],
-#jqt ul li input[type="tel"],
-#jqt ul li input[type="number"],
-#jqt ul li input[type="search"],
-#jqt ul li input[type="email"],
-#jqt ul li input[type="url"],
-#jqt ul li textarea,
-#jqt ul li select {
-    position: relative;
-    display: block;
-    font: normal 13pt Helvetica;
-    font-color: #385487;
-    line-height: 21pt;
-    color: #385487;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));
-    border: 0;
-    padding: 0;
-    -webkit-box-sizing: border-box;
-    -webkit-text-size-adjust: none;
-    -webkit-appearance: none;
-    -webkit-box-flex: 1;
-    -webkit-user-select: text;
-}
-
-#jqt ul li label + input {
+#jqt form ul li label + input, #jqt ul.form li label + input {
     text-align: right;
     float: right;
-    max-width: 180px;
 }
 
-#jqt ul li textarea {
+#jqt form ul li textarea, #jqt ul.form li textarea {
     width: 100%;
     padding: 0px;
     min-height: 120px;
@@ -840,7 +918,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-user-select: auto;
 }
 
-#jqt ul li select {
+#jqt form ul li select, #jqt ul.form li select {
     text-indent: 0px;
     background: transparent url(img/chevron.png) no-repeat 103% 3px;
     -webkit-appearance: textfield;
@@ -849,22 +927,33 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-user-select: auto;
 }
 
-#jqt ul li input[type="checkbox"], #jqt ul li input[type="radio"] {
+#jqt form ul li input[type="checkbox"], #jqt fieldset input[type="radio"],
+#jqt ul.form li input[type="checkbox"], #jqt fieldset input[type="radio"] {
     margin: 0;
     color: rgb(50,79,133);
     padding: 10px 10px;
 }
 
-#jqt ul li input[type="checkbox"]:after, #jqt ul li input[type="radio"]:after {
+#jqt form ul li input[type="checkbox"]:before, #jqt ul.form li input[type="checkbox"]:before {
+    display: block;
     content: attr(title);
     font: 17px "Helvetica Neue", Helvetica;
-    display: block;
+    font-weight: bold;
+    vertical-align: center;
+    line-height: 28px;
     width: 246px;
-    margin: -12px 0 0 17px;
 }
 
+#jqt fieldset input[type="radio"]:before, #jqt fieldset input[type="radio"]:before {
+    display: block;
+    content: attr(title);
+    font: 17px "Helvetica Neue", Helvetica;
+    font-weight: bold;
+    vertical-align: center;
+    line-height: 28px;
+}
 
-#jqt form > h1, #jqt form > :not(.toolbar) h1 {
+#jqt form > h1, #jqt form > :not(.toolbar) h1, #jqt .form h1 {
     margin: 0;
     padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
@@ -875,7 +964,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
 }
 
-#jqt form > h2, #jqt form > :not(.toolbar) h2 {
+#jqt form > h2, #jqt form > :not(.toolbar) h2, #jqt .form h2 {
     margin: 0;
     padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
@@ -886,7 +975,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
 }
 
-#jqt form > h3, #jqt form > :not(.toolbar) h3 {
+#jqt form > h3, #jqt form > :not(.toolbar) h3, #jqt .form h3 {
     padding-left: 10px;
     padding-right: 5px;
     font: bold 10pt "Helvetica Neue", Helvetica;
@@ -897,13 +986,63 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
 }
 
-#jqt form > h4, #jqt form > :not(.toolbar) h4 {
+#jqt form > h4, #jqt form > :not(.toolbar) h4, #jqt .form h4 {
     padding-left: 10px;
     padding-right: 5px;
     font: 8.5pt "Helvetica Neue", Helvetica;
     padding-top: 7px;
     color: grey;
     text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
+}
+
+#jqt ul li input[type="checkbox"].onoff {
+    display: block;
+    -webkit-box-sizing: border-box;
+    -webkit-appearance: none;
+    position: relative;
+    width: 94px;
+    height: 27px;
+    overflow: hidden;
+    /* -webkit-box-flex: 1; */
+    margin-left: auto;
+    padding-left: auto;
+    float: right;
+    right: 0px;
+    border-style: none;
+    border-width: 0;
+    border-radius: 4px;
+    background: black url(img/on_off.png) no-repeat;
+    background-position: 0 0;
+    -webkit-transition: background-position .15s;
+}
+
+#jqt input[type="checkbox"].onoff:checked {
+    background-position: -55px 0;
+    -webkit-transition: background-position .15s;
+}
+
+#jqt fieldset {
+    border: none;
+}
+
+#jqt fieldset input[type="radio"] {
+    display: block;
+    min-height: 44px;
+    -webkit-appearance: none;
+    width: 100%;
+    color: black;
+    background-color: white;
+    line-height: 28px;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+#jqt fieldset input[type="radio"]:checked {
+    color: #324F85;
+}
+
+#jqt fieldset input[type="radio"]:active {
+    color: #fff;
 }
 
 /* @end */
@@ -957,14 +1096,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-right: 0;
     border-top: 0;
 }
-
-/*
-#jqt #plastic ul li.check, #jqt #metal ul li.check {
-    background-image: url(img/check.png), none;
-    background-position: right center, left top;
-    background-repeat: no-repeat;
-}*/
-
 
 #jqt ul.metal {
     border-top: 0;
@@ -1096,21 +1227,13 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat;
 }
 
-#jqt .plastic {
+#jqt ul.plastic {
     margin: 0;
     padding: 0;
     background: rgb(173,173,173);
 }
 
-#jqt ul.edgetoedge, #jqt ul.metal, #jqt .plastic ul {
-    -webkit-border-radius: 0;
-    margin: 0;
-    border-left: 0;
-    border-right: 0;
-    border-top: 0;
-}
-
-#jqt .plastic ul {
+#jqt ul.plastic {
     -webkit-border-radius: 0;
     margin: 0;
     border-left: 0;
@@ -1119,40 +1242,41 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-color: rgb(173,173,173);
 }
 
-#jqt .plastic ul li {
+#jqt ul.plastic li {
+    display: block;
     -webkit-border-radius: 0;
     border-top: 1px solid rgb(191,191,191);
     border-bottom: 1px solid rgb(157,157,157);
 }
 
-#jqt .plastic ul li:nth-child(odd) {
+#jqt ul.plastic li:nth-child(odd) {
     background-color: rgb(152,152,152);
     border-top: 1px solid rgb(181,181,181);
     border-bottom: 1px solid rgb(138,138,138);
 }
 
-#jqt .plastic ul + p {
+#jqt ul.plastic + p {
     font-size: 11px;
     color: #2f3237;
     text-shadow: none;
     padding: 10px 10px;
 }
 
-#jqt .plastic ul + p strong {
+#jqt ul.plastic p strong {
     font-size: 14px;
     line-height: 18px;
     text-shadow: #fff 0 1px 0;
 }
 
-#jqt .plastic ul li a {
+#jqt ul.plastic li a {
     text-shadow: rgb(211,211,211) 0 1px 0;
 }
 
-#jqt .plastic ul li:nth-child(odd) a {
+#jqt ul.plastic li:nth-child(odd) a {
     text-shadow: rgb(191,191,191) 0 1px 0;
 }
 
-#jqt .plastic ul li small {
+#jqt ul.plastic li small {
     color: #3C3C3C;
     text-shadow: rgb(211,211,211) 0 1px 0;
     font-size: 13px;
@@ -1161,18 +1285,18 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     line-height: 24px;
 }
 
-#jqt #plastic ul.minibanner, #jqt #plastic ul.bigbanner {
+#jqt ul.plastic.minibanner, #jqt ul.plastic.bigbanner {
     margin: 10px;
     border: 0;
     height: 81px;
     clear: both;
 }
 
-#jqt #plastic ul.bigbanner {
+#jqt ul.plastic.bigbanner {
     height: 140px !important;
 }
 
-#jqt #plastic ul.minibanner li {
+#jqt ul.plastic.minibanner li {
     border: 1px solid rgb(138,138,138);
     background-color: rgb(152,152,152);
     width: 145px;
@@ -1182,7 +1306,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding: 0;
 }
 
-#jqt #plastic ul.bigbanner li {
+#jqt ul.plastic.bigbanner li {
     border: 1px solid rgb(138,138,138);
     background-color: rgb(152,152,152);
     width: 296px;
@@ -1193,11 +1317,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin-bottom: 4px;
 }
 
-#jqt #plastic ul.minibanner li:first-child {
+#jqt ul.plastic.minibanner li:first-child {
     margin-right: 6px;
 }
 
-#jqt #plastic ul.minibanner li a {
+#jqt ul.plastic.minibanner li a {
     color: transparent;
     text-shadow: none;
     display: block;
@@ -1205,7 +1329,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     height: 81px;
 }
 
-#jqt #plastic ul.bigbanner li a {
+#jqt ul.plastic.bigbanner li a {
     color: transparent;
     text-shadow: none;
     display: block;
@@ -1261,40 +1385,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 
 
-/* @group Toggle */
-
-#jqt .toggle {
-    width: 94px;
-    position: relative;
-    height: 27px;
-    display: block;
-    overflow: hidden;
-    top: -4px;
-    float: right;
-}
-
-#jqt .toggle input[type="checkbox"]:checked {
-    left: 0px;
-}
-
-#jqt .toggle input[type="checkbox"] {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    margin: 0;
-    -webkit-border-radius: 5px;
-    background: #fff url(img/on_off.png) 0 0 no-repeat;
-    height: 27px;
-    overflow: hidden;
-    width: 149px;
-    border: 0;
-    -webkit-appearance: textarea;
-    background-color: transparent;
-    -webkit-transition: left .15s;
-    position: absolute;
-    left: -55px;
-    background-color: grey;
-}
-
-/* @end */
+/* @group Misc */
 
 #jqt .info {
     background: #dce1eb;

@@ -27,8 +27,7 @@
             }); */
 
             var jQT = $.jQTouch({
-              slideSelector: '#jqt ul > li > a, #jqt ol > li > a',
-              useFastTouch: true
+              activableSelector: '#jqt ul > li.arrow, #jqt ol > li.arrow'
             });
 
             function setHeight($item) {
@@ -169,49 +168,47 @@
                 </div>
                 <div class="s-scrollwrapper">
                   <div class="s-scrollpane" id="z-scopepane">
-                    <div class="grid">
-                      <div class="row">
-                        <h4>H4 Header 1</h4>
-                        <div class="item">
-                          <a href="#"><div class="icon"><div class="mask"></div></div></a>
-                          <p class="ico_txt">Clock</p>
-                        </div>
-                        <div class="item">
-                          <a href="#"><div class="icon"><div class="mask"></div></div></a>
-                          <p class="ico_txt">Custom</p>
-                          <span class="badge">2</span>
-                          <span class="redbadge">7</span>
-                        </div>
-                        <div class="item">
-                          <a href="#"><div class="icon"><div class="mask"></div></div></a>
-                          <p class="ico_txt">Camera</p>
-                        </div>
-                        <div class="item">
-                          <a href="#"><div class="icon"><div class="mask"></div></div></a>
-                          <p class="ico_txt">Mail</p>
-                          <span class="redbadge">3</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <h4>H4 Header 2</h4>
-                        <div href="#" class="item slide" >
-                          <a href="#"><div class="icon" title="Notes"><div class="mask"></div></div></a>
-                          <p class="ico_txt">Notes</p>
-                        </div>
-                        <div class="item slide" >
-                          <a href="#"><div class="icon" title="Calculator"></div></a>
-                          <p class="ico_txt">Calculator</p>
-                        </div>
-                        <div href="#" class="item slide" >
-                          <a href="#"><div class="icon" title="Maps"></div></a>
-                          <p class="ico_txt">Maps</p>
-                        </div>
-                        <div href="#" class="item slide" >
-                          <a href="#"><div class="icon" title="Contacts"><div class="mask"></div></div></a>
-                          <p class="ico_txt">Contacts</p>
-                        </div>
-                      </div>
-                    </div>
+                    <ul class="grid">
+                      <h4>H4 Header 1</h4>
+                      <li class="item">
+                        <a href="#"><div class="icon"><div class="mask"></div></div></a>
+                        Clock
+                      </li>
+                      <li class="item">
+                        <a href="#"><div class="icon"><div class="mask"></div></div></a>
+                        Custom
+                        <small class="light">2</small>
+                        <small>7</small>
+                      </li>
+                      <li class="item">
+                        <a href="#"><div class="icon"><div class="mask"></div></div></a>
+                        Camera
+                      </li>
+                      <li class="item">
+                        <a href="#"><div class="icon"><div class="mask"></div></div></a>
+                        Mail
+                        <small>3</small>
+                      </li>
+                    </ul>
+                    <ul class="grid">
+                      <h4>H4 Header 2</h4>
+                      <li href="#" class="item slide" >
+                        <a href="#"><div class="icon" title="Notes"><div class="mask"></div></div></a>
+                        Notes
+                      </li>
+                      <li class="item slide" >
+                        <a href="#"><div class="icon" title="Calculator"></div></a>
+                        Calculator
+                      </li>
+                      <li href="#" class="item slide" >
+                        <a href="#"><div class="icon" title="Maps"></div></a>
+                        Maps
+                      </li>
+                      <li href="#" class="item slide" >
+                        <a href="#"><div class="icon" title="Contacts"><div class="mask"></div></div></a>
+                        Contacts
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div id="navibar1" class="navibar">
