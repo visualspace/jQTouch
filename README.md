@@ -6,9 +6,10 @@ BeeDesk's fork.
 - iScroll integration,
 - Grid layout with badge,
 - Radio button (Check group, and toolbar radio) with no js,
+- CSS enhancements such as navibar, span-width buttons, buttonset,
 - Mail layout css and example,
 - Webkit gradient for buttons,
-- Working landscape mode with toolbar width,
+- Working landscape mode with toolbar height auto-shrink,
 - etc.
 
 See the demo here
