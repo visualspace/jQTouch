@@ -953,7 +953,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     line-height: 28px;
 }
 
-#jqt form > h1, #jqt form > :not(.toolbar) h1, #jqt .form h1 {
+#jqt form > h1, #jqt form > :not(.toolbar) h1, #jqt .form :not(.toolbar) > h1 {
     margin: 0;
     padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
@@ -964,7 +964,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
 }
 
-#jqt form > h2, #jqt form > :not(.toolbar) h2, #jqt .form h2 {
+#jqt form > h2, #jqt form > :not(.toolbar) h2, #jqt .form :not(.toolbar) > h2 {
     margin: 0;
     padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
@@ -975,7 +975,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
 }
 
-#jqt form > h3, #jqt form > :not(.toolbar) h3, #jqt .form h3 {
+#jqt form > h3, #jqt form > :not(.toolbar) h3, #jqt .form :not(.toolbar) > h3 {
     padding-left: 10px;
     padding-right: 5px;
     font: bold 10pt "Helvetica Neue", Helvetica;
@@ -986,7 +986,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
 }
 
-#jqt form > h4, #jqt form > :not(.toolbar) h4, #jqt .form h4 {
+#jqt form > h4, #jqt form > :not(.toolbar) h4, #jqt .form :not(.toolbar) > h4 {
     padding-left: 10px;
     padding-right: 5px;
     font: 8.5pt "Helvetica Neue", Helvetica;
