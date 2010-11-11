@@ -774,21 +774,28 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li.arrow {
-    background-image: url(img/chevron.png), none;
-    background-position: right center, left top;
+    background-image: url(img/chevron.png), none, none;
+    background-position: right center, 6px center, left top;
     background-repeat: no-repeat;
 }
 
+#jqt ul li.arrow.unread {
+    background-image: url(img/chevron.png), url(img/blueball.png), none;
+    background-position: right center, 6px center, left top;
+    background-repeat: no-repeat, no-repeat, repeat-x;
+}
+
+
 #jqt ul li.forward {
-    background-image: url(img/chevron.png), none; /* @TODO@ - using only regular chervon now */
-    background-position: right center, left top;
-    background-repeat: no-repeat;
+    background-image: url(img/chevron.png), none, none; /* @TODO@ - using only regular chervon now */
+    background-position: right center, left center, left top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 #jqt ul li.check, #jqt fieldset.rounded input[type="radio"]:checked {
-    background-image: url(img/check.png), none;
-    background-position: right center, left top;
-    background-repeat: no-repeat;
+    background-image: url(img/check.png), none, none;
+    background-position: right center, left center, left top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 #jqt ul li a {
@@ -814,21 +821,27 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li.arrow.active {
-    background-image: url(img/listArrowSel.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
-    background-position: right center, left top !important;
-    background-repeat: no-repeat !important;
+    background-image: url(img/listArrowSel.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
+    background-position: right center, left center, left top !important;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+}
+
+#jqt ul li.arrow.unread.active {
+    background-image: url(img/listArrowSel.png), url(img/blueball.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
+    background-position: right center, 6px center, left top !important;
+    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 #jqt ul li.check.active, #jqt fieldset.rounded input[type="radio"]:checked:active {
-    background-image: url(img/check_white.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left top;
-    background-repeat: no-repeat;
+    background-image: url(img/check_white.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left center, left top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 #jqt ul li.check.active, #jqt fieldset.rounded input[type="radio"]:not(:checked):active {
-    background-image: none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left top;
-    background-repeat: no-repeat;
+    background-image: none, none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left center, left top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 #jqt fieldset.rounded input[type="radio"]:not(:active) {
@@ -845,13 +858,13 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul li.forward.active {
     background-image: url(img/chevron_circle.png);
     background-position: right center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 #jqt ul li.check.active {
-    background-image: url(img/check_white.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left top;
-    background-repeat: no-repeat;
+    background-image: url(img/check_white.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-position: right center, left center, left top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 /* items (.img) below does not seem to be used anywhere in the example. */
