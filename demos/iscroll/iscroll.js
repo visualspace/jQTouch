@@ -20,7 +20,8 @@ function iScroll (el, options) {
   that.element.style.webkitTransitionProperty = '-webkit-transform';
   that.element.style.webkitTransitionTimingFunction = 'cubic-bezier(0,0,0.25,1)';
   that.element.style.webkitTransitionDuration = '0';
-  that.element.style.webkitTransform = translateOpen + '0,0' + translateClose;
+/*	var matrix = new WebKitCSSMatrix(window.getComputedStyle(that.element).webkitTransform);
+	that.element.style.webkitTransform = translateOpen + '0,' + matrix.f + 'px' + translateClose;*/
 
   // Default options
   that.options = {
@@ -79,6 +80,8 @@ iScroll.prototype = {
   x: 0,
   y: 0,
   enabled: true,
+  pageX: 0,
+  pageY: 0,
 
   handleEvent: function (e) {
     var that = this;
@@ -155,9 +158,11 @@ iScroll.prototype = {
       that.maxPageX = -Math.floor(that.maxScrollX/that.scrollWidth);
       that.maxPageY = -Math.floor(that.maxScrollY/that.scrollHeight);
 
-      snap = that.snap(resetX, resetY);
-      resetX = snap.x;
-      resetY = snap.y;
+//	  snap = that.snap(resetX, resetY);
+//	  resetX = snap.x;
+//	  resetY = snap.y;
+      resetX = -that.pageX * that.scrollWidth;
+      resetY = -that.pageY * that.scrollHeight;
     }
 
     if (resetX!=that.x || resetY!=that.y) {
@@ -229,6 +234,9 @@ iScroll.prototype = {
       return;
     }
 
+//		window.disable_v = false;
+//		window.disable_h = false;
+
     if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {      
       e.preventDefault();
     }
@@ -276,7 +284,6 @@ iScroll.prototype = {
       newY = that.y + topDelta;
 
     e.preventDefault();
-    // e.stopPropagation(); // Stopping propagation just saves some cpu cycles (I presume)
 
     that.touchStartX = pageX;
     that.touchStartY = pageY;
@@ -289,14 +296,25 @@ iScroll.prototype = {
       newY = that.options.bounce ? Math.round(that.y + topDelta / 3) : (newY >= 0 || that.maxScrollY>=0) ? 0 : that.maxScrollY;
     }
 
-    if (that.distX + that.distY > 5) {      // 5 pixels threshold
+    if (that.options.snap==false && window.disable_h) {
+      e.stopPropagation();
+    }
+
+    if (that.distX + that.distY > 20) {			// 5 pixels threshold
       // Lock scroll direction
-      if (that.distX-3 > that.distY) {
+      if (that.distX-5 > that.distY) {
         newY = that.y;
         topDelta = 0;
-      } else if (that.distY-3 > that.distX) {
+        window.disable_v = true;
+      } else if (that.distY-5 > that.distX) {
         newX = that.x;
         leftDelta = 0;
+        window.disable_h = true;
+      }
+
+      if (!that.options.snap && window.disable_v) {
+        window.disable_h = false;
+        return;
       }
       that.setPosition(newX, newY);
       that.moved = true;
@@ -313,6 +331,10 @@ iScroll.prototype = {
     if (!this.scrolling) {
       return;
     }
+
+    window.disable_v = false;
+    window.disable_h = false;
+
     var that = this,
       time = e.timeStamp - that.scrollStartTime,
       point = isTouch ? e.changedTouches[0] : e,
