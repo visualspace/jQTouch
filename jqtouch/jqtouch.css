@@ -29,6 +29,7 @@ body {
 #jqt .selectable, #jqt input, #jqt textarea {
     -webkit-user-select: auto;
 }
+
 #jqt.notransform {
     -webkit-transform: none !important;
 }
@@ -36,6 +37,7 @@ body {
 #jqt > * {
     -webkit-backface-visibility: hidden;
     -webkit-box-sizing: border-box;
+    -webkit-box-orient: vertical;
     display: none;
     position: absolute;
     left: 0;
@@ -53,6 +55,7 @@ body {
     right: 0;
     min-height: 100%;
 }
+
 @media only screen and (min-device-width: 768px) {
     #jqt.splitscreen {
         width: 768px;
@@ -60,12 +63,14 @@ body {
         margin-right: auto;
         -jqt-splitscreen: 1;
     }
+
     #jqt.splitscreen > * {
         left: auto;
         right: 0;
         width: 448px;
         border-radius: 5px;
     }
+
     #jqt.splitscreen > [section="aside"] {
         position: absolute;
         left: 0;
@@ -79,26 +84,33 @@ body {
     }
 
 }
+
 @media only screen and (min-device-height: 768px) and (orientation:landscape),
 only screen and (min-device-width: 1024px) {
     #jqt.splitscreen {
         width: 1024px;
     }
+
     #jqt.splitscreen > * {
         width: 704px;
     }
+
     #jqt.splitscreen > [section="aside"] {
     }
 }
+
 #jqt > .current {
-    display: block !important;
+    display: -webkit-box;
 }
+
 #jqt > .front {
     z-index: 100;
 }
+
 #jqt > * .missection {
     display: none !important;
 }
+
 #jqt .in.start, #jqt .out.start {
     -webkit-transition-duration: 350ms;
     -webkit-transition-timing-function: ease-in-out;

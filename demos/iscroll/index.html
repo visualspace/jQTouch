@@ -2,7 +2,6 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        
         <title>jQTouch &beta;</title>
         <style type="text/css" media="screen">@import "../../jqtouch/jqtouch.css";</style>
         <style type="text/css" media="screen">@import "../../themes/apple/theme.css";</style>
@@ -10,106 +9,81 @@
         <script src="../../jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="iscroll.js" type="application/x-javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
-            /*
-            var jQT = new $.jQTouch({
-                icon: 'jqtouch.png',
-                addGlossToIcon: false,
-                startupScreen: 'jqt_startup.png',
-                statusBar: 'black',
-                preloadImages: [
-                    '../../themes/jqt/img/back_button.png',
-                    '../../themes/jqt/img/back_button_clicked.png',
-                    '../../themes/jqt/img/button_clicked.png',
-                    '../../themes/jqt/img/grayButton.png',
-                    '../../themes/jqt/img/whiteButton.png',
-                    '../../themes/jqt/img/loading.gif'
-                    ]
-            }); */
-
             var jQT = $.jQTouch({
               activableSelector: '#jqt ul > li.arrow, #jqt ol > li.arrow'
             });
 
-            function setHeight($item) {
-              var $wrapper = $item.find('.s-scrollwrapper');
-              if ($wrapper.length > 0) {
-                var headerH = 0;
-                var footerH = 0;
-                var tabbarH = 0;
-                var wrapperH = 320;
-  
-                var $header = $item.find('.toolbar');
-                headerH = $header.length > 0 ? ($header.outerHeight() > 0 ? $header.outerHeight() : 0) : 0;
-  
-                var $footer = $item.find('.navibar'); // page footer
-                var $tabbar = $('#tabbar'); // global tabbar
-                if ($footer.length > 0) {
-                  footerH = $footer.outerHeight();
-                } else if ($tabbar.length > 0) {
-                  tabbarH = $tabbar.outerHeight(); 
-                }
-
-                // workaround limitation on outerHeight (ie, returns zero until animation ended)
-                if (headerH > 0 || footerH > 0 || tabbarH > 0) {
-                  wrapperH = window.innerHeight - headerH - footerH - tabbarH;
-                  $wrapper.height(wrapperH);
-                }
-
-                // refresh scroll
-                var scroll = $item.data('iscroll_object');
-                if (scroll !== undefined && scroll !== null) {
-                  scroll.refresh();
-                }
+            $(document).ready(function(){
+              // initialize iscroll
+              var KEY_ISCROLL_OBJ = 'iscroll_object';
+              function refreshScroll($pane) {
+                $pane.find('.s-scrollwrapper, .s-innerscrollwrapper').each(function (i, wrap) {
+                  var $wrapper = $(wrap);
+                  var scroll = $wrapper.data(KEY_ISCROLL_OBJ);
+                  if (scroll !== undefined && scroll !== null) {
+                    scroll.refresh();
+                  }
+                });
               }
-            }
 
-            function setCurrentHeight() {
-              setHeight($('.current'));
-            }
+              function loaded() {
+                $("#jqt").children().each(function (i, pane) {
+                  $(pane).find('.s-scrollwrapper, .s-innerscrollwrapper').each(function (i, wrap) {
+                    var $wrapper = $(wrap);
 
-            function loaded() {
-              $('#jqt').children().each(function () {
-                var $this = $(this);
-                var $wrapper = $this.find('.s-scrollwrapper');
-                var $pane = $wrapper.find('.s-scrollpane'); 
-                if ($wrapper.length > 0) {
-                  var scroll = new iScroll($pane[0].id, {desktopCompatibility: true});
-                  $this.data('iscroll_object', scroll); 
+                    var $content = $wrapper.find('.s-scrollpane');
+                    if ($content.length === 1) {
+                      var contentid = $content.attr('id');
+                      if (!!contentid && $('#' + contentid).parent()[0] === $wrapper[0]) {
+                        var scroll = new iScroll(contentid, {
+                          desktopCompatibility: true,
+                          bounce: true,
+                          momentum: true,
+                          checkDOMChanges: false
+                        });
+                        $wrapper.data(KEY_ISCROLL_OBJ, scroll);
 
-                  // workaround limitation on outerHeight (ie, returns zero until animation ended)
-                  // set a default for most common case to avoid resize being seen
-                  wrapperH = window.innerHeight - 88;
-                  $wrapper.height(wrapperH);
-
-                  scroll.refresh();
-
-                  $this.bind('pageAnimationEnd', function(event, info) {
-                    if (info.direction == 'in') {
-                      setHeight($(this));
+                        scroll.refresh();
+                      } else {
+                        if (!!contentid) {
+                          console.warn('iScroll is not enabled for this <div>. <div id="' + contentidid + '"> is not unique.');
+                        } else {
+                          console.warn('iScroll is not enabled for this <div>. An unique id must be specified.');
+                        }
+                      }
                     }
                   });
-                }
-              });
-            }
+                  $(pane).bind('pageAnimationEnd', function(event, info) {
+                    if (info.direction == 'in') {
+                      refreshScroll($(this));
+                    }
+                  });
+                });
+                $(window).resize(function() {
+                  $('#jqt > .current').each(function(i, one) {
+                    refreshScroll($(one));
+                  });
+                });
+              }
 
-            document.addEventListener('touchmove', function(e){ e.preventDefault(); }, true);
-            $(window).resize(function() {
-              $('#jqt').children().each(function () {
-                setHeight($(this));
-              });
-            });
-            $(document).ready(function(){
               loaded();
-              $(window).resize();
 
               setTimeout(function() {
+                loaded();
                 $(window).resize();
-              }, 1500);
+
+                setTimeout(function() {
+                  $(window).resize();
+                }, 1500);
+              }, 50);
             });
         </script>
         <style type="text/css" media="screen">
             #jqt.fullscreen #home .info {
                 display: none;
+            }
+            #jqt .contentwrap {
+                background-color: white;
             }
             div#jqt #about {
                 padding: 100px 10px 40px;
@@ -125,27 +99,6 @@
                 color: #fff;
                 font-weight: bold;
                 text-decoration: none;
-            }
-
-            .s-scrollwrapper {
-              height:200px;       /* Of course you need to specify the object height */
-              position:relative;  /* On older OS versions "position" and "z-index" must be defined, */
-              z-index:1;          /* it seems that recent webkit is less picky and works anyway. */
-              width:100%;
-              background:#FFFFF;
-              overflow:hidden;
-            /*  background:#aaa url(wrapper-bg.png);*/
-            }
-
-            .s-scrollpane {      
-              float:left;
-              width:100%;
-              padding:0;
-              background-color: #AAAAAA;
-              min-height: 100%;
-            /*  -webkit-box-shadow:0 0 8px #555;    /* Don't use shadows in production, they slow down drastically CSS animations */
-            /*  -webkit-touch-callout:none;*/
-            /*  -webkit-tap-highlight-color:rgba(0,0,0,0);*/
             }
         </style>
     </head>
@@ -166,7 +119,7 @@
                     <h1>Grid & iScroll</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <div class="s-scrollwrapper">
+                <div class="s-scrollwrapper contentwrap">
                   <div class="s-scrollpane" id="z-scopepane">
                     <ul class="grid">
                       <h4>H4 Header 1</h4>
@@ -213,7 +166,7 @@
                 </div>
                 <div id="navibar1" class="navibar">
                   <div class="center"><a href="#" class="button slideup"">Button</a></div>
-                  <a href="#iscroll" class="left button slideup"><div class="buttonicon">Settings</div></a>   
+                  <a href="#iscroll" class="left button slideup"><div class="buttonicon">Settings</div></a>
                   <div id="sw-refresh" class="right button"><div class="buttonicon">Right</div></div>
                 </div>
             </div>
@@ -222,7 +175,7 @@
                     <h1>jQT & iScroll Test</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <div id="target-wrapper2" class="s-scrollwrapper">
+                <div id="target-wrapper2" class="s-scrollwrapper contentwrap">
                   <div id="target-pane2" class="s-scrollpane"><!-- this element must have an id -->
                     <ul>
                       <li class="arrow">Hello World</li>
@@ -437,7 +390,7 @@
                     <h1>jQTouch & iScroll</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <div id="target-wrapper" class="s-scrollwrapper">
+                <div id="target-wrapper" class="s-scrollwrapper contentwrap">
                   <div id="target-pane" class="s-scrollpane"><!-- this element must have an id -->
                     <ul>
                       <li class="arrow"><a href="#gridiscroll">Item 1</a></li>
@@ -651,6 +604,9 @@
                 <div class="toolbar">
                     <h1>jQTouch</h1>
                     <a class="button slideup" id="infoButton" href="#about">About</a>
+                </div>
+                <div class="info">
+                   This demo is depreciated. Please refer to "MAIN" or "MAIL" demo.
                 </div>
                 <ul class="rounded">
                     <li class="arrow"><a href="#iscroll2">iScroll Integration</a><small class="counter">1</small></li>

@@ -4,10 +4,14 @@ body {
 /* @group general */
 
 #jqt > * {
-    -webkit-transform:translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
     -webkit-backface-visibility: hidden;
     background: rgb(197,204,211) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);
     -webkit-user-select: ignore;
+    -webkit-box-sizing: border-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: start;
+    -webkit-box-align: stretch;
 }
 
 #jqt > * > h2 {
@@ -23,6 +27,59 @@ body {
 
 #jqt > * > * {
     -webkit-box-sizing: border-box;
+}
+
+#jqt > * a {
+    -webkit-user-drag: none;
+}
+
+#jqt > * .content {
+    display: -webkit-box;
+    -webkit-box-flex: 10;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    -webkit-box-align: stretch;
+}
+
+#jqt > * .contentwrap {
+    display: -webkit-box;
+    position: relative;
+    -webkit-box-flex: 10;
+    overflow: hidden;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    margin: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    bottom: 0;
+    max-height: 100%;
+}
+
+#jqt > * > div:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info) {
+    /* back-compat worthwhile? */
+    top:0;
+    left:0;
+    right:0;
+    overflow: hidden;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    min-height: 100%;
+    -webkit-box-flex: 10;
+}
+
+
+#jqt > * .contentwrap > .content,
+#jqt > * .contentwrap > :first-child:not(.noncontent) {
+    position: absolute;
+    display: block;
+    top:0;
+    left:0;
+    right:0;
+    overflow: hidden;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    min-height: 100%;
 }
 
 /* @end */
@@ -63,7 +120,6 @@ body {
 
 #jqt .navibar {
     -webkit-box-flex: 0;
-    bottom: 0px;
     border-top: 1px solid #2d3642;
     padding: 7px 5px 9px 5px;
     /* background-color: #D8DEE6; */
@@ -134,6 +190,7 @@ body {
     text-overflow: ellipsis;
     text-decoration: none;
     white-space: nowrap;
+    -webkit-user-drag: none;
 }
 
 #jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
@@ -155,9 +212,9 @@ body {
     max-width: 95px;
     padding-left: 8px;
     padding-right: 8px;
-    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #77A2F8), color-stop(0.5, #225FDA), color-stop(0.5, #1F55C3), color-stop(1, #1F57C6));
-    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
-    -webkit-border-radius:6px;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #77A2F8), color-stop(0.5, #225FDA), color-stop(0.5, #1F55C3), color-stop(1, #1F57C6));
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
+    -webkit-border-radius: 6px;
 }
 
 #jqt .toolbar .back, #jqt .toolbar .cancel {
@@ -182,10 +239,10 @@ body {
 }
 
 #jqt .navibar .button, #jqt .navibar .tog {
-    border:1px solid #45505d;
-    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
+    border: 1px solid #45505d;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.25);
-    -webkit-border-radius:6px;
+    -webkit-border-radius: 6px;
 }
 
 #jqt .toolbar .left, #jqt .navibar .left {
@@ -337,7 +394,7 @@ body {
       min-height: 24px;
       padding-left: 10px;
       padding-right: 10px;
-      font-size: 8.75pt;
+      font-size: 8.5pt;
   }
 
   #jqt .toolbar .back, #jqt .toolbar .cancel {
@@ -1157,7 +1214,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-border-radius: 0 !important;
 }
 
-#jqt ul.edgetoedge li.sep {
+#jqt ul.edgetoedge li.sep, #jqt ul.mail li.sep {
     -webkit-box-sizing: border-box;
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 159, 171, 1)), to(rgba(181, 193, 201, 1.0)));
     border-bottom: 1px solid #b5c1c9;
@@ -1205,7 +1262,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.mail {
-    background: white; 
+    background: white;
 }
 
 #jqt ul.edgetoedge li:first-child,
