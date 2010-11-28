@@ -15,6 +15,7 @@ BeeDesk's fork.
 See the demo here
 
 - [Demo](http://bit.ly/beedesk-jqt), The main demo with iPad split-screen support with automatically iPhone adaption, iscroll on apple theme. 
+- [Labnote](http://labnote.beedesk.com), Blog for tips and hints on developing Html5 / webkit / jqtouch app. 
 
 
 jQTouch
