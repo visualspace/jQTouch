@@ -29,18 +29,6 @@ body {
     -webkit-box-sizing: border-box;
 }
 
-#jqt > * a {
-    -webkit-user-drag: none;
-}
-
-#jqt > * .content {
-    display: -webkit-box;
-    -webkit-box-flex: 10;
-    -webkit-box-orient: vertical;
-    -webkit-box-pack: center;
-    -webkit-box-align: stretch;
-}
-
 #jqt > * .contentwrap {
     display: -webkit-box;
     position: relative;
@@ -80,6 +68,14 @@ body {
     padding-top: 0px;
     padding-bottom: 0px;
     min-height: 100%;
+}
+
+#jqt > * .content {
+    display: -webkit-box;
+    -webkit-box-flex: 10;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: justify;
+    -webkit-box-align: stretch;
 }
 
 /* @end */

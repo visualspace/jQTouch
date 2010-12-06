@@ -237,7 +237,7 @@ iScroll.prototype = {
 //		window.disable_v = false;
 //		window.disable_h = false;
 
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {      
+    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
       e.preventDefault();
     }
     // e.stopPropagation();
