@@ -456,6 +456,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin-right: 0px;
     margin-top: 0px;
     margin-bottom: 0px;
+    display: -webkit-box;
+    -webkit-box-sizing: border-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-align: stretch;
+    -webkit-box-pack: center;
 }
 
 #jqt ul.grid {
@@ -471,8 +476,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.grid li, #jqt ul.smallgrid li {
-    display: inline-block;
-    -webkit-box-pack: center;
+    display: -webkit-box;
     position: relative;
     text-align:center;
     list-stype-type: none;
@@ -517,8 +521,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding-top: 2pt;
 }
 
-#jqt ul.grid h4,
-#jqt ul.smallgrid h4 {
+#jqt h4 {
     position: relative;
     margin-left:5px;
     color: grey;
@@ -1060,9 +1063,44 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-user-select: auto;
 }
 
+#jqt form ul li input:focus + small {
+    -webkit-box-sizing: border-box;
+    position: relative;
+    font-size: 10pt;
+    min-width: 19pt;
+    height: 19pt;
+    border-radius: 1.2em;
+    text-align: center;
+    width: auto;
+    padding: 1px;
+    background-color: #7070C0;
+    border: 2.5pt solid white;
+    color: white;
+    font-weight: bold;
+    text-shadow: none;
+    /* background-size: contain; */
+    background-position: center center;
+    -webkit-background-origin: content-box;
+    -webkit-box-shadow: rgba(0,0,0,0.5) 1pt 1pt 3pt;
+    background-image: -webkit-gradient(radial, 50% -130%, 24, 50% 0, 54, from(rgba(255,255,255,0.3)), to(rgba(255,255,255,0.1)),
+      color-stop(4%, rgba(255,255,255,0.3)),
+      color-stop(8%, rgba(31,31,31,0.1)),
+      color-stop(38%, rgba(239,239,239,0.1))),
+      color-stop(80%, #FFF)),
+      color-stop(100%, #FFF));
+}
+
+#jqt form ul li input:focus + small.plus {
+    background-image: url(img/plus.png);
+    background-repeat: no-repeat;
+}
+
 #jqt form ul li label + input, #jqt ul.form li label + input {
     text-align: right;
-    float: right;
+}
+
+#jqt form ul li label + input.left, #jqt ul.form li label + input.left {
+    text-align: left;
 }
 
 #jqt form ul li textarea, #jqt ul.form li textarea {
@@ -1243,7 +1281,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-color: rgb(255,255,255);
 }
 
-#jqt ul.edgetoedge, #jqt ul.metal, #jqt ul.plastic, #jqt ul.mail {
+#jqt ul.edgetoedge, #jqt ul.metal, #jqt ul.plastic, #jqt ul.mail, #jqt ul.message {
     -webkit-border-radius: 0;
     margin: 0;
     border-left: 0;
@@ -1265,6 +1303,14 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul.edgetoedge li:first-child a,
 #jqt ul.edgetoedge li:last-child,
 #jqt ul.edgetoedge li:last-child a,
+#jqt ul.mail li:first-child,
+#jqt ul.mail li:first-child a,
+#jqt ul.mail li:last-child,
+#jqt ul.mail li:last-child a,
+#jqt ul.message li:first-child,
+#jqt ul.message li:first-child a,
+#jqt ul.message li:last-child,
+#jqt ul.message li:last-child a,
 #jqt ul.metal li:first-child a,
 #jqt ul.metal li:last-child a {
     -webkit-border-radius: 0;
