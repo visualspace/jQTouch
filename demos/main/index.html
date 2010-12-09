@@ -70,6 +70,10 @@
             });
 
             $(document).ready(function(){
+              document.body.addEventListener('touchmove', function(e){ e.preventDefault(); });
+            });
+
+            $(document).ready(function(){
               // initialize iscroll
               var KEY_ISCROLL_OBJ = 'iscroll_object';
               function refreshScroll($pane) {
@@ -190,7 +194,7 @@
                     {
                         $('#movie').css('display', 'block');
                     }
-                })
+                });
             });
         </script>
     </head>
@@ -449,42 +453,34 @@
                     <h4>H4 Header 1</h4>
                     <ul class="grid">
                       <li class="item">
-                        <a href="#"><div class="icon d-compass"><div class="mask"></div></div></a>
-                        Compass
+                        <a href="#"><div class="icon d-compass"><div class="mask"></div></div>Compass</a>
                       </li>
                       <li class="item">
-                        <a href="#"><div class="icon d-compass"></div></a>
-                        Compass2
+                        <a href="#"><div class="icon d-compass"></div>Compass2</a>
                         <small>3</small>
                       </li>
                       <li class="item">
-                        <a href="#"><div class="icon d-icontact"></div></a>
-                        Contacts
+                        <a href="#"><div class="icon d-icontact"></div>Contacts</a>
                         <small class="light">2</small>
                         <small>7</small>
                       </li>
                       <li class="item">
-                        <a href="#"><div class="icon d-icontact"><div class="mask"></div></div></a>
-                        Mask
+                        <a href="#"><div class="icon d-icontact"><div class="mask"></div></div>Mask</a>
                       </li>
                     </ul>
                     <h4>H4 Header 2</h4>
                     <ul class="grid">
                       <li href="#" class="item slide" >
-                        <a href="#"><div class="icon d-compass" title="Notes"><div class="mask"></div></div></a>
-                        Notes
+                        <a href="#"><div class="icon d-compass" title="Notes"><div class="mask"></div></div>Notes</a>
                       </li>
                       <li class="item slide" >
-                        <a href="#"><div class="icon d-compass" title="Calculator"></div></a>
-                        Calculator
+                        <a href="#"><div class="icon d-compass" title="Calculator"></div>Calculator</a>
                       </li>
                       <li href="#" class="item slide" >
-                        <a href="#"><div class="icon d-compass" title="Maps"></div></a>
-                        Maps
+                        <a href="#"><div class="icon d-compass" title="Maps"></div>Maps</a>
                       </li>
                       <li href="#" class="item slide" >
-                        <a href="#"><div class="icon d-compass" title="Contacts"><div class="mask"></div></div></a>
-                        Contacts
+                        <a href="#"><div class="icon d-compass" title="Contacts"><div class="mask"></div></div>Contacts</a>
                       </li>
                     </ul>
                   </form>
