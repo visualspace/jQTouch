@@ -46,9 +46,9 @@ body {
 
 #jqt > * > div:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info) {
     /* back-compat worthwhile? */
-    top:0;
-    left:0;
-    right:0;
+    top: 0;
+    left: 0;
+    right: 0;
     overflow: hidden;
     padding-top: 0px;
     padding-bottom: 0px;
@@ -56,14 +56,13 @@ body {
     -webkit-box-flex: 10;
 }
 
-
 #jqt > * .contentwrap > .content,
 #jqt > * .contentwrap > :first-child:not(.noncontent) {
     position: absolute;
     display: block;
-    top:0;
-    left:0;
-    right:0;
+    top: 0;
+    left: 0;
+    right: 0;
     overflow: hidden;
     padding-top: 0px;
     padding-bottom: 0px;
@@ -524,7 +523,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt h4 {
     position: relative;
-    margin-left:5px;
+    margin-left: 15px;
     color: grey;
     text-shadow: -0.5pt -0.5pt 1.5pt white;
 }

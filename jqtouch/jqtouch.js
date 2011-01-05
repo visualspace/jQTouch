@@ -727,18 +727,26 @@
             }
         }
         function submitForm(e, callback) {
-            var $form = (typeof(e)==='string') ? $(e).eq(0) : (e.target ? $(e.target) : $(e));
+            $(':focus').blur();
 
-            if ($form.length && $form.is(jQTSettings.formSelector)) {
+            e.preventDefault();
+
+            var $form = (typeof(e)==='string') ? $(e).eq(0) : (e.target ? $(e.target) : $(e));
+            
+            if (!$form.length) return false;
+            // someone else will handle this event
+            if (!$form.is(jQTSettings.formSelector) && !$form.is(jQTSettings.selectSelector)) {
+              return true;
+            }
+            if ($form.attr('action')) {
                 showPageByHref($form.attr('action'), {
                     data: $form.serialize(),
                     method: $form.attr('method') || "POST",
-                    animation: defaultAnimations[0] || null,
+                    animation: animations[0] || null,
                     callback: callback
                 });
-                return false;
             }
-            return true;
+            return false;
         }
         function submitParentForm($el) {
             var $form = $el.closest('form');
@@ -1099,6 +1107,7 @@
             $(touchSelectors.join(', ')).live('click', liveTap);
             $(touchSelectors.join(', ')).css('-webkit-touch-callout', 'none');
             $(touchSelectors.join(', ')).css('-webkit-user-drag: none', 'none');
+            $(document).live('touchmove', function(e) { e.preventDefault(); });
 
             // listen to touch events
             // performance critical to scroll
@@ -1202,7 +1211,9 @@
             // Go to the top of the "current" page
             $(currentPage).addClass('current');
             addPageToHistory(currentPage);
-            scrollTo(0, 0);
+
+            // nexus (and andriod in general) need to scrollTo(0, 1). Newer iPhone call do (0, 0).
+            setTimeout(function(){window.scrollTo(0, 1);}, 1000);
             startHashCheck();
         });
 
