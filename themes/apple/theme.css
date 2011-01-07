@@ -1039,7 +1039,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));
     border: 0;
     padding: 0;
-    -webkit-box-flex: 10;
     -webkit-box-sizing: border-box;
     -webkit-text-size-adjust: none;
     -webkit-appearance: none;
@@ -1051,12 +1050,28 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-box-pack: justify;
 }
 
+#jqt form ul li.noflex, #jqt ul.form li.noflex {
+    display: block;
+}
+
+#jqt ul li input[type="text"],
+#jqt ul li input[type="password"],
+#jqt ul li input[type="tel"],
+#jqt ul li input[type="number"],
+#jqt ul li input[type="search"],
+#jqt ul li input[type="email"],
+#jqt ul li input[type="url"],
+#jqt ul li select  {
+    -webkit-box-flex-group: 1;
+    -webkit-box-flex: 10;
+}
+
 #jqt form ul li label, #jqt ul.form li label {
     position: relative;
     float: left;
-    width: auto;
     text-overflow: ellipsis;
     text-align: left;
+    min-width: 80px;
     padding-right: 10px;
     overflow: hidden;
     white-space: nowrap;
@@ -1096,10 +1111,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt form ul li label + input, #jqt ul.form li label + input {
-    text-align: right;
-}
-
-#jqt form ul li label + input.left, #jqt ul.form li label + input.left {
     text-align: left;
 }
 
@@ -1113,11 +1124,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt form ul li select, #jqt ul.form li select {
-    text-indent: 0px;
     background: transparent url(img/chevron.png) no-repeat 103% 3px;
     -webkit-appearance: textfield;
-    margin-left: -6px;
-    width: 104%;
     -webkit-user-select: auto;
 }
 
