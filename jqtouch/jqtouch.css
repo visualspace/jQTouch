@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-    -webkit-user-drag: none;
 }
 
 a {
@@ -38,23 +37,15 @@ body {
 }
 
 #jqt > * {
-    -webkit-backface-visibility: hidden;
-    -webkit-box-sizing: border-box;
-    -webkit-box-orient: vertical;
     display: none;
     position: absolute;
-    left: 0;
     width: 100%;
-    -webkit-transform: translate3d(0,0,0) rotate(0) scale(1);
-    min-height: 100%;
-    overflow: hidden;
 }
 
 #jqt > [section="aside"] {
     -webkit-backface-visibility: hidden;
     -webkit-box-sizing: border-box;
     display: none;
-    position: absolute;
     right: 0;
     min-height: 100%;
 }
@@ -104,6 +95,7 @@ only screen and (min-device-width: 1024px) {
 
 #jqt > .current {
     display: -webkit-box;
+    display: -moz-box;
 }
 
 #jqt > .front {

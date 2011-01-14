@@ -116,7 +116,6 @@
                   });
                   $(pane).bind('pageAnimationEnd', function(event, info) {
                     if (info.direction == 'in') {
-                      console.warn('refreshing...' + $(this).attr("id"));
                       refreshScroll($(this));
                     }
                   });
