@@ -615,7 +615,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     height: 1.2em;
     border-radius: 1.2em;
     text-align: center;
-    bottom: 35px;
+    bottom: 23px;
     right: -7px;
     width: auto;
     padding: 1px;
@@ -829,25 +829,21 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     color: #222;
     border-top: 1px solid #E0E0E0;
     list-style-type: none;
-    vertical-align: middle;
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 32pt;
+    padding: 10px;
+    line-height: 23px;
     -webkit-transform: translate3d(0,0,0); /* expensive way to avoid flickr */
     min-height: 44px;
 }
 
 #jqt ul li > a, #jqt fieldset.rounded input[type="radio"] > a {
-    margin-left: -10px;
-    margin-right: -10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin: -10px;
+    padding: 10px;
 }
 
 #jqt ul.mail li {
     height: 78px;
     color: #000;
-    line-height: 14pt;
+    line-height: 23px;
     padding-left: 30px;
     padding-right: 10px;
     padding-top: 4px;
@@ -873,7 +869,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul.mail li .subject {
     display: block;
     font-size: 11pt;
-    line-height: 13pt;
+    line-height: 15px;
     font-weight: normal;
 }
 
@@ -891,9 +887,9 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     display: block;
     display: -webkit-box;
     /* display: -moz-box; */
-    font-size: 10pt;
+    font-size: 9pt;
     font-weight: normal;
-    line-height: 12pt;
+    line-height: 16px;
     height: 26pt;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -945,7 +941,26 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
     display: block;
     width: 100%;
+    margin: -10px;
+    padding: 10px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+#jqt ul li.icon, 
+#jqt ul li a.icon {
+    text-indent: 44px;
+    background-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    background-size: contain;
+    -webkit-background-size: contain;
+    -webkit-background-origin: content-box;
+    -webkit-mask-origin: content-box;
+}
+
+#jqt ul.edgetoedge li.icon, 
+#jqt ul.edgetoedge li a.icon {
+    -webkit-mask-origin: border-box;
+    -webkit-background-origin: border-box;
 }
 
 #jqt ul li.arrow.active, #jqt ul li.check.active {
@@ -1106,6 +1121,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul li textarea,
 #jqt ul li select {
     display: -webkit-box;
+    display: -moz-box;
     position: relative;
     font: normal 13pt Helvetica;
     font-color: #385487;
@@ -1122,7 +1138,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt form ul li, #jqt ul.form li {
     display: block;
-    -webkit-box-pack: justify;
+    display: -webkit-box;
 }
 
 #jqt form ul li.noflex, #jqt ul.form li.noflex {
@@ -1139,7 +1155,9 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul li select  {
     -webkit-box-flex-group: 1;
     -webkit-box-flex: 10;
-    line-height: 32pt;
+    -moz-box-flex-group: 1;
+    -moz-box-flex: 10;
+    line-height: 24px;
 }
 
 #jqt form ul li label, #jqt ul.form li label {
@@ -1147,7 +1165,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     float: left;
     text-overflow: ellipsis;
     text-align: left;
-    min-width: 80px;
+    min-width: 90px;
     padding-right: 10px;
     overflow: hidden;
     white-space: nowrap;
@@ -1193,20 +1211,17 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt form ul li textarea, #jqt ul.form li textarea {
     width: 100%;
-    padding-top: 8px;
-    padding-bottom: 8px;
     min-height: 120px;
     font-size: inherited;
     -webkit-user-select: auto;
     -webkit-box-flex: 1;
 }
 
-#jqt form ul li label + textarea, #jqt ul.form li label + textarea {
-    padding-top: 0px;
-}
-
 #jqt form ul li select, #jqt ul.form li select {
-    background: transparent url(img/chevron.png) no-repeat 103% 10px;
+    background-color: transparent;
+    background-image: url(img/chevron.png);
+    background-repeat: no-repeat;
+    background-position: 102% center;
     -webkit-appearance: textfield;
     -webkit-user-select: auto;
 }
@@ -1349,7 +1364,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-top: 1px solid #b5c1c9;
     color: #fff;
     font-size: 13pt;
-    line-height: 13pt;
+    line-height: 14px;
     margin: 1px 0 0 0;
     padding: 3px 10px;
     text-shadow: #636a6f 0 1px 0;
@@ -1358,6 +1373,20 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.edgetoedge li {
+}
+
+#jqt ul.edgetoedge li .icon {
+  -webkit-box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  background-color: lightgrey;
+  float: left;
+  margin-left: 0px;
+  margin-right: 10px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-bottom: -10px;
+  padding: 0px;
 }
 
 #jqt .edgetoedge h4 {
@@ -1456,20 +1485,21 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li small.counter {
+    position: relative;
     font-size: 17px !important;
     line-height: 13px !important;
     font-weight: bold;
-    background: rgb(154,159,170);
+    background-color: rgb(154,159,170);
     color: #fff;
     -webkit-border-radius: 11px;
     -moz-border-radius: 11px;
-    /* line-height: 32px; */
-    padding: 4px 10px 5px 10px;
-    /* float: right; */
-    /* display: inline !important; */
+    padding: 5px 10px 5px 10px;
     width: auto;
     top: 0px;
-    margin-top: -33px;
+}
+
+#jqt ul li.arrow small {
+    right: 30px;
 }
 
 #jqt ul li.arrow small.counter {

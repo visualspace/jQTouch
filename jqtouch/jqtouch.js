@@ -268,13 +268,13 @@
         function getSearchString(search) {
             var result = '';
             for (var item in search) {
-                if (result.length === 0) {
+                if (result.length !== 0) {
                     result += '&';
                 }
                 result += item + '=' + encodeURIComponent(search[item]);
             }
-            if (result.legnth > 0) {
-                result += '?';
+            if (result.length > 0) {
+                result = '?' + result;
             }
             return result;
         };
@@ -1213,7 +1213,9 @@
             addPageToHistory(currentPage);
 
             // nexus (and andriod in general) need to scrollTo(0, 1). Newer iPhone call do (0, 0).
-            setTimeout(function(){window.scrollTo(0, 1);}, 1000);
+            setTimeout(function() {
+              window.scrollTo(0, 1);
+            }, 1000);
             startHashCheck();
         });
 
