@@ -2,10 +2,11 @@ body {
 }
 
 /* @group general */
-#jqt > * {
+#jqt > div, #jqt > form {
     -webkit-transform: translate3d(0,0,0);
     -webkit-backface-visibility: hidden;
-    background: rgb(197,204,211) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);
+    background-color: rgb(197,204,211);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAABCAIAAACdaSOZAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiPHrmCgMC/GNjYwNSAAEGADdNA3dnzPlQAAAAAElFTkSuQmCC);
     -webkit-user-select: ignore;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -61,7 +62,7 @@ body {
     }
 }
 
-#jqt > * > div:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info) {
+#jqt > * > div:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info):not(.choicefloat) {
     /* back-compat worthwhile? */
     top: 0;
     left: 0;
@@ -100,7 +101,6 @@ body {
 /* @group Toolbar & Navibar */
 
 #jqt .toolbar, #jqt .navibar, #jqt .bar {
-    display: block;
     -webkit-box-pack: justify;
     -webkit-box-orient: horizontal;
     -webkit-box-flex: 0;
@@ -113,7 +113,7 @@ body {
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
 }
 
-#jqt .bar {
+#jqt .navibar, #jqt .bar {
     display: -webkit-box;
     display: -moz-box;
 }
@@ -138,9 +138,19 @@ body {
     -webkit-box-flex: 0;
     border-top: 1px solid #2d3642;
     padding: 7px 5px 9px 5px;
-    /* background-color: #D8DEE6; */
     background-color: black;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#D8DEE6), color-stop(0.03, #b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#b0bccd), color-stop(0.5, #889bb3), color-stop(0.5, #8195af), to(#6d84a2));
+}
+
+#jqt .navibar::before {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    top: auto;
+    margin: -7px -5px 0 -5px;
+    border-top: 1px solid #D8DEE6;
+    content: "";
 }
 
 #jqt .toolbar > *, #jqt .navibar > *, #jqt .bar > * {
@@ -449,6 +459,59 @@ body {
 /* @end */
 
 
+
+/* @group Choice Pane */
+
+#jqt > div::before {
+    display: none;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+}
+
+#jqt > div.river::before {
+    display: block;
+    opacity: 1;
+    /*background-color: rgba(0, 0, 0, 0.4);*/
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 1000ms;
+}
+
+#jqt > div.choicepane {
+    height: 100%;
+    background-color: transparent;
+    background-image: none;
+    z-index: 100;
+}
+
+#jqt > div.choicepane > div.choicefloat {
+    position: absolute;
+    top: auto;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding-bottom: 10px;
+    border-top: 1px solid #333;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(160, 168, 172, 0.75)), color-stop(0.08, rgba(112, 120, 128, 0.5)), color-stop(0.08, rgba(96, 102, 114, 0.5)), to(rgba(96, 102, 114, 0.5)));
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+#jqt > div.choicepane > div.choicefloat::before {
+    display: block;
+    position: relative;
+    height: 10px;
+    content: "";
+    border-top: 1px solid #CCC;
+    width: 100%;
+}
+
+/* @end */
+
+
 /* @group Spinner */
 
 /* http://37signals.com/svn/posts/2577-loading-spinner-animation-using-css-and-webkit */
@@ -504,20 +567,16 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     display: block;
     display: -webkit-box;
     display: -moz-box;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding: 0px 5px;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 3px;
+    padding-right: 4px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-orient: horizontal;
     -webkit-box-align: stretch;
     -webkit-box-pack: center;
-}
-
-#jqt ul.grid {
-    margin-bottom: 8px;
 }
 
 #jqt ul.smallgrid {
@@ -536,7 +595,10 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     text-align:center;
     list-stype-type: none;
     min-height: none;
-    padding: 3px;
+    padding-left: 1px;
+    padding-right: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     border: 0px;
     border-top: 0px none;
     font-weight: bold;
@@ -615,7 +677,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     height: 1.2em;
     border-radius: 1.2em;
     text-align: center;
-    bottom: 35px;
+    bottom: 23px;
     right: -7px;
     width: auto;
     padding: 1px;
@@ -724,11 +786,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 /* @group Button */
 
-#jqt .whiteButton,
-#jqt .grayButton, #jqt .redButton, #jqt .blueButton, #jqt .greenButton {
+#jqt .pushbutton, #jqt .whiteButton, #jqt .grayButton,
+#jqt .redButton, #jqt .blueButton, #jqt .greenButton {
     display: block;
     border-width: 0 12px;
-    margin: 0 10px;
+    margin: 10px 10px;
     padding: 10px;
     text-align: center;
     font-size: 20px;
@@ -737,29 +799,30 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     color: inherit;
 }
 
-#jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active,
-#jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active {
-    -webkit-border-image: url(img/activeButton.png) 0 12 0 12;
-}
-
-#jqt .whiteButton {
+#jqt .whiteButton, #jqt .pushbutton.white {
     -webkit-border-image: url(img/whiteButton.png) 0 12 0 12;
     text-shadow: rgba(255, 255, 255, 0.7) 0 1px 0;
 }
 
-#jqt .grayButton {
+#jqt .grayButton, #jqt .pushbutton.gray {
     -webkit-border-image: url(img/grayButton.png) 0 12 0 12;
     color: #FFFFFF;
 }
 
-#jqt .redButton {
+#jqt .redButton, #jqt .pushbutton.red {
     -webkit-border-image: url(img/redButton.png) 0 12 0 12;
     color: #FFFFFF;
 }
 
-#jqt .greenButton {
+#jqt .greenButton, #jqt .pushbutton.green {
     -webkit-border-image: url(img/greenButton.png) 0 12 0 12;
     color: #FFFFFF;
+}
+
+#jqt .pushbutton:active, #jqt .pushbutton.active,
+#jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active,
+#jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active {
+    -webkit-border-image: url(img/activeButton.png) 0 12 0 12;
 }
 
 /* @end */
@@ -829,25 +892,21 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     color: #222;
     border-top: 1px solid #E0E0E0;
     list-style-type: none;
-    vertical-align: middle;
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 32pt;
+    padding: 10px;
+    line-height: 23px;
     -webkit-transform: translate3d(0,0,0); /* expensive way to avoid flickr */
     min-height: 44px;
 }
 
 #jqt ul li > a, #jqt fieldset.rounded input[type="radio"] > a {
-    margin-left: -10px;
-    margin-right: -10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin: -10px;
+    padding: 10px;
 }
 
 #jqt ul.mail li {
     height: 78px;
     color: #000;
-    line-height: 14pt;
+    line-height: 23px;
     padding-left: 30px;
     padding-right: 10px;
     padding-top: 4px;
@@ -873,7 +932,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul.mail li .subject {
     display: block;
     font-size: 11pt;
-    line-height: 13pt;
+    line-height: 15px;
     font-weight: normal;
 }
 
@@ -891,9 +950,9 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     display: block;
     display: -webkit-box;
     /* display: -moz-box; */
-    font-size: 10pt;
+    font-size: 9pt;
     font-weight: normal;
-    line-height: 12pt;
+    line-height: 16px;
     height: 26pt;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -945,7 +1004,26 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
     display: block;
     width: 100%;
+    margin: -10px;
+    padding: 10px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+#jqt ul li.icon,
+#jqt ul li a.icon {
+    text-indent: 44px;
+    background-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    background-size: contain;
+    -webkit-background-size: contain;
+    -webkit-background-origin: content-box;
+    -webkit-mask-origin: content-box;
+}
+
+#jqt ul.edgetoedge li.icon,
+#jqt ul.edgetoedge li a.icon {
+    -webkit-mask-origin: border-box;
+    -webkit-background-origin: border-box;
 }
 
 #jqt ul li.arrow.active, #jqt ul li.check.active {
@@ -1106,6 +1184,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul li textarea,
 #jqt ul li select {
     display: -webkit-box;
+    display: -moz-box;
     position: relative;
     font: normal 13pt Helvetica;
     font-color: #385487;
@@ -1122,7 +1201,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt form ul li, #jqt ul.form li {
     display: block;
-    -webkit-box-pack: justify;
+    display: -webkit-box;
 }
 
 #jqt form ul li.noflex, #jqt ul.form li.noflex {
@@ -1139,7 +1218,9 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul li select  {
     -webkit-box-flex-group: 1;
     -webkit-box-flex: 10;
-    line-height: 32pt;
+    -moz-box-flex-group: 1;
+    -moz-box-flex: 10;
+    line-height: 24px;
 }
 
 #jqt form ul li label, #jqt ul.form li label {
@@ -1147,7 +1228,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     float: left;
     text-overflow: ellipsis;
     text-align: left;
-    min-width: 80px;
+    min-width: 90px;
     padding-right: 10px;
     overflow: hidden;
     white-space: nowrap;
@@ -1193,20 +1274,17 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt form ul li textarea, #jqt ul.form li textarea {
     width: 100%;
-    padding-top: 8px;
-    padding-bottom: 8px;
     min-height: 120px;
     font-size: inherited;
     -webkit-user-select: auto;
     -webkit-box-flex: 1;
 }
 
-#jqt form ul li label + textarea, #jqt ul.form li label + textarea {
-    padding-top: 0px;
-}
-
 #jqt form ul li select, #jqt ul.form li select {
-    background: transparent url(img/chevron.png) no-repeat 103% 10px;
+    background-color: transparent;
+    background-image: url(img/chevron.png);
+    background-repeat: no-repeat;
+    background-position: 102% center;
     -webkit-appearance: textfield;
     -webkit-user-select: auto;
 }
@@ -1270,7 +1348,9 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     white-space: nowrap;
 }
 
-#jqt form > h4, #jqt form > :not(.toolbar) h4, #jqt .form :not(.toolbar) > h4 {
+#jqt form > h4,
+#jqt form > :not(.toolbar):not(.navibar) h4,
+#jqt .form :not(.toolbar):not(.navibar) > h4 {
     padding-left: 10px;
     padding-right: 5px;
     font: 8.5pt "Helvetica Neue", Helvetica;
@@ -1349,7 +1429,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-top: 1px solid #b5c1c9;
     color: #fff;
     font-size: 13pt;
-    line-height: 13pt;
+    line-height: 14px;
     margin: 1px 0 0 0;
     padding: 3px 10px;
     text-shadow: #636a6f 0 1px 0;
@@ -1358,6 +1438,20 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.edgetoedge li {
+}
+
+#jqt ul.edgetoedge li .icon {
+  -webkit-box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  background-color: lightgrey;
+  float: left;
+  margin-left: 0px;
+  margin-right: 10px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-bottom: -10px;
+  padding: 0px;
 }
 
 #jqt .edgetoedge h4 {
@@ -1456,20 +1550,21 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li small.counter {
+    position: relative;
     font-size: 17px !important;
     line-height: 13px !important;
     font-weight: bold;
-    background: rgb(154,159,170);
+    background-color: rgb(154,159,170);
     color: #fff;
     -webkit-border-radius: 11px;
     -moz-border-radius: 11px;
-    /* line-height: 32px; */
-    padding: 4px 10px 5px 10px;
-    /* float: right; */
-    /* display: inline !important; */
+    padding: 5px 10px 5px 10px;
     width: auto;
     top: 0px;
-    margin-top: -33px;
+}
+
+#jqt ul li.arrow small {
+    right: 30px;
 }
 
 #jqt ul li.arrow small.counter {

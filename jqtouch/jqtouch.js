@@ -24,7 +24,6 @@
     $LastChangedBy: $
 
 */
-
 (function($) {
     $.jQTouch = function(options) {
 
@@ -47,14 +46,15 @@
             orientation,
             isMobileWebKit = RegExp(" Mobile/").test(navigator.userAgent),
             tapReady=true,
+            lastTime=0,
             lastAnimationTime=0,
             touchSelectors=[],
             publicObj={},
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
-            actionNodeTypes=['anchor', 'area', 'back', 'submit'];
+            actionNodeTypes=['anchor', 'area', 'back'];
             behaviorModifier=['toggle'];
-            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade'],
+            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade', 'frostglass', 'notransition'],
             defaultSection=null,
             animations=[],
             splitscreenmode=false,
@@ -85,6 +85,8 @@
             slideSelector: '.slide',
             slideupSelector: '.slideup',
             swapSelector: '.swap',
+            frostglassSelector: '.frostglass',
+            notransitionSelector: '.notransition',
 
             // node type selectors
             anchorSelector: '#jqt a',
@@ -93,7 +95,7 @@
             formSelector: '#jqt form',
             submitSelector: '#jqt .submit, input[type=\'submit\']',
 
-            // behaviour selectors (experimental)
+            // behavior selectors (experimental)
             toggleSelector: '#jqt .tog',
 
             // special selectors
@@ -101,6 +103,19 @@
             swipeableSelector: '#jqt .swipe',
             tapableSelector: '#jqt .tap'
         };
+
+        function _debug(message) {
+            var now = (new Date).getTime();
+            var delta = now - lastTime;
+            lastTime = now;
+            if (jQTSettings.debug) {
+                if (message) {
+                    console.log(delta + ': ' + message);
+                } else {
+                    console.log(delta + ': ' + 'Called ' + arguments.callee.caller.name);
+                }
+            }
+        }
 
         /* -- tag for code merge --
         function addAnimation(animation) {
@@ -268,13 +283,13 @@
         function getSearchString(search) {
             var result = '';
             for (var item in search) {
-                if (result.length === 0) {
+                if (result.length !== 0) {
                     result += '&';
                 }
                 result += item + '=' + encodeURIComponent(search[item]);
             }
-            if (result.legnth > 0) {
-                result += '?';
+            if (result.length > 0) {
+                result = '?' + result;
             }
             return result;
         };
@@ -337,6 +352,14 @@
 
                 fromPage.addClass(animation + ' out');
                 toPage.addClass(animation + ' in current');
+                if (animation === 'frostglass') {
+                    if (!backwards) {
+                        fromPage.addClass('river');
+                    } else {
+                        fromPage.removeClass('river');
+                        toPage.removeClass('river');
+                    }
+                }
 
                 var darkart = 30;
                 if (params.heavy && bogomark > 0.1) {
@@ -371,6 +394,14 @@
                 if (animation && animation !== 'notransition') {
                     toPage.removeClass('start in ' + animation);
                     fromPage.removeClass('start out current ' + animation);
+                    if (animation === 'frostglass') {
+                        if (!backwards) {
+                            fromPage.addClass('river');
+                        } else {
+                            fromPage.removeClass('river');
+                            toPage.removeClass('river');
+                        }
+                    }
                     if (backwards) {
                         toPage.toggleClass('reverse');
                         fromPage.toggleClass('reverse');
@@ -378,6 +409,12 @@
                     toPage.css('top', 0);
                 } else {
                     fromPage.removeClass('current active');
+                    if (!backwards) {
+                        fromPage.addClass('river');
+                    } else {
+                        fromPage.removeClass('river');
+                        toPage.removeClass('river');
+                    }
                 }
 
                 toPage.trigger('pageAnimationEnd', { direction: 'in', reverse: backwards });
@@ -518,11 +555,11 @@
             var section = toPage.attr('section');
             var criteria = !!section? {section: section}: {section: defaultSection};
             var fromPage = findPageFromHistory(criteria, 0);
+            var adjustedName = adjustAnimation(animation, reverse);
             if (!fromPage) {
                 console.error('Cannot find source page.');
                 return false;
             } else if (toPage[0].id !== fromPage.id) {
-                var adjustedName = adjustAnimation(animation, reverse);
                 var animationstarted = animatePages({
                   to: toPage,
                   from: fromPage.page,
@@ -726,13 +763,13 @@
                 settings.$referrer.unselect();
             }
         }
-        function submitForm(e, callback) {
+        function submitHandler(e, callback) {
             $(':focus').blur();
 
             e.preventDefault();
 
             var $form = (typeof(e)==='string') ? $(e).eq(0) : (e.target ? $(e.target) : $(e));
-            
+
             if (!$form.length) return false;
             // someone else will handle this event
             if (!$form.is(jQTSettings.formSelector) && !$form.is(jQTSettings.selectSelector)) {
@@ -767,10 +804,41 @@
         };
         */
 
-        /* -- tag for code merge --
+        function clickHandler(e) {
+            _debug();
+
+            if (!tapReady) {
+                _debug('ClickHandler handler aborted because tap is not ready');
+                e.preventDefault();
+                return false;
+            }
+
+            // Figure out whether to prevent default
+            var $el = $(e.target);
+
+            // Find the nearest tappable ancestor
+            if (!$el.is(touchSelectors.join(', '))) {
+                var $el = $(e.target).closest(touchSelectors.join(', '));
+            }
+
+            // Prevent default if we found an internal link (relative or absolute)
+            if ($el && $el.attr('href') && !$el.isExternalLink()) {
+                _debug('Need to prevent default click behavior');
+                e.preventDefault();
+            } else {
+                _debug('No need to prevent default click behavior');
+            }
+
+            // Trigger a tap event if touchstart is not on the job
+            if ($.support.touch) {
+                _debug('Not converting click to a tap event because touch handler is on the job');
+            } else {
+                _debug('Converting click event to a tap event');
+                $(e.target).trigger('tap', e);
+            }
+        }
+
         function tapHandler(e){
-        */
-        function liveTap(e){
             // Grab the clicked element
             var $el = $(e.currentTarget);
 
@@ -781,7 +849,7 @@
               if ($link.length) {
                   $el = $link;
               } else {
-                  console.warn('Not a known node type. type: ' + event.target.nodeName + ' id: ' + event.target.id);
+                  console.warn('Not a known node type. type: ' + e.target.nodeName + ' id: ' + e.target.id);
                   return;
               }
             }
@@ -1104,9 +1172,9 @@
                 console.warn('invalid selector for nodetype: ' + name);
               }
             }
-            $(touchSelectors.join(', ')).live('click', liveTap);
+            $(touchSelectors.join(', ')).live('click', tapHandler);
             $(touchSelectors.join(', ')).css('-webkit-touch-callout', 'none');
-            $(touchSelectors.join(', ')).css('-webkit-user-drag: none', 'none');
+            $(touchSelectors.join(', ')).css('-webkit-user-drag', 'none');
             $(document).live('touchmove', function(e) { e.preventDefault(); });
 
             // listen to touch events
@@ -1134,16 +1202,13 @@
                 $body = $('body').attr('id', 'jqt');
             }
 
-
-            if (jQTSettings.fullScreenClass && window.navigator.standalone == true) {
-                $body.addClass(jQTSettings.fullScreenClass + ' ' + jQTSettings.statusBar);
-            }
-
             // Create custom live events
             $body
+                .bind('click', tapHandler)
                 .bind('orientationchange', updateOrientation)
-                .trigger('orientationchange')
-                .submit(submitForm);
+                .bind('submit', submitHandler)
+                //.bind('tap', tapHandler)
+                .trigger('orientationchange');
 
             if (jQTSettings.useFastTouch && $.support.touch) {
                 $body.click(function(e) {
@@ -1166,6 +1231,10 @@
                         return false;
                     }
                 });
+            }
+
+            if (jQTSettings.fullScreenClass && window.navigator.standalone == true) {
+              $body.addClass(jQTSettings.fullScreenClass + ' ' + jQTSettings.statusBar);
             }
 
             // handling split screen for wider device (such as iPad)
@@ -1198,6 +1267,9 @@
             if (currentAside.length != 0) {
                 currentAside.addClass('current');
             }
+            // Go to the top of the "current" page
+            $(currentPage).addClass('current');
+            addPageToHistory(currentPage);
 
             // adjust visibiliy of elements
             $.each(['full', 'main', 'aside'], function(i, section) {
@@ -1208,21 +1280,20 @@
 
             bogomark = Math.max(0.1, Math.min(1, BogoMips.benchmark()));
 
-            // Go to the top of the "current" page
-            $(currentPage).addClass('current');
-            addPageToHistory(currentPage);
-
             // nexus (and andriod in general) need to scrollTo(0, 1). Newer iPhone call do (0, 0).
-            setTimeout(function(){window.scrollTo(0, 1);}, 1000);
+            setTimeout(function() {
+              window.scrollTo(0, 1);
+            }, 1000);
             startHashCheck();
         });
 
         // Expose public methods and properties
         publicObj = {
+            hist: hist,
             getOrientation: getOrientation,
             goBack: goBack,
             goTo: goTo,
-            submitForm: submitForm
+            submitForm: submitHandler
         };
 
         return publicObj;
