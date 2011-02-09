@@ -55,7 +55,7 @@
             actionNodeTypes=['anchor', 'area', 'back'];
             behaviorModifier=['toggle'];
             standardAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade', 'notransition'],
-            animationModifiers=['smokedglass'];
+            animationModifiers=['smokedglass', 'clearglass'];
             defaultSection=null,
             animations=[],
             modifiers=[],
@@ -89,6 +89,7 @@
             slideupSelector: '.slideup',
             swapSelector: '.swap',
             smokedglassSelector: '.smokedglass',
+            clearglassSelector: '.clearglass',
             notransitionSelector: '.notransition',
 
             // node type selectors
@@ -135,7 +136,7 @@
                     console.warn('invalid selector for animation: ' + name);
                 }
             }
-            
+
             // Add animations and each selector
             for (var i in animationModifiers) {
                 var name = animationModifiers[i];
@@ -157,7 +158,7 @@
             var matcher = function(candidate) { return false; };
             if (typeof(search) === 'string') {
                 if (!!search) {
-                    matcher = function(candidate) { return hasString(search, candidate.name); };
+                    matcher = function(candidate) { return hasWord(search, candidate.name); };
                 }
             } else if ($.isFunction(search)) {
                 matcher = search;
@@ -178,7 +179,7 @@
                 }
             }
 
-            result = name + " " + modifier; 
+            result = name + " " + modifier;
             return result;
         }
 
@@ -293,8 +294,35 @@
             }
         }
 
-        function hasString(string, fullname) {
-          var result = (new RegExp('(^|\\s)' + fullname + '(\\s|$)')).test(string);           
+        function hasWord(string, fullname) {
+          var result = false;
+          var names = fullname;
+          if (!$.isArray(fullname)) {
+            names = [];
+            names.push(fullname);
+          }
+          for (var i=0, len=names.length; i<len; i++) {
+            if ((new RegExp('(^|\\s)' + names[i] + '(\\s|$)')).test(string)) {
+              result = true;
+              break;
+            }
+          }
+          return result;
+        };
+
+        function findWord(string, fullname) {
+          var result = "";
+          var names = fullname;
+          if (!$.isArray(fullname)) {
+            names = [];
+            names.push(fullname);
+          }
+          for (var i=0, len=names.length; i<len; i++) {
+            if ((new RegExp('(^|\\s)' + names[i] + '(\\s|$)')).test(string)) {
+              result = names[i];
+              break;
+            }
+          }
           return result;
         };
 
@@ -384,12 +412,14 @@
 
                 fromPage.addClass(animation + ' out');
                 toPage.addClass(animation + ' in current');
-                if (hasString(animation, 'smokedglass')) {
+                if (hasWord(animation, animationModifiers)) {
+                    var modifier = findWord(animation, animationModifiers);
                     if (!backwards) {
-                        fromPage.addClass('river');
+                        fromPage.addClass(modifier);
+                        toPage.removeClass(modifier);
                     } else {
-                        fromPage.removeClass('river');
-                        toPage.removeClass('river');
+                        fromPage.removeClass(modifier);
+                        toPage.removeClass(modifier);
                     }
                 }
 
@@ -426,13 +456,15 @@
                 if (animation && animation !== 'notransition') {
                     toPage.removeClass('start in ' + animation);
                     fromPage.removeClass('start out current ' + animation);
-                    if (hasString(animation, 'smokedglass')) {
-                        if (!backwards) {
-                            fromPage.addClass('river');
-                        } else {
-                            fromPage.removeClass('river');
-                            toPage.removeClass('river');
-                        }
+                    if (hasWord(animation, animationModifiers)) {
+                      var modifier = findWord(animation, animationModifiers);
+                      if (!backwards) {
+                          fromPage.addClass(modifier);
+                          toPage.removeClass(modifier);
+                      } else {
+                          fromPage.removeClass(modifier);
+                          toPage.removeClass(modifier);
+                      }
                     }
                     if (backwards) {
                         toPage.toggleClass('reverse');
@@ -441,11 +473,15 @@
                     toPage.css('top', 0);
                 } else {
                     fromPage.removeClass('current active');
-                    if (!backwards) {
-                        fromPage.addClass('river');
-                    } else {
-                        fromPage.removeClass('river');
-                        toPage.removeClass('river');
+                    if (hasWord(animation, animationModifiers)) {
+                      var modifier = findWord(animation, animationModifiers);
+                      if (!backwards) {
+                          fromPage.addClass(modifier);
+                          toPage.removeClass(modifier);
+                      } else {
+                          fromPage.removeClass(modifier);
+                          toPage.removeClass(modifier);
+                      }
                     }
                 }
 
