@@ -54,9 +54,11 @@
             extensions=$.jQTouch.prototype.extensions,
             actionNodeTypes=['anchor', 'area', 'back'];
             behaviorModifier=['toggle'];
-            defaultAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade', 'frostglass', 'notransition'],
+            standardAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade', 'notransition'],
+            animationModifiers=['smokedglass'];
             defaultSection=null,
             animations=[],
+            modifiers=[],
             splitscreenmode=false,
             hairExtensions='';
 
@@ -73,6 +75,7 @@
             statusBar: 'default', // other options: black-translucent, black
             useAnimations: true,
             defaultAnimation: 'slide',
+            defaultModifier: '',
             useFastTouch: false, // Experimental.
 
             // animation selectors
@@ -85,7 +88,7 @@
             slideSelector: '.slide',
             slideupSelector: '.slideup',
             swapSelector: '.swap',
-            frostglassSelector: '.frostglass',
+            smokedglassSelector: '.smokedglass',
             notransitionSelector: '.notransition',
 
             // node type selectors
@@ -122,8 +125,8 @@
          */
         function initAnimations() {
             // Add animations and each selector
-            for (var i in defaultAnimations) {
-                var name = defaultAnimations[i];
+            for (var i in standardAnimations) {
+                var name = standardAnimations[i];
                 var selector = jQTSettings[name + 'Selector'];
                 if (typeof(selector) == 'string' && selector.length > 0) {
                     var selector = jQTSettings[name + 'Selector'];
@@ -132,26 +135,50 @@
                     console.warn('invalid selector for animation: ' + name);
                 }
             }
+            
+            // Add animations and each selector
+            for (var i in animationModifiers) {
+                var name = animationModifiers[i];
+                var selector = jQTSettings[name + 'Selector'];
+                if (typeof(selector) == 'string' && selector.length > 0) {
+                    var selector = jQTSettings[name + 'Selector'];
+                    modifiers.push({name: name, selector: selector});
+                } else {
+                    console.warn('invalid selector for animation: ' + name);
+                }
+            }
         }
 
         function findAnimation(search) {
-            var result = jQTSettings.defaultAnimation;
+            var result;
+            var name = jQTSettings.defaultAnimation;
+            var modifier = jQTSettings.defaultModifier;
 
             var matcher = function(candidate) { return false; };
             if (typeof(search) === 'string') {
                 if (!!search) {
-                    matcher = function(candidate) { return candidate.name === search; };
+                    matcher = function(candidate) { return hasString(search, candidate.name); };
                 }
             } else if ($.isFunction(search)) {
                 matcher = search;
+            } else {
+                console.warn("Null fn for animation.");
             }
 
             for (var i = animations.length - 1; i >= 0; i--) {
                 if (matcher(animations[i]) === true) {
-                    result = animations[i];
+                    name = animations[i].name;
                     break;
                 }
             }
+            for (var i = modifiers.length - 1; i >= 0; i--) {
+                if (matcher(modifiers[i]) === true) {
+                    modifier = modifiers[i].name;
+                    break;
+                }
+            }
+
+            result = name + " " + modifier; 
             return result;
         }
 
@@ -266,6 +293,11 @@
             }
         }
 
+        function hasString(string, fullname) {
+          var result = (new RegExp('(^|\\s)' + fullname + '(\\s|$)')).test(string);           
+          return result;
+        };
+
         function parseSearch(q) {
           // Andy E and community @ http://stackoverflow.com/posts/2880929/revisions
           var results = {};
@@ -352,7 +384,7 @@
 
                 fromPage.addClass(animation + ' out');
                 toPage.addClass(animation + ' in current');
-                if (animation === 'frostglass') {
+                if (hasString(animation, 'smokedglass')) {
                     if (!backwards) {
                         fromPage.addClass('river');
                     } else {
@@ -394,7 +426,7 @@
                 if (animation && animation !== 'notransition') {
                     toPage.removeClass('start in ' + animation);
                     fromPage.removeClass('start out current ' + animation);
-                    if (animation === 'frostglass') {
+                    if (hasString(animation, 'smokedglass')) {
                         if (!backwards) {
                             fromPage.addClass('river');
                         } else {
@@ -871,7 +903,7 @@
             // Figure out the animation to use
             var animation = findAnimation(function(candidate) {
                 return $el.is(candidate.selector);
-            }).name;
+            });
             var reverse = $el.hasClass('reverse');
 
             // Handle supported action type
