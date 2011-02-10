@@ -48,7 +48,7 @@
             tapReady=true,
             lastTime=0,
             lastAnimationTime=0,
-            touchSelectors=[],
+            actionSelectors=[],
             publicObj={},
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
@@ -885,8 +885,8 @@
             var $el = $(e.target);
 
             // Find the nearest tappable ancestor
-            if (!$el.is(touchSelectors.join(', '))) {
-                var $el = $(e.target).closest(touchSelectors.join(', '));
+            if (!$el.is(actionSelectors.join(', '))) {
+                var $el = $(e.target).closest(actionSelectors.join(', '));
             }
 
             // Prevent default if we found an internal link (relative or absolute)
@@ -910,9 +910,9 @@
             // Grab the clicked element
             var $el = $(e.currentTarget);
 
-            var anyTouchSelectors = touchSelectors.join(', ');
-            if (!$el.is(anyTouchSelectors)) {
-              var $link = $(e.target).closest(anyTouchSelectors);
+            var anyActionSelectors = actionSelectors.join(', ');
+            if (!$el.is(anyActionSelectors)) {
+              var $link = $(e.target).closest(anyActionSelectors);
 
               if ($link.length) {
                   $el = $link;
@@ -1079,7 +1079,6 @@
                 setTimeout(function() {
                   handlepress(e);
                 }, 1000);
-
             };
 
             function handlemove(e) {
@@ -1235,14 +1234,15 @@
               var name = actionNodeTypes[i];
               var selector = jQTSettings[name + 'Selector'];
               if (typeof(selector) == 'string' && selector.length > 0) {
-                touchSelectors.push(selector);
+                actionSelectors.push(selector);
               } else {
                 console.warn('invalid selector for nodetype: ' + name);
               }
             }
-            $(touchSelectors.join(', ')).live('click', tapHandler);
-            $(touchSelectors.join(', ')).css('-webkit-touch-callout', 'none');
-            $(touchSelectors.join(', ')).css('-webkit-user-drag', 'none');
+            $(window).live('click', clickHandler);
+            $(actionSelectors.join(', ')).live('tap', tapHandler);
+            $(actionSelectors.join(', ')).css('-webkit-touch-callout', 'none');
+            $(actionSelectors.join(', ')).css('-webkit-user-drag', 'none');
             $(document).live('touchmove', function(e) { e.preventDefault(); });
 
             // listen to touch events

@@ -59,6 +59,10 @@ function iScroll (el, options) {
   that.refresh();
 
   window.addEventListener('onorientationchange' in window ? 'orientationchange' : 'resize', that, false);
+	
+  window.addEventListener('scroll', function(){
+    that.scrollTo(0, 0, 1000);
+  }, false);
 
   if (isTouch || that.options.desktopCompatibility) {
     that.element.addEventListener(START_EVENT, that, false);
@@ -414,6 +418,16 @@ iScroll.prototype = {
     var that = this,
       resetX = that.x,
       resetY = that.y;
+
+    if (that.maxScrollX === 0 && that.maxScrollY === 0) {
+      // workaround a bug that maxScrollX is not set
+      that.scrollWidth = that.wrapper.clientWidth;
+      that.scrollHeight = that.wrapper.clientHeight;
+      that.scrollerWidth = that.element.offsetWidth;
+      that.scrollerHeight = that.element.offsetHeight;
+      that.maxScrollX = that.scrollWidth - that.scrollerWidth;
+      that.maxScrollY = that.scrollHeight - that.scrollerHeight;
+    }
 
     if (that.x >= 0) {
       resetX = 0;
