@@ -68,6 +68,11 @@ body {
         border-radius: 5px;
     }
 
+    #jqt.splitscreen > .unfixed {
+        overflow: scroll;
+        height: 100%;
+    }
+
     #jqt.splitscreen > [section="aside"] {
         position: absolute;
         left: 0;
