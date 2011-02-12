@@ -66,10 +66,6 @@
             });
 
             $(document).ready(function(){
-              document.body.addEventListener('touchmove', function(e){ e.preventDefault(); });
-            });
-
-            $(document).ready(function(){
               // initialize iscroll
               var KEY_ISCROLL_OBJ = 'iscroll_object';
               function refreshScroll($pane) {
@@ -428,47 +424,45 @@
                   </ul>
                 </div>
             </div>
-            <form id="forms">
+            <form id="forms" class="unfixed">
                 <div class="toolbar">
                     <h1>Forms</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <div class="s-scrollwrapper contentwrap">
-                  <div class="s-scrollpane" id="formspane">
-                      <h2>Please fill the form:</h2>
-                      <ul class="edit rounded">
-                        <li><label for="some_text">Name</label><input type="text" name="name" placeholder="Text" id="some_text" /></li>
-                        <li><label for="some_tel">Telephone</label><input type="tel" name="phone" placeholder="Phone" id="some_tel"  /></li>
-                        <li><label for="some_number">Zip</label><input type="number" name="zip" placeholder="Numbers" id="some_number" /></li>
-                        <li><input type="email" name="email" placeholder="Email" id="some_email" /></li>
-                        <li><input type="search" name="search" placeholder="Search" id="some_search" /></li>
-                        <li><input type="url" name="url" placeholder="Url" id="some_url" /></li>
-                        <li><textarea placeholder="Textarea" ></textarea></li>
-                        <li class="noflex"><label for="labeled_textarea">Label</label><textarea id="labeled_textarea" placeholder="Textarea" ></textarea></li>
-                        <li><label for="">Sample Toggle</label><input type="checkbox" class="onoff"/></li>
-                        <li><input type="checkbox" class="onoff"/></li>
-                        <li>
-                           <label for="lol">Select your car:</label>
-                            <select id="lol">
-                                <optgroup label="Swedish Cars">
-                                    <option value ="volvo">Volvo</option>
-                                    <option value ="saab">Saab</option>
-                                </optgroup>
-                                <optgroup label="German Cars">
-                                    <option value ="mercedes">Mercedes</option>
-                                    <option value ="audi">Audi</option>
-                                </optgroup>
-                            </select>
-                        </li>
-                        <li><input type="password" name="some_name" value="iphonedelcopon" id="some_name" /></li>
-                    </ul>
-                    <h2>Select one of these:</h2>
-                    <fieldset class="rounded">
-                        <input type="radio" name="bag" value="paper" title="Paper"></input>
-                        <input type="radio" name="bag" value="plastic" title="Plastic" checked></input>
-                        <input type="radio" name="bag" value="hybird" title="Hybird"></input>
-                    </fieldset>
-                </div>
+                  <div class="content" id="formspane">
+                    <h2>Please fill the form:</h2>
+                    <ul class="edit rounded">
+                      <li><label for="some_text">Name</label><input type="text" name="name" placeholder="Text" id="some_text" /></li>
+                      <li><label for="some_tel">Telephone</label><input type="tel" name="phone" placeholder="Phone" id="some_tel"  /></li>
+                      <li><label for="some_number">Zip</label><input type="number" name="zip" placeholder="Numbers" id="some_number" /></li>
+                      <li><input type="email" name="email" placeholder="Email" id="some_email" /></li>
+                      <li><input type="search" name="search" placeholder="Search" id="some_search" /></li>
+                      <li><input type="url" name="url" placeholder="Url" id="some_url" /></li>
+                      <li><textarea placeholder="Textarea" ></textarea></li>
+                      <li class="noflex"><label for="labeled_textarea">Label</label><textarea id="labeled_textarea" placeholder="Textarea" ></textarea></li>
+                      <li><label for="">Sample Toggle</label><input type="checkbox" class="onoff"/></li>
+                      <li><input type="checkbox" class="onoff"/></li>
+                      <li>
+                         <label for="lol">Select your car:</label>
+                          <select id="lol">
+                              <optgroup label="Swedish Cars">
+                                  <option value ="volvo">Volvo</option>
+                                  <option value ="saab">Saab</option>
+                              </optgroup>
+                              <optgroup label="German Cars">
+                                  <option value ="mercedes">Mercedes</option>
+                                  <option value ="audi">Audi</option>
+                              </optgroup>
+                          </select>
+                      </li>
+                      <li><input type="password" name="some_name" value="iphonedelcopon" id="some_name" /></li>
+                  </ul>
+                  <h2>Select one of these:</h2>
+                  <fieldset class="rounded">
+                      <input type="radio" name="bag" value="paper" title="Paper"></input>
+                      <input type="radio" name="bag" value="plastic" title="Plastic" checked></input>
+                      <input type="radio" name="bag" value="hybird" title="Hybird"></input>
+                  </fieldset>
               </div>
             </form>
             <div id="choicepane" class="choicepane">

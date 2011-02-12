@@ -14,14 +14,6 @@ body {
     -webkit-box-pack: start;
     -webkit-box-align: stretch;
     min-height: 100%;
-    /* change the following to "overflow: auto" if you don't use iscroll */
-    overflow: hidden;
-}
-
-@-moz-document url-prefix() {
-    #jqt > * {
-        overflow: auto;
-    }
 }
 
 #jqt > * > h2 {
@@ -40,12 +32,16 @@ body {
     -moz-box-sizing: border-box;
 }
 
+#jqt > .unfixed {
+    overflow: scroll;
+    height: 100%;
+}
+
 #jqt > * > .contentwrap {
     position: relative;
     box-flex: 10;
     -webkit-box-flex: 10;
     -moz-box-flex: 10;
-    overflow: hidden;
     z-index: 1;
     left: 0;
     right: 0;
@@ -57,8 +53,10 @@ body {
 }
 
 @-moz-document url-prefix() {
+    #jqt > div, #jqt > form {
+    }
+
     #jqt > * > .contentwrap {
-        overflow: visible;
     }
 }
 
@@ -67,7 +65,6 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    overflow: hidden;
     padding-top: 0px;
     padding-bottom: 0px;
     min-height: 100%;
@@ -82,7 +79,6 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    overflow: hidden;
     padding-top: 0px;
     padding-bottom: 0px;
     min-height: 100%;
@@ -1217,6 +1213,17 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-text-size-adjust: none;
     -webkit-appearance: none;
     -webkit-user-select: text;
+}
+
+#jqt ul li.input::before {
+    display: block;
+    position: absolute;
+    content: "";
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 #jqt form ul li, #jqt ul.form li {

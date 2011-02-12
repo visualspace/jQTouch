@@ -61,7 +61,9 @@ function iScroll (el, options) {
   window.addEventListener('onorientationchange' in window ? 'orientationchange' : 'resize', that, false);
 	
   window.addEventListener('scroll', function(){
-    that.scrollTo(0, 0, 1000);
+    if (window.pageXOffset === 0 && window.pageYOffset === 0) {
+      that.scrollTo(0, 0, 1000);
+    }
   }, false);
 
   if (isTouch || that.options.desktopCompatibility) {
@@ -241,9 +243,6 @@ iScroll.prototype = {
 //		window.disable_v = false;
 //		window.disable_h = false;
 
-    if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
-      e.preventDefault();
-    }
     // e.stopPropagation();
     that.scrolling = true;    // This is probably not needed, but may be useful if iScroll is used in conjuction with other frameworks
 
@@ -458,7 +457,15 @@ iScroll.prototype = {
       }
     }
   },
-  
+
+  getPosition: function() {
+    var that = this,
+    resetX = that.x,
+    resetY = that.y;
+
+    return {x: resetX, y: resetY};
+  },
+
   snap: function (x, y) {
     var that = this, time;
 

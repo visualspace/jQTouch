@@ -76,6 +76,8 @@
             useAnimations: true,
             defaultAnimation: 'slide',
             defaultModifier: '',
+            inputguard: true,
+            inputtypes: ["input[type='text']", "input[type='password']", "input[type='tel']", "input[type='number']", "input[type='search']", "input[type='email']", "input[type='url']", "select", "textarea"],
             useFastTouch: false, // Experimental.
 
             // animation selectors
@@ -103,7 +105,7 @@
             toggleSelector: '#jqt .tog',
 
             // special selectors
-            activableSelector: '#jqt ul > li, #jqt ol > li',
+            activableSelector: '#jqt ol > li, #jqt ul > li.arrow',
             swipeableSelector: '#jqt .swipe',
             tapableSelector: '#jqt .tap'
         };
@@ -1119,9 +1121,7 @@
                 unbindEvents($el);
                 if (!tapped && (absX <= 1 && absY <= 1)) {
                     tapped = true;
-                    setTimeout(function() {
-                      $el.trigger('tap');
-                    }, 10); /* give a chance other touch to end */
+                    $el.trigger('tap');
                     setTimeout(function() {
                       $el.removeClass('active');
                   }, 1000);
@@ -1243,7 +1243,7 @@
             $(actionSelectors.join(', ')).live('tap', tapHandler);
             $(actionSelectors.join(', ')).css('-webkit-touch-callout', 'none');
             $(actionSelectors.join(', ')).css('-webkit-user-drag', 'none');
-            $(document).live('touchmove', function(e) { e.preventDefault(); });
+            $("#jqt > :not(.unfixed)").live(MOVE_EVENT, function(e) { e.preventDefault(); });
 
             // listen to touch events
             // performance critical to scroll
@@ -1275,7 +1275,6 @@
                 .bind('click', tapHandler)
                 .bind('orientationchange', updateOrientation)
                 .bind('submit', submitHandler)
-                //.bind('tap', tapHandler)
                 .trigger('orientationchange');
 
             if (jQTSettings.useFastTouch && $.support.touch) {
@@ -1345,6 +1344,11 @@
                 $section.children().find('[section~="' + section + '"]').removeClass('missection');
                 $section.children().find('[section]:not([section~="' + section + '"])').addClass('missection');
             });
+ 
+            // guard input for proper scroll behaviour
+            if (jQTSettings.inputguard) {
+              // just won't work
+            }
 
             bogomark = Math.max(0.1, Math.min(1, BogoMips.benchmark()));
 
