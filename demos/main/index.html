@@ -44,7 +44,8 @@
                 background-image: url(./image/00434881.png);
             }
         </style>
-        <script src="../../jqtouch/jquery-1.4.3.min.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../../jqtouch/jquery-1.5.0.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../../jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="../iscroll/iscroll.js" type="application/x-javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
@@ -429,50 +430,90 @@
                     <h1>Forms</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                  <div class="content" id="formspane">
-                    <h2>Please fill the form:</h2>
-                    <ul class="edit rounded">
-                      <li><label for="some_text">Name</label><input type="text" name="name" placeholder="Text" id="some_text" /></li>
-                      <li><label for="some_tel">Telephone</label><input type="tel" name="phone" placeholder="Phone" id="some_tel"  /></li>
-                      <li><label for="some_number">Zip</label><input type="number" name="zip" placeholder="Numbers" id="some_number" /></li>
-                      <li><input type="email" name="email" placeholder="Email" id="some_email" /></li>
-                      <li><input type="search" name="search" placeholder="Search" id="some_search" /></li>
-                      <li><input type="url" name="url" placeholder="Url" id="some_url" /></li>
-                      <li><textarea placeholder="Textarea" ></textarea></li>
-                      <li class="noflex"><label for="labeled_textarea">Label</label><textarea id="labeled_textarea" placeholder="Textarea" ></textarea></li>
-                      <li><label for="">Sample Toggle</label><input type="checkbox" class="onoff"/></li>
-                      <li><input type="checkbox" class="onoff"/></li>
-                      <li>
-                         <label for="lol">Select your car:</label>
-                          <select id="lol">
-                              <optgroup label="Swedish Cars">
-                                  <option value ="volvo">Volvo</option>
-                                  <option value ="saab">Saab</option>
-                              </optgroup>
-                              <optgroup label="German Cars">
-                                  <option value ="mercedes">Mercedes</option>
-                                  <option value ="audi">Audi</option>
-                              </optgroup>
-                          </select>
-                      </li>
-                      <li><input type="password" name="some_name" value="iphonedelcopon" id="some_name" /></li>
-                  </ul>
-                  <h2>Select one of these:</h2>
-                  <fieldset class="rounded">
-                      <input type="radio" name="bag" value="paper" title="Paper"></input>
-                      <input type="radio" name="bag" value="plastic" title="Plastic" checked></input>
-                      <input type="radio" name="bag" value="hybird" title="Hybird"></input>
-                  </fieldset>
+                <div class="content" id="formspane">
+                  <h2>Please fill the form:</h2>
+                  <ul class="edit rounded">
+                    <li><label for="some_text">Name</label><input type="text" name="name" placeholder="Text" id="some_text" /></li>
+                    <li><label for="some_tel">Telephone</label><input type="tel" name="phone" placeholder="Phone" id="some_tel"  /></li>
+                    <li><label for="some_number">Zip</label><input type="number" name="zip" placeholder="Numbers" id="some_number" /></li>
+                    <li><input type="email" name="email" placeholder="Email" id="some_email" /></li>
+                    <li><input type="search" name="search" placeholder="Search" id="some_search" /></li>
+                    <li><input type="url" name="url" placeholder="Url" id="some_url" /></li>
+                    <li><textarea placeholder="Textarea" ></textarea></li>
+                    <li class="noflex"><label for="labeled_textarea">Label</label><textarea id="labeled_textarea" placeholder="Textarea" ></textarea></li>
+                    <li><label for="">Sample Toggle</label><input type="checkbox" class="onoff"/></li>
+                    <li><input type="checkbox" class="onoff"/></li>
+                    <li>
+                       <label for="lol">Select your car:</label>
+                        <select id="lol">
+                            <optgroup label="Swedish Cars">
+                                <option value ="volvo">Volvo</option>
+                                <option value ="saab">Saab</option>
+                            </optgroup>
+                            <optgroup label="German Cars">
+                                <option value ="mercedes">Mercedes</option>
+                                <option value ="audi">Audi</option>
+                            </optgroup>
+                        </select>
+                    </li>
+                    <li><input type="password" name="some_name" value="iphonedelcopon" id="some_name" /></li>
+                </ul>
+                <h2>Select one of these:</h2>
+                <fieldset class="rounded">
+                    <input type="radio" name="bag" value="paper" title="Paper"></input>
+                    <input type="radio" name="bag" value="plastic" title="Plastic" checked></input>
+                    <input type="radio" name="bag" value="hybird" title="Hybird"></input>
+                </fieldset>
               </div>
             </form>
             <div id="choicepane" class="choicepane">
               <div class="choicefloat">
-                <a href="#" class="pushbutton white">Open in Safari</a>
-                <a href="#" class="pushbutton white">Mail Link</a>
-                <a href="#" class="pushbutton white">Repost Link</a>
-                <a href="#" class="pushbutton white">Read Later</a>
+                <a href="#grid" class="pushbutton white backward">Open in Safari</a>
+                <a href="#grid" class="pushbutton white fade backward">Mail Link</a>
+                <a href="#grid" class="pushbutton white flip backward">Repost Link</a>
+                <a href="#grid" class="pushbutton white slideup backward">Read Later</a>
                 <br/>
                 <a href="#" class="pushbutton gray back">Cancel</a>
+              </div>
+            </div>
+            <div id="searchpane" class="searchpane">
+              <div class="toolbar">
+                <h1>Search Combo</h1>
+                <a href="#" class="back">Back</a>
+              </div>
+              <div class="s-scrollwrapper contentwrap">
+                <div class="s-scrollpane" id="searchscroll">
+                  <div class="searchbox">
+                    <div class="bar inputbar">
+                      <input type="search" value="hello world" placeholder="Search"/>
+                      <div class="button searchcancel">Cancel</div>
+                    </div>
+                    <div class="bar optionbar">
+                      <input type="radio" name="what" title="From" checked />
+                      <input type="radio" name="what" title="To" />
+                      <input type="radio"  name="what" title="Subject" />
+                      <input type="radio"  name="what" title="All" />
+                    </div>
+                    <div class="smokedscreen">
+                    </div>
+                    <input type="hidden" class="hiddeninput" />
+                  </div>
+                  <ul class="edgetoedge">
+                      <li class="sep">F</li>
+                      <li><a href="#">Flintstone, <em>Fred</em></a></li>
+                      <li><a href="#">Flintstone, <em>Pebble</em></a></li>
+                      <li><a href="#">Flintstone, <em>Wilma</em></a></li>
+                      <li class="sep">J</li>
+                      <li><a href="#">Jetson, <em>Elroy</em></a></li>
+                      <li><a href="#">Jetson, <em>George</em></a></li>
+                      <li><a href="#">Jetson, <em>Jane</em></a></li>
+                      <li><a href="#">Jetson, <em>Judy</em></a></li>
+                      <li class="sep">R</li>
+                      <li><a href="#">Rubble, <em>Bambam</em></a></li>
+                      <li><a href="#">Rubble, <em>Barney</em></a></li>
+                      <li><a href="#">Rubble, <em>Betty</em></a></li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div id="progresspane" class="choicepane">
@@ -657,6 +698,7 @@
                     <ul class="rounded">
                         <li class="arrow"><a href="#choicepane" class="smokedglass slideup">Choice Pane</a></li>
                         <li class="arrow"><a href="#progresspane" class="clearglass fade">Progress Modal</a></li>
+                        <li class="arrow"><a href="#searchpane" class="slideup">Search Pane</a></li>
                     </ul>
                   </form>
                 </div>

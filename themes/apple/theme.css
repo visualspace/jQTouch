@@ -1,7 +1,23 @@
+/*
+ *  Created by David Kaneda <http://www.davidkaneda.com>
+ *  Documentation and issue tracking on GitHub <http://wiki.github.com/senchalabs/jQTouch/>
+ *
+ *  Special thanks to Jonathan Stark <http://jonathanstark.com/>
+ *  and pinch/zoom <http://www.pinchzoom.com/>
+ *
+ *  Contributor: Thomas Yip <http://beedesk.com/>
+ *
+ *  (c) 2009-2011 by jQTouch project members and contributors
+ *  Released under MIT license
+ */
+
 body {
 }
 
+
+
 /* @group general */
+
 #jqt > div, #jqt > form {
     -webkit-transform: translate3d(0,0,0);
     -webkit-backface-visibility: hidden;
@@ -21,7 +37,7 @@ body {
     padding: 10px 20px 2px 20px;
     color: rgb(76, 86, 108);
     font: bold 12pt "Helvetica Neue", Helvetica;
-    text-shadow: rgba(255,255,255,.2) 1px 1px 1px;
+    text-shadow: rgba(255, 255, 255, .2) 1px 1px 1px;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -92,13 +108,13 @@ body {
 /* @group Toolbar & Navibar */
 
 #jqt .toolbar, #jqt .navibar, #jqt .bar {
+    -webkit-box-sizing: border-box;
     -webkit-box-pack: justify;
     -webkit-box-orient: horizontal;
     -webkit-box-flex: 0;
     -moz-box-flex: 0;
     border: none;
     height: 44px;
-    width: 100%;
     text-align: center;
     overflow: hidden;
     background-image: -moz-linear-gradient(top, #b0bccd, #889bb3 50%, #8195af 50%, #6d84a2);
@@ -299,11 +315,19 @@ body {
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5), color-stop(0.5, #5877a2), color-stop(0.5, #476999), color-stop(1, #4a6c9b));
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.25);
     -webkit-appearance: none;
-    -webkit-box-flex: 1;
     -webkit-text-decorations-in-effect: none;
 }
 
-#jqt .bar input[type="radio"]:first-child, #jqt .bar .button:first-child, #jqt .buttonset .button:last-child {
+#jqt .bar input[type="radio"] {
+    -webkit-box-flex: 1;
+}
+
+#jqt .bar .button, #jqt .buttonset .button {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#jqt .bar input[type="radio"]:first-of-type, #jqt .bar .button:first-of-type, #jqt .buttonset .button:first-of-type {
     /* bug! can't figure out why the order of buttonset is reversed */
     -webkit-border-top-left-radius: 6px;
     -webkit-border-bottom-left-radius: 6px;
@@ -311,12 +335,24 @@ body {
     -moz-border-bottom-left-radius: 6px;
 }
 
-#jqt .bar input[type="radio"]:last-child, #jqt .bar .button:last-child, #jqt .buttonset .button:first-child {
+#jqt .bar input[type="radio"]:first-of-type:not(:first-child),
+#jqt .bar .button:first-of-type:not(:first-child),
+#jqt .buttonset .button:first-of-type:not(:first-child) {
+    margin-left: 15px;
+}
+
+#jqt .bar input[type="radio"]:last-of-type, #jqt .bar .button:last-of-type, #jqt .buttonset .button:last-of-type {
     border-right: 1px solid #45505d;
     -webkit-border-top-right-radius: 6px;
     -webkit-border-bottom-right-radius: 6px;
     -moz-border-top-right-radius: 6px;
     -moz-border-bottom-right-radius: 6px;
+}
+
+#jqt .bar input[type="radio"]:last-of-type:not(:last-child),
+#jqt .bar .button:last-of-type:not(:last-child),
+#jqt .buttonset .button:last-of-type:not(:last-child) {
+    margin-right: 20px;
 }
 
 #jqt .bar input[type="radio"]:after, #jqt .bar .button:after {
@@ -451,6 +487,146 @@ body {
 
 
 
+/* @group Search Pane */
+
+#jqt .searchpane .toolbar, #jqt .searchbox .inputbar, #jqt .searchbox .degager {
+    -webkit-transition-duration: 200ms;
+    -webkit-transition-timing-function: linear;
+}
+
+#jqt .searchpane .toolbar {
+    position: relative;
+    top: 0px;
+    z-index: 10;
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-transition-property: -webkit-transform;
+}
+
+#jqt .searchpane.engaged .toolbar {
+    -webkit-transform: translate3d(0, -44px, 0);
+}
+
+#jqt .searchpane .contentwrap {
+    position: relative;
+    margin-top: -44px;
+    bottom: 0;
+}
+
+#jqt .searchbox .inputbar {
+    position: relative;
+    top: 44px;
+    z-index: 20;
+    border-top: 1px solid #F1F3F4;
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-transition-property: -webkit-transform;
+}
+
+#jqt .searchbox.engaged .inputbar {
+    -webkit-transform: translate3d(0, -44px, 0);
+}
+
+#jqt .searchbox .optionbar {
+    position: relative;
+    border-top: 1px solid #CDD4D9;
+}
+
+#jqt .searchbox .inputbar, #jqt .searchbox .optionbar {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#E0E4E7), color-stop(0.5, #C4CCD2), color-stop(0.5, #BFC8CE), to(#B4BEC6));
+    border-bottom: 1px solid #8293A0;
+}
+
+#jqt .searchbox .smokedscreen {
+    display: none;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    min-height: 100px;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+#jqt .searchbox.engaged .smokedscreen {
+    display: block;
+}
+
+#jqt .searchbox input[type="search"] {
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    -webkit-border-radius: 15px;
+    -webkit-box-flex: 1;
+    padding: 1px 10px 1px 30px;
+    height: 30px;
+    line-height: 30px;
+    background-color: white;
+    border: 0px solid transparent;
+    -webkit-box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+#jqt .searchbox input[type="search"] {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    font-size: 12pt;
+    color: #111;
+    -webkit-transition-property: right;
+    -webkit-transition-timing-function: linear;
+}
+
+#jqt .searchbox.engaged input[type="search"] {
+    right: 75px;
+}
+
+#jqt .searchbox .searchcancel {
+    position: absolute;
+    right: -90px;
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-transition-property: -webkit-transform;
+}
+
+#jqt .searchbox.engaged .searchcancel {
+    -webkit-transition-duration: 50ms;
+    -webkit-transform: translate3d(-100px, 0, 0);
+}
+
+
+
+
+#jqt .searchbox .inputbar input[type="radio"], #jqt .searchbox .optionbar input[type="radio"] {
+    color: #415E85;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #D6DDE1), color-stop(0.5, #C4CDD3), color-stop(0.5, #C3CBD2), color-stop(1, #B4BEC6));
+    -webkit-box-shadow: inset 0 1px 1px rgba(127, 127, 127, .25), 0 1px 0 rgba(127, 127, 127, 0.25);
+    text-shadow: rgba(127, 127, 127, 0.5) -0.5px -0.5px 0, rgba(255, 255, 255, 0.5) 0.5px 0.5px 0;
+    border-top: 1px solid #647283;
+    border-left: 1px solid #647283;
+    border-bottom: 1px solid #647283;
+}
+
+#jqt .searchbox .inputbar .button:last-of-type, #jqt .searchbox .inputbar input[type="radio"]:last-of-type {
+    border-right: 1px solid #647283;
+}
+
+#jqt .searchbox .inputbar .button, #jqt .searchbox .optionbar .button,
+#jqt .searchbox .inputbar input[type="radio"]:checked,
+#jqt .searchbox .optionbar input[type="radio"]:checked,
+#jqt .searchbox .inputbar input[type="radio"]:active,
+#jqt .searchbox .optionbar input[type="radio"]:active,
+#jqt .searchbox .inputbar input[type="radio"].active,
+#jqt .searchbox .optionbar input[type="radio"].active {
+    color: white;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #8C9BAF), color-stop(0.5, #7B8BA3), color-stop(0.5, #7989A1), color-stop(1, #657893));
+    text-shadow: rgba(127, 127, 127, 0.5) -1px -1px 0, rgba(127, 127, 127, 0.5) 1px 1px 0;
+}
+
+#jqt .searchbox .inputbar .button:active, #jqt .searchbox .optionbar .button:active,
+#jqt .searchbox .inputbar .button.active, #jqt .searchbox .optionbar .button.active {
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #8991A7), color-stop(0.5, #4D597A), color-stop(0.5, #3E4B6F), color-stop(1, #3E4A6E));
+}
+
+/* @end */
+
+
+
 /* @group Choice Pane */
 
 #jqt > div::before {
@@ -475,7 +651,7 @@ body {
     height: 100%;
     background-color: transparent;
     background-image: none;
-    z-index: 100;
+    z-index: 50;
 }
 
 #jqt > div.choicepane > div.spinnerfloat {
@@ -743,7 +919,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 
 
-/* @group Button */
+/* @group */
 
 #jqt ul.row {
   position: absolute;
