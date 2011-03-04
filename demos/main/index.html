@@ -47,7 +47,7 @@
 
         <script src="../../jqtouch/jquery-1.5.1.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="../../jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
-        <script src="../iscroll/iscroll.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="../../extensions/iscroll/iscroll.js" type="application/x-javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
             var jQT = new $.jQTouch({
                 icon: 'jqtouch.png',
@@ -79,32 +79,39 @@
                 });
               }
 
+              var generatedRows = 0;
               function loaded() {
                 $("#jqt").children().each(function (i, pane) {
                   $(pane).find('.s-scrollwrapper, .s-innerscrollwrapper').each(function (i, wrap) {
                     var $wrapper = $(wrap);
 
-                    var $content = $wrapper.find('.s-scrollpane');
-                    if ($content.length === 1) {
-                      var contentid = $content.attr('id');
-                      if (!!contentid && $('#' + contentid).parent()[0] === $wrapper[0]) {
-                        var scroll = new iScroll(contentid, {
-                          desktopCompatibility: true,
-                          bounce: true,
-                          momentum: true,
-                          checkDOMChanges: false,
-                          topOnDOMChanges: false
-                        });
-                        $wrapper.data(KEY_ISCROLL_OBJ, scroll);
+                    var data = $wrapper.data(KEY_ISCROLL_OBJ);
+                    if (data === undefined || data === null) {
+                      var scroll;
+                      var options = {};
+                      if ($wrapper.hasClass("scrollrefresh")) {
+                        options = {
+                          pullToRefresh: "down",
+                          onPullDown: function () {
+                            setTimeout(function () {
+                              var el, li, i;
+                              el = $("#z-taskdue")[0];
 
-                        scroll.refresh();
-                      } else {
-                        if (!!contentid) {
-                          console.warn('iScroll is not enabled for this <div>. <div id="' + contentidid + '"> is not unique.');
-                        } else {
-                          console.warn('iScroll is not enabled for this <div>. An unique id must be specified.');
-                        }
+                              for (i=0; i<3; i++) {
+                                li = document.createElement('li');
+                                li.innerText = 'Generated row ' + (++generatedRows);
+                                el.insertBefore(li, el.childNodes[0]);
+                              }
+
+                              scroll.refresh(); // IMPORTANT!
+                            }, 1000); // <-- Simulate network congestion, remove setTimeout from production!
+                          }
+                        };
                       }
+
+                      scroll = new iScroll(wrap, options);
+                      $wrapper.data(KEY_ISCROLL_OBJ, scroll);
+                      scroll.refresh();
                     }
                   });
                   $(pane).bind('pageAnimationEnd', function(event, info) {
@@ -362,16 +369,24 @@
                     <div class="s-scrollpane" id="roundedpane">
                         <ul class="rounded">
                             <li class="arrow"><a class="p-painter icon" href="#">
-                              Title<p>Descrption or details</p>
+                              Title<p>Description or details</p>
                             </a></li>
                             <li class="arrow"><a class="p-photographer icon" href="#">
-                              Title<p>Descrption or details</p>
+                              Title<p>Description or details</p>
                             </a></li>
                         </ul>
                         <ul class="rounded">
                             <li class="arrow"><a class="p-photographer icon" href="#">
-                              Title<p>Descrption or details</p>
+                              Title<p>Description or details</p>
                             </a></li>
+                        </ul>
+                        <ul class="rounded form">
+                            <li class="arrow">
+                              <a href="#z-startendpane" class="multiline">
+                                <div><label>Starts</label><span class="value">Wed, Mar 10, 2011</span></div>
+                                <div><label>Ends</label><span class="value">Wed, Mar 11, 2011</span></div>
+                              </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
