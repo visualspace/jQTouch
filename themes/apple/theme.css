@@ -14,8 +14,6 @@
 body {
 }
 
-
-
 /* @group general */
 
 #jqt > div, #jqt > form {
@@ -48,7 +46,8 @@ body {
     -moz-box-sizing: border-box;
 }
 
-#jqt > * > .contentwrap {
+#jqt > * .contentwrap {
+    display: -webkit-box;
     position: relative;
     box-flex: 10;
     -webkit-box-flex: 10;
@@ -61,6 +60,7 @@ body {
     margin-top: 0px;
     padding-top: 0px;
     min-height: 100%;
+    overflow-x: hidden;
 }
 
 @-moz-document url-prefix() {
@@ -78,7 +78,7 @@ body {
     right: 0;
     padding-top: 0px;
     padding-bottom: 0px;
-    min-height: 100%;
+    /* min-height: 100%; */
     -webkit-box-flex: 10;
     -moz-box-flex: 10;
 }
@@ -110,6 +110,7 @@ body {
 #jqt .toolbar, #jqt .navibar, #jqt .bar {
     -webkit-box-sizing: border-box;
     -webkit-box-pack: justify;
+    -webkit-box-align: center;
     -webkit-box-orient: horizontal;
     -webkit-box-flex: 0;
     -moz-box-flex: 0;
@@ -230,6 +231,32 @@ body {
     -webkit-user-drag: none;
 }
 
+#jqt .toolbar .button > .icon, #jqt .toolbar .add > .icon, #jqt .toolbar .leftButton > .icon, #jqt .toolbar .tog > .icon,
+#jqt .toolbar .actionButton > .icon, #jqt .toolbar .done > .icon,
+#jqt .toolbar .back > .icon, #jqt .toolbar .cancel > .icon, #jqt .toolbar .tog > .icon,
+#jqt .toolbar input[type="submit"] > .icon, #jqt .toolbar input[type="reset"] > .icon,
+#jqt .navibar .button > .icon, #jqt .navibar .tog > .icon, /** navibar **/
+#jqt .bar input[type="radio"] > .icon, #jqt .bar .button > .icon {
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    height: 22px;
+    min-width: 40px;
+    width: auto;
+    line-height: 14px;
+    vertical-align: middle;
+    color: whilte;
+    background-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    background-size: contain;
+    background-position: 50% 50%;
+    -webkit-background-size: contain;
+    -webkit-background-origin: content-box;
+    -webkit-mask-origin: content-box;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 22px 22px;
+    -webkit-mask-position-x: 50%;
+}
+
 #jqt .toolbar .button, #jqt .toolbar .add, #jqt .toolbar .leftButton, #jqt .toolbar .tog,
 #jqt .navibar .button, #jqt .navibar .tog,
 #jqt .toolbar input[type="reset"] {
@@ -327,7 +354,7 @@ body {
     padding-right: 8px;
 }
 
-#jqt .bar input[type="radio"]:first-of-type, #jqt .bar .button:first-of-type, #jqt .buttonset .button:first-of-type {
+#jqt .bar input[type="radio"]:first-of-type, #jqt .bar .button:first-of-type, #jqt .buttonset .button:last-of-type {
     /* bug! can't figure out why the order of buttonset is reversed */
     -webkit-border-top-left-radius: 6px;
     -webkit-border-bottom-left-radius: 6px;
@@ -341,7 +368,7 @@ body {
     margin-left: 15px;
 }
 
-#jqt .bar input[type="radio"]:last-of-type, #jqt .bar .button:last-of-type, #jqt .buttonset .button:last-of-type {
+#jqt .bar input[type="radio"]:last-of-type, #jqt .bar .button:last-of-type, #jqt .buttonset .button:first-of-type {
     border-right: 1px solid #45505d;
     -webkit-border-top-right-radius: 6px;
     -webkit-border-bottom-right-radius: 6px;
@@ -467,6 +494,24 @@ body {
   }
 }
 
+#jqt > .wait .toolbar:not(.progress) {
+    display: none;
+}
+
+#jqt > :not(.wait) .toolbar.progress {
+    display: none;
+}
+
+#jqt > * .toolbar.progress .spinner {
+  position: absolute;
+  margin-left: 30px;
+  margin-right: 5px;
+  margin-top: 2px;
+  width: 20px;
+  height: 20px;
+}
+
+/*
 #jqt form .progress {
   display: none;
 }
@@ -481,7 +526,7 @@ body {
 
 #jqt form.wait .idle {
   display: none;
-}
+}*/
 
 /* @end */
 
@@ -921,50 +966,56 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 /* @group */
 
+#jqt ul {
+    font: normal 13pt Helvetica;
+    font-color: #385487;
+    color: #385487;
+    font-size: 17px;
+}
+
 #jqt ul.row {
-  position: absolute;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  z-index: 99;
-  height: 78px;
-  width: 100%;
-  border-top: 1px solid #666;
-  border-bottom: 1px solid #666;
-  padding: 0 10px;
-  margin: auto;
-  text-align: right;
-  font-size: 7pt;
-  background-color: rgba(255, 255, 255, 0.5);
-  -webkit-box-shadow: 0 0 16px #BBB;
-  -webkit-transition-property: opacity;
-  -webkit-transition-duration: 500ms;
-  -webkit-transition-timing-function: linear;
-  opacity: 1;
-  overflow: hidden;
-  z-index: 999;
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    z-index: 99;
+    height: 78px;
+    width: 100%;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+    padding: 0 10px;
+    margin: auto;
+    text-align: right;
+    font-size: 7pt;
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 16px #BBB;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 500ms;
+    -webkit-transition-timing-function: linear;
+    opacity: 1;
+    overflow: hidden;
 }
 
 #jqt ul.row.t-hide {
-  opacity: 0;
-  -webkit-transition-property: opacity;
-  -webkit-transition-duration: 175ms;
-  -webkit-transition-timing-function: linear;
+    opacity: 0;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 175ms;
+    -webkit-transition-timing-function: linear;
 }
 
 #jqt ul.row li {
-  display: inline-block;
-  font: 7pt;
-  line-height: 8pt;
-  width: 60px;
-  border: 0px transparent;
-  background: transparent;
-  padding: 3px 12px 3px 12px;
-  margin: 0;
-  font-size: 8pt;
-  background-repeat: no-repeat;
-  color: #fff;
-  text-align: center;
-  text-shadow: 1pt 1pt 1.5pt #000;
+    display: inline-block;
+    font: 7pt;
+    line-height: 8pt;
+    width: 60px;
+    border: 0px transparent;
+    background: transparent;
+    padding: 3px 12px 3px 12px;
+    margin: 0;
+    font-size: 8pt;
+    background-repeat: no-repeat;
+    color: #fff;
+    text-align: center;
+    text-shadow: 1pt 1pt 1.5pt #000;
 }
 
 /* @end */
@@ -1029,6 +1080,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     line-height: 21pt;
     padding: 0;
     margin: 15px 10px 17px 10px;
+    list-style-type: none;
 }
 
 #jqt ul.rounded, #jqt fieldset.rounded {
@@ -1329,12 +1381,41 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 
 /* @group Forms */
+#jqt form ul li, #jqt ul.form li {
+    display: -webkit-box;
+}
+
+#jqt form ul li.multiline, #jqt ul.form li.multiline,
+#jqt form ul li > a.multiline, #jqt ul.form li > a.multiline {
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: start;
+    -webkit-box-align: stretch;
+    -webkit-box-lines: multiple;
+    box-lines: multiple;
+}
+
+#jqt form ul li.multiline > div, #jqt ul.form li.multiline > div,
+#jqt form ul li > a.multiline > div, #jqt ul.form li > a.multiline > div {
+    display: -webkit-box;
+    -webkit-box-sizing: border-box;
+    -webkit-box-flex: 10;
+    -webkit-box-orient: horizontal;
+}
+
+#jqt form ul li.noflex, #jqt ul.form li.noflex {
+    display: block;
+}
+
+#jqt ul.form li:hover {
+    background-color: #fff;
+}
+
 #jqt form {
     /* -webkit-box-shadow: inset 0 0 2px #444; */
 }
 
 #jqt ul.form li, #jqt fieldset.rounded input[type="radio"] {
-    padding: 7px 10px;
+/*    padding: 7px 10px;*/
 }
 
 #jqt ul.form li.error {
@@ -1343,10 +1424,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 #jqt ul.form li.error + li.error {
     border-top: 0;
-}
-
-#jqt ul.form li:hover {
-    background: #fff;
 }
 
 #jqt ul li p {
@@ -1373,9 +1450,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     display: -webkit-box;
     display: -moz-box;
     position: relative;
-    font: normal 13pt Helvetica;
-    font-color: #385487;
-    color: #385487;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));
     border: 0;
     padding: 0;
@@ -1384,6 +1458,21 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-text-size-adjust: none;
     -webkit-appearance: none;
     -webkit-user-select: text;
+}
+
+#jqt ul li .value,
+#jqt ul li input[type="text"],
+#jqt ul li input[type="password"],
+#jqt ul li input[type="tel"],
+#jqt ul li input[type="number"],
+#jqt ul li input[type="search"],
+#jqt ul li input[type="email"],
+#jqt ul li input[type="url"],
+#jqt ul li textarea,
+#jqt ul li select {
+    font: normal 13pt Helvetica;
+    font-color: #385487;
+    color: #385487;
 }
 
 #jqt ul li.input::before {
@@ -1395,15 +1484,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.4);
-}
-
-#jqt form ul li, #jqt ul.form li {
-    display: block;
-    display: -webkit-box;
-}
-
-#jqt form ul li.noflex, #jqt ul.form li.noflex {
-    display: block;
 }
 
 #jqt ul li input[type="text"],
@@ -1557,6 +1637,20 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
 }
 
+#jqt ul li h4 {
+    -webkit-box-sizing: border-box;
+    position: absolute;
+    padding-left: 10px;
+    padding-right: 5px;
+    font: 8.5pt "Helvetica Neue", Helvetica;
+    padding-top: 7px;
+    color: grey;
+    text-shadow: rgba(255,255,255,1) -1pt -1pt 2pt, rgba(255,255,255,1) 1pt 1pt 1pt;
+    top: 22px;
+    left: 85px;
+    right: 0px;
+}
+
 #jqt ul li input[type="checkbox"].onoff {
     display: block;
     -webkit-box-sizing: border-box;
@@ -1566,8 +1660,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     width: 94px;
     height: 27px;
     overflow: hidden;
-    /* -webkit-box-flex: 1; */
-    margin: 8px 0px;
     margin-left: auto;
     padding-left: auto;
     float: right;
@@ -1628,11 +1720,36 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     color: #fff;
     font-size: 13pt;
     line-height: 14px;
-    margin: 1px 0 0 0;
+    margin: 0;
     padding: 3px 10px;
     text-shadow: #636a6f 0 1px 0;
     min-height: 22px !important;
     height: 22px !important;
+    width: 100%;
+}
+
+/* Stacked ul with implicit sep */
+#jqt ul.edgetoedge.stacked, ul.mail.stacked {
+    border-top: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+}
+
+#jqt ul.edgetoedge.stacked::before, #jqt ul.mail.stacked::before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: block;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 159, 171, 1)), to(rgba(181, 193, 201, 1.0)));
+    border-bottom: 1px solid #b5c1c9;
+    border-top: 1px solid #b5c1c9;
+    color: #fff;
+    font-size: 14px;
+    line-height: 14px;
+    margin: 0;
+    padding: 3px 10px;
+    text-shadow: #636a6f 0 1px 0;
+    min-height: 22px !important;
+    height: 22px !important;
+    content: attr(title);
 }
 
 #jqt ul.edgetoedge li {
@@ -1722,6 +1839,37 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt .edgetoedge h4 + ul {
     border-top: 1px solid rgb(152,158,164);
     border-bottom: 1px solid rgb(113,125,133);
+}
+
+#jqt ul.message li.contact.label,
+#jqt ul.message li.details.label {
+    color: #888;
+    font-size: 12px;
+    font-weight: 75;
+}
+
+#jqt ul.message li.details {
+}
+
+#jqt ul.message li.title {
+    display: -webkit-box;
+    font-size: 9pt;
+    font-weight: normal;
+    line-height: 16px;
+    height: 26pt;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+    overflow: hidden;
+}
+
+#jqt ul.message li.paragraph {
+    font-weight: normal;
+    font-size: 13px;
+}
+
+#jqt ul.message li.title .span {
 }
 
 /* @end */
@@ -1994,6 +2142,10 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 /* @group Misc */
 
 #jqt .info {
+    display: block;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    width: 100%;
     background: #dce1eb;
     font-size: 12px;
     line-height: 16px;

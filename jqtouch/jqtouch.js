@@ -119,12 +119,10 @@
                         {find: ".searchcancel", event: "touchstart mousedown", fn: function(type, gear) {
                           $(gear).find("input:focus").blur();
                           $(gear).find(".hiddeninput").focus();
-                          //$(window).focus();
                         }},
                         {find: ".smokedscreen", event: "touchstart mousedown", fn: function(type, gear) {
                           $(gear).find("input:focus").blur();
                           $(gear).find(".hiddeninput").focus();
-                          //$(window).focus();
                         }}
                     ]
                 },
@@ -241,12 +239,12 @@
 
         function addPageToHistory(page, search, animation) {
             // Grab some info
-            var pageId = page.attr('id');
-            var page = $('#' + pageId); // normalize to actual page
-            var section = page.attr('section');
+            var pageId = page[0].id;
+            var npage = $('#' + pageId); // normalize to actual page
+            var section = splitscreenmode? npage.attr('section'): defaultSection;
             // Prepend info to page history
             hist.unshift({
-                page: page,
+                page: npage,
                 search: search,
                 animation: animation,
                 section: section,
@@ -368,6 +366,23 @@
           return results;
         };
 
+        function replaceHrefPart(loc, parts) {
+          var href = {protocol: loc.protocol, host: loc.host, port: loc.port,
+              pathname: loc.pathname, hash: loc.hash, search: loc.search};
+          var h = $.extend(href, parts);
+
+          var result = "";
+          result += h.protocol;
+          result += "//";
+          result += h.port? (":" + h.port): "";
+          result += h.host;
+          result += h.pathname;
+          result += h.hash;
+          result += h.search;
+
+          return result;
+        }
+
         function getSearchString(search) {
             var result = '';
             for (var item in search) {
@@ -397,7 +412,7 @@
             postcallback = params.postcallback;
 
             // Error check for target page
-            if (!toPage || !fromPage || toPage.length == 0 || fromPage.length == 0) {
+            if (!toPage || !fromPage || toPage.length === 0 || fromPage.length === 0) {
                 $.fn.unselect();
                 console.error('Target element is missing. Dest: ' + toPage + ' Source: ' + fromPage);
                 tapReady = true;
@@ -648,7 +663,7 @@
             }
 
             if (typeof(toPage) === 'string') {
-                nextPage = $(toPage);
+                var nextPage = $(toPage);
                 if (nextPage.length < 1) {
                     showPageByHref(toPage, {
                         'animation': animation
@@ -660,7 +675,7 @@
             }
 
             var section = toPage.attr('section');
-            var criteria = !!section? {section: section}: {section: defaultSection};
+            var criteria = splitscreenmode && !!section? {section: section}: {section: defaultSection};
             var fromPage = findPageFromHistory(criteria, 0);
             var adjustedName = adjustAnimation(animation, reverse);
             if (!fromPage) {
@@ -694,7 +709,7 @@
                     addPageToHistory(toPage, search, adjustedName);
                 } else {
                     $.fn.unselect();
-                    console.error('Target element is the current page.');
+                    console.warn('Target element is the current page.');
                     return false;
                 }
             }
@@ -991,7 +1006,7 @@
                         cur = cur.parentNode;
                     }
                     goBack({
-                        to: hash,
+                        //to: hash,
                         from: from
                     });
                 } else {
@@ -1363,7 +1378,11 @@
             $(actionSelectors.join(', ')).live('tap', tapHandler);
             $(actionSelectors.join(', ')).css('-webkit-touch-callout', 'none');
             $(actionSelectors.join(', ')).css('-webkit-user-drag', 'none');
-            $("#jqt > :not(.unfixed)").live(MOVE_EVENT, function(e) { e.preventDefault(); });
+            $(document).live(MOVE_EVENT, function(e) {
+              if (!$(this).hasClass("unfixed")) {
+                e.preventDefault();
+              }
+            });
 
             // listen to touch events
             // performance critical to scroll
@@ -1491,16 +1510,19 @@
 
             // Make sure exactly one child of body has "current" class
             if ($('#jqt > .current').length == 0) {
-                currentPage = $('#jqt > *:first');
+                currentPage = $('#jqt').children().first();
             } else {
                 currentPage = $('#jqt > .current:first');
                 $('#jqt > .current').removeClass('current');
             }
             if (currentAside.length != 0) {
-                currentAside.addClass('current');
+                currentAside.addClass('current alphapage');
             }
             // Go to the top of the "current" page
-            $(currentPage).addClass('current');
+            if (currentPage.length === 0) {
+              throw "Failed to find first page";
+            }
+            currentPage.addClass('current alphapage');
             addPageToHistory(currentPage);
 
             // adjust visibiliy of elements
@@ -1509,6 +1531,32 @@
                 $section.children().find('[section~="' + section + '"]').removeClass('missection');
                 $section.children().find('[section]:not([section~="' + section + '"])').addClass('missection');
             });
+
+            // move to init page be specified in querystring
+            var loc = window.location;
+            var search = parseSearch(loc.search.substring(1));
+            if (!!search.jqtpage) {
+              var page = "#" + search.jqtpage;
+              delete search.jqtpage;
+
+              var newloc = replaceHrefPart(window.location, {search: getSearchString(search)});
+              window.history.replaceState({}, "page", newloc);
+
+              var $page = $("#jqt > " + page);
+              var section = $page.attr("section");
+              if ($page.length === 1) {
+                if (section === defaultSection) {
+                  $("#jqt > .current").removeClass("current alphapage");
+                  $page.addClass("current alphapage");
+                } else {
+                  console.warn("Init page must be displayed in the default section.");
+                }
+              } else {
+                console.warn("Unexpected number of page.");
+              }
+            }
+            var pageid = $("#jqt > .current").attr("id");
+            $("#jqt > .current").trigger("pagein", {hash: "#" + pageid, search: search});
 
             // guard input for proper scroll behaviour
             if (jQTSettings.inputguard) {
