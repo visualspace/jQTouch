@@ -63,6 +63,30 @@ body {
     overflow-x: hidden;
 }
 
+#jqt > * .contentwrap[title]::before,
+#jqt > * .content[title]::before {
+  /* position: absolute; */
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  height: 22px;
+  width: 100%;
+  border-top: 1px solid #CDD5DF;
+  border-bottom: 1px solid #6d84a2;
+  background-color: #889bb3;
+  background-position: center, 0 0;
+  background-repeat: no-repeat, repeat-x;
+  background-image: url(./images/cascade_15px.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 171, 159, 0.75)), to(rgba(181, 201, 193, 0.75)));
+  cursor: pointer;
+  padding: 0 10px;
+  top: 0px;
+  opacity: 0.5;
+  z-index: 199;
+  text-align: right;
+  font-weight: 200;
+  content: attr(title);
+}
+
 @-moz-document url-prefix() {
     #jqt > div, #jqt > form {
     }
@@ -1145,10 +1169,10 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul.mail li {
     height: 78px;
     color: #000;
-    line-height: 23px;
+    line-height: 22px;
     padding-left: 30px;
     padding-right: 10px;
-    padding-top: 4px;
+    padding-top: 1px;
     padding-bottom: 3px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1168,33 +1192,35 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     outline: 0;
 }
 
-#jqt ul.mail li .subject {
-    display: block;
-    font-size: 11pt;
-    line-height: 15px;
-    font-weight: normal;
-}
-
 #jqt ul.mail li .date {
     position: relative;
     color: #2470D8;
     float: right;
     top: 2px;
-    font-size: 10.5pt;
-    line-height: 10.5pt;
+    font-size: 15px;
+    line-height: 18px;
     font-weight: 100;
 }
 
-#jqt ul.mail li p {
+#jqt ul.mail li .title {
     display: block;
-    display: -webkit-box;
-    /* display: -moz-box; */
-    font-size: 9pt;
-    font-weight: normal;
+    font-size: 14px;
+    padding-right: 5px;
     line-height: 16px;
-    height: 26pt;
+    font-weight: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+#jqt ul.mail li p {
+    font-size: 13.5px;
+    font-weight: normal;
+    line-height: 15.5px;
+    height: 31px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    padding-right: 5px;
     text-overflow: ellipsis;
     white-space: normal;
     overflow: hidden;
