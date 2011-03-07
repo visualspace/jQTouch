@@ -83,8 +83,6 @@ function iScroll (el, options) {
 		div.innerHTML = '<span class="iScrollPullDownIcon"></span><span class="iScrollPullDownLabel">' + that.options.pullDownLabel[0] + '</span>\n';
 		that.scroller.insertBefore(div, that.scroller.children[0]);
 		that.options.bounce = true;
-		that.offsetBottom = div.offsetHeight;
-		that.scroller.style.marginTop = -that.offsetBottom + 'px';
 		that.pullDownEl = div;
 		that.pullDownLabel = div.getElementsByTagName('span')[1];
 	}
@@ -95,8 +93,6 @@ function iScroll (el, options) {
 		div.innerHTML = '<span class="iScrollPullUpIcon"></span><span class="iScrollPullUpLabel">' + that.options.pullUpLabel[0] + '</span>\n';
 		that.scroller.appendChild(div);
 		that.options.bounce = true;
-		that.offsetTop = div.offsetHeight;
-		that.scroller.style.marginBottom = -that.offsetTop + 'px';
 		that.pullUpEl = div;
 		that.pullUpLabel = div.getElementsByTagName('span')[1];
 	}
@@ -113,7 +109,7 @@ function iScroll (el, options) {
 		that._bind('gesturestart');
 		that.scroller.style.webkitTransform = that.scroller.style.webkitTransform + ' scale(1)';
 	}
-
+	
 	if (!hasTouch) {
 		that._bind('mousewheel');
 	}
@@ -130,7 +126,7 @@ iScroll.prototype = {
 	
 	handleEvent: function (e) {
 		var that = this;
-	
+
 		switch(e.type) {
 			case START_EV: that._start(e); break;
 			case MOVE_EV: that._move(e); break;
@@ -424,7 +420,7 @@ iScroll.prototype = {
 		that._unbind(MOVE_EV);
 		that._unbind(END_EV);
 		that._unbind(CANCEL_EV);
-	
+		
 		if (that.zoomed) return;
 
 		if (!that.moved) {
@@ -835,24 +831,35 @@ iScroll.prototype = {
 			i, l, els,
 			oldHeight, offsets;
 
-		if (that.pullDownToRefresh && that.pullDownEl.className.match('loading') && !that.contentReady) {
-			oldHeight = that.scrollerH;
-			that.contentReady = true;
-			that.pullDownEl.className = 'iScrollPullDown';
-			that.pullDownLabel.innerText = that.options.pullDownLabel[0];
-			that.offsetBottom = that.pullDownEl.offsetHeight;
-			that.scroller.style.marginTop = -that.offsetBottom + 'px';
+		if (that.pullDownToRefresh) {
+			var loading = that.pullDownEl.className.match('loading');
+			if (loading && !that.contentReady) {
+				oldHeight = that.scrollerH;
+				that.contentReady = true;
+				that.pullDownEl.className = 'iScrollPullDown';
+				that.pullDownLabel.innerText = that.options.pullDownLabel[0];
+				that.offsetBottom = that.pullDownEl.offsetHeight;
+				that.scroller.style.marginTop = -that.offsetBottom + 'px';
+			} else if (!loading) {
+				that.offsetBottom = that.pullDownEl.offsetHeight;
+				that.scroller.style.marginTop = -that.offsetBottom + 'px';
+			}
 		}
 
-		if (that.pullUpToRefresh && that.pullUpEl.className.match('loading') && !that.contentReady) {
-			oldHeight = that.scrollerH;
-			that.contentReady = true;
-			that.pullUpEl.className = 'iScrollPullUp';
-			that.pullUpLabel.innerText = that.options.pullUpLabel[0];
-			that.offsetTop = that.pullUpEl.offsetHeight;
-			that.scroller.style.marginBottom = -that.offsetTop + 'px';
+		if (that.pullUpToRefresh) {
+			var loading = that.pullUpEl.className.match('loading');
+			if (loading && !that.contentReady) {
+				oldHeight = that.scrollerH;
+				that.contentReady = true;
+				that.pullUpEl.className = 'iScrollPullUp';
+				that.pullUpLabel.innerText = that.options.pullUpLabel[0];
+				that.offsetTop = that.pullUpEl.offsetHeight;
+				that.scroller.style.marginBottom = -that.offsetTop + 'px';
+			} else if (!loading) {
+				that.offsetTop = that.pullUpEl.offsetHeight;
+				that.scroller.style.marginBottom = -that.offsetTop + 'px';
+			}
 		}
-
 
 		that.wrapperW = that.wrapper.clientWidth;
 		that.wrapperH = that.wrapper.clientHeight;
