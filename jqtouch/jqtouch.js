@@ -1488,8 +1488,27 @@
               $body.addClass(jQTSettings.fullScreenClass + ' ' + jQTSettings.statusBar);
             }
 
+            var loc = window.location;
+
+            //allow override of splitscreen mode in the url
+            var search = parseSearch(loc.search.substring(1));
+            var usersplitmode = search.jqtsplitmode;
+            if (usersplitmode !== undefined) {
+              delete search.jqtsplitmode;
+              if (usersplitmode === "true") {
+                usersplitmode = true;
+              } else {
+                usersplitmode = false;
+              }
+            } else {
+              usersplitmode = true;
+            }
+
             // handling split screen for wider device (such as iPad)
-            splitscreenmode = $.support.wide & $body.hasClass('splitscreen');
+            splitscreenmode = usersplitmode && $.support.wide && $body.hasClass('splitscreen');
+            if (usersplitmode === false) {
+              $("#jqt").removeClass('splitscreen');
+            }
             if (splitscreenmode) {
                 var $aside = $('#jqt > [section="aside"]');
                 if ($aside.length > 0) {
@@ -1533,14 +1552,9 @@
             });
 
             // move to init page be specified in querystring
-            var loc = window.location;
-            var search = parseSearch(loc.search.substring(1));
             if (!!search.jqtpage) {
               var page = "#" + search.jqtpage;
               delete search.jqtpage;
-
-              var newloc = replaceHrefPart(window.location, {search: getSearchString(search)});
-              window.history.replaceState({}, "page", newloc);
 
               var $page = $("#jqt > " + page);
               var section = $page.attr("section");
@@ -1557,6 +1571,10 @@
             }
             var pageid = $("#jqt > .current").attr("id");
             $("#jqt > .current").trigger("pagein", {hash: "#" + pageid, search: search});
+
+            // update browser url
+            var newloc = replaceHrefPart(window.location, {search: getSearchString(search)});
+            window.history.replaceState({}, "page", newloc);
 
             // guard input for proper scroll behaviour
             if (jQTSettings.inputguard) {
