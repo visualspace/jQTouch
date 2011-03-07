@@ -749,6 +749,74 @@ body {
 /* @end */
 
 
+
+/* @group Spinner */
+
+/* based on: https://github.com/cubiq/iscroll */
+.iScrollPullDown,
+.iScrollPullUp {
+    -webkit-box-sizing: border-box;
+    background:#fff;
+    border-bottom:1px solid #aaa;
+    height:50px;
+    line-height:40px;
+    padding:5px 10px;
+    font-size:14px;
+    color:#999;
+    font-weight:bold;
+    -webkit-transform:translate3d(0,0,0);   /* Put the element in the HW accelerated layer */
+}
+
+.iScrollPullDownIcon,
+.iScrollPullUpIcon {
+    display:block; float:left;
+    width:40px; height:40px;
+    background:url(../../extensions/iscroll/pull-icon.png) 0 0 no-repeat;
+    background-size:40px 80px;
+    margin-right:5px;
+    -webkit-transition-property:-webkit-transform;
+    -webkit-transition-duration:250ms;
+    -webkit-transform:rotate(0);
+}
+
+.iScrollPullDown.flip .iScrollPullDownIcon {
+    -webkit-transform:rotate(-180deg);
+}
+
+.iScrollPullDown.loading .iScrollPullDownIcon,
+.iScrollPullUp.loading .iScrollPullUpIcon {
+    background-position:0 100%;
+    -webkit-animation-name:loading;
+    -webkit-animation-duration:1.5s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+}
+
+.iScrollPullUp {
+    border-bottom:0;
+}
+
+.iScrollPullUpIcon {
+    -webkit-transform:rotate(-180deg);
+}
+
+.iScrollPullUp.flip .iScrollPullUpIcon {
+    -webkit-transform:rotate(0);
+}
+
+@-webkit-keyframes loading {
+    from { -webkit-transform:rotate(0deg); }
+    to { -webkit-transform:rotate(360deg); }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:2) {
+    .iScrollPullDownIcon,
+    .iScrollPullUpIcon {
+        background-image:url(../../extensions/iscroll/pull-icon@2x.png);
+    }
+}
+
+
 /* @group Spinner */
 
 /* http://37signals.com/svn/posts/2577-loading-spinner-animation-using-css-and-webkit */
