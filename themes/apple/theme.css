@@ -535,25 +535,6 @@ body {
   height: 20px;
 }
 
-/*
-#jqt form .progress {
-  display: none;
-}
-
-#jqt form.wait .progress {
-  display: block;
-}
-
-#jqt form .idle {
-  display: block;
-}
-
-#jqt form.wait .idle {
-  display: none;
-}*/
-
-/* @end */
-
 
 
 /* @group Search Pane */
