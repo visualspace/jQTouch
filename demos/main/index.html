@@ -36,6 +36,26 @@
                 background-image: url(./image/iphonecontact_57px.png);
             }
 
+
+            .buttonicon {
+              position: relative;
+              min-width: 30px;
+              min-height: 30px;
+              background-color: white;
+              color: white;
+              -webkit-mask-repeat: no-repeat;
+            }
+
+            .d-refresh {
+              -webkit-mask-image: url(./image/01-refresh.png);
+              -webkit-mask-position: 3px 1px;
+            }
+
+            .d-config {
+              -webkit-mask-image: url(./image/20-gear2.png);
+              -webkit-mask-position: 1px 1px;
+            }
+
             .p-photographer{
                 background-image: url(./image/00433945.png);
             }
@@ -274,6 +294,70 @@
                   </div>
                 </div>
             </div>
+            <div id="barbuttons">
+                <div class="toolbar">
+                    <h1>Toolbar Buttons</h1>
+                    <a href="#" class="back">Home</a>
+                </div>
+                <div class="bar">
+                    <div class="button red">Red</div>
+                    <div class="button greyblue">Grey Blue</div>
+                    <div class="button brightblue">Bright Blue</div>
+                    <div class="button darkgrey">Dark Grey</div>
+                    <div class="button lightgrey">Light Grey</div>
+                </div>
+                <div class="bar">
+                    <div class="button span red">Red</div>
+                    <div class="button span greyblue">Grey Blue</div>
+                    <div class="button span brightblue">Bright Blue</div>
+                    <div class="button span lightgrey">Light Grey</div>
+                </div>
+                <div class="bar">
+                    <input type="radio" name="whatsup" title="To" />
+                    <input type="radio" name="whatsup" title="From" />
+                    <input type="radio" name="whatsup" title="Subject" />
+                    <input type="radio" name="whatsup" title="All" checked />
+                </div>
+                <div class="buttonset bar">
+                    <div class="button">A</div>
+                    <div class="button">Set</div>
+                    <div class="button">of</div>
+                    <div class="button">Independent</div>
+                    <div class="button">Buttons</div>
+                </div>
+                <div class="bar">
+                    <div class="button span">A Wide Button</div>
+                </div>
+                <div class="bar">
+                    <div class="button left">Left</div>
+                    <div class="button span">Span Center</div>
+                    <div class="button right">Right</div>
+                </div>
+                <div class="bar">
+                    <div class="button left nopad">Tight Left</div>
+                    <div class="button center" style="min-width: 150px;">A Fixed Size Center</div>
+                    <div class="button right nopad">Tight Right</div>
+                </div>
+                <div class="bar">
+                    <a href="#" class="icon d-refresh"></a>
+                    <a href="#" class="icon d-config"></a>
+                    <a href="#" class="icon d-config"></a>
+                    <a href="#" class="icon d-refresh"></a>
+                </div>
+                <div class="bar">
+                    <div class="button nopad"><div class="icon d-refresh"></div></div>
+                    <div class="button nopad"><div class="icon d-config"></div></div>
+                    <div class="button nopad"><div class="buttonicon d-config"></div></div>
+                    <div class="button nopad"><div class="buttonicon d-refresh"></div></div>
+                </div>
+                <div class="bar">
+                    <div class="button left">Left</div>
+                    <div class="buttonset right">
+                        <div class="button">Prev</div>
+                        <div class="button">Next</div>
+                    </div>
+                </div>
+            </div>
             <div id="callback">
                 <div class="toolbar">
                     <h1>AJAX w/Callback</h1>
@@ -485,7 +569,6 @@
               <div class="choicefloat">
                 <a href="#grid" class="pushbutton white backward">Open in Safari</a>
                 <a href="#grid" class="pushbutton white fade backward">Mail Link</a>
-                <a href="#grid" class="pushbutton white flip backward">Repost Link</a>
                 <a href="#grid" class="pushbutton white slideup backward">Read Later</a>
                 <br/>
                 <a href="#" class="pushbutton gray back">Cancel</a>
@@ -549,13 +632,13 @@
                 <div class="s-scrollwrapper contentwrap">
                   <form class="s-scrollpane" id="homepane">
                     <ul class="rounded">
-                        <li class="arrow"><a href="#ui">User Interface</a> <small class="counter">4</small></li>
+                        <li class="arrow"><a href="#ui">User Interface</a> <small class="counter">13</small></li>
                         <li class="arrow"><a href="#animations">Animations</a> <small class="counter">8</small></li>
                         <li class="arrow"><a href="#ajax">AJAX</a> <small class="counter">3</small></li>
                         <li class="arrow"><a href="#callbacks">Events</a> <small class="counter">3</small></li>
                         <li class="arrow"><a href="#extensions">Extensions</a> <small class="counter">4</small></li>
                         <li class="arrow"><a href="#video">Video</a></li>
-                        <li class="arrow"><a href="#demos">Demos</a> <small class="counter">2</small></li>
+                        <li class="arrow"><a href="#demos">Demos</a> <small class="counter">3</small></li>
                     </ul>
                     <h2>External Links</h2>
                     <ul class="rounded">
@@ -704,6 +787,7 @@
                     <h2>Buttons</h2>
                     <ul class="rounded">
                         <li class="arrow"><a href="#buttons">Buttons</a></li>
+                        <li class="arrow"><a href="#barbuttons">Toolbar Buttons</a></li>
                     </ul>
                     <h2>Forms</h2>
                     <ul class="rounded">
