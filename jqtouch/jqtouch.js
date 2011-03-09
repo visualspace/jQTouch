@@ -374,7 +374,7 @@
           var result = "";
           result += h.protocol;
           result += "//";
-          result += h.port? (":" + h.port): "";
+          // result += h.port? (":" + h.port): "";
           result += h.host;
           result += h.pathname;
           result += h.hash;
