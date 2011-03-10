@@ -477,10 +477,13 @@
                     }
                 }
 
+                /*
                 var darkart = 30;
                 if (params.heavy && bogomark > 0.1) {
                     darkart = Math.floor(350 * bogomark);
                 }
+                setTimeout(function() {
+                 */
                 setTimeout(function() {
                     fromPage.addClass('start');
                     toPage.addClass('start');
@@ -490,7 +493,8 @@
                             pagecallback();
                         }
                     }, 10);
-                }, darkart);
+                }, 50);
+                //}, darkart);
             } else {
                 if ($.isFunction(pagecallback)) {
                     pagecallback();
