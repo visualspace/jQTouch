@@ -1,0 +1,30 @@
+{
+  "application": "beedesk-jqtouch",
+  "cloneable": false,
+  "created": {
+    "__class__": "Date",
+    "isoformat": "2011-03-09T06:13:05.799828Z"
+  },
+  "icon": null,
+  "modified": {
+    "__class__": "Date",
+    "isoformat": "2011-03-09T06:13:05.800012Z"
+  },
+  "owner": "beedesk",
+  "readers": [
+    "public"
+  ],
+  "referers": [],
+  "secureData": false,
+  "sha1": "f5f2e18cbbcbeeb553a0fd846a186a331580dcb6",
+  "size": 316,
+  "tags": [
+    "jqtouch"
+  ],
+  "title": "Testbed for BeeDesk's JQTouch Fork",
+  "url": "http://beedesk-jqtouch.pageforest.com/",
+  "writers": [
+    "mckoss",
+    "beedesk"
+  ]
+}
