@@ -52,14 +52,10 @@ body {
     box-flex: 10;
     -webkit-box-flex: 10;
     -moz-box-flex: 10;
-    z-index: 1;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0px;
-    margin-top: 0px;
-    padding-top: 0px;
     min-height: 100%;
+    bottom: 0; left: 0; right: 0;
+    margin: 0px; margin-top: 0px;
+    padding-top: 0px;
     overflow-x: hidden;
 }
 
@@ -69,19 +65,16 @@ body {
   display: block;
   position: relative;
   -webkit-box-sizing: border-box;
-  height: 22px;
-  width: 100%;
-  border-top: 1px solid #CDD5DF;
-  border-bottom: 1px solid #6d84a2;
+  height: 22px; width: 100%;
+  top: 0px;
+  border-top: 1px solid #CDD5DF; border-bottom: 1px solid #6d84a2;
   background-color: #889bb3;
-  background-position: center, 0 0;
-  background-repeat: no-repeat, repeat-x;
+  background-position: center, 0 0; background-repeat: no-repeat, repeat-x;
   background-image: url(./images/cascade_15px.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 171, 159, 0.75)), to(rgba(181, 201, 193, 0.75)));
   cursor: pointer;
   padding: 0 10px;
-  top: 0px;
   opacity: 0.5;
-  z-index: 199;
+  z-index: 19;
   text-align: right;
   font-weight: 200;
   content: attr(title);
@@ -97,11 +90,8 @@ body {
 
 #jqt > * > div:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info):not(.choicefloat):not(.spinnerfloat) {
     /* back-compat worthwhile? */
-    top: 0;
-    left: 0;
-    right: 0;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    top: 0; left: 0; right: 0;
+    padding-top: 0px; padding-bottom: 0px;
     /* min-height: 100%; */
     -webkit-box-flex: 10;
     -moz-box-flex: 10;
@@ -111,11 +101,8 @@ body {
 #jqt > * .contentwrap > :first-child:not(.noncontent) {
     position: absolute;
     display: block;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    top: 0; left: 0; right: 0;
+    padding-top: 0px; padding-bottom: 0px;
     min-height: 100%;
 }
 
@@ -231,7 +218,7 @@ body {
 
 #jqt > * > * .button,
 #jqt > * > * .tog,
-#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"], 
+#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"],
 #jqt .toolbar .add, #jqt .toolbar .leftButton,
 #jqt .toolbar .actionButton, #jqt .toolbar .done,
 #jqt .toolbar input[type="submit"], #jqt .toolbar input[type="reset"],
@@ -283,7 +270,7 @@ body {
 #jqt > * > * .button.greyblue,
 #jqt > * > * .button, /* default */
 #jqt > * > * .tog,
-#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"], 
+#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"],
 #jqt .toolbar .add, #jqt .toolbar .leftButton,
 #jqt .toolbar input[type="reset"] {
     border: 1px solid #45505d;
@@ -324,7 +311,7 @@ body {
 
 #jqt > * > * .button,
 #jqt > * > * .tog,
-#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"], 
+#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"],
 #jqt .toolbar .add, #jqt .toolbar .leftButton,
 #jqt .toolbar .actionButton, #jqt .toolbar .done,
 #jqt .toolbar input[type="submit"], #jqt .toolbar input[type="reset"] {
@@ -382,7 +369,7 @@ body {
     margin-right: 0px;
 }
 
-#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"], 
+#jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"],
 #jqt > * .buttonset .button {
     -webkit-box-flex: 1;
     max-width: none;
@@ -392,35 +379,35 @@ body {
     margin-right: 0px;
 }
 
-#jqt > * > .navibar input[type="radio"]:first-of-type, #jqt > * > .toolbar input[type="radio"]:first-of-type, #jqt > * .bar input[type="radio"]:first-of-type, 
+#jqt > * > .navibar input[type="radio"]:first-of-type, #jqt > * > .toolbar input[type="radio"]:first-of-type, #jqt > * .bar input[type="radio"]:first-of-type,
 #jqt > * .buttonset .button:first-of-type:not(.right),  #jqt > * .buttonset .button.right:last-of-type {
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
 }
 
 
-#jqt > * > .navibar input[type="radio"]:first-of-type:not(:first-child), #jqt > * > .toolbar input[type="radio"]:first-of-type:not(:first-child), #jqt > * .bar input[type="radio"]:first-of-type:not(:first-child), 
+#jqt > * > .navibar input[type="radio"]:first-of-type:not(:first-child), #jqt > * > .toolbar input[type="radio"]:first-of-type:not(:first-child), #jqt > * .bar input[type="radio"]:first-of-type:not(:first-child),
 #jqt > * .buttonset .button:first-of-type:not(:first-child) {
     margin-left: 20px;
 }
 
-#jqt > * > .navibar input[type="radio"]:last-of-type, #jqt > * > .toolbar input[type="radio"]:last-of-type, #jqt > * .bar input[type="radio"]:last-of-type, 
+#jqt > * > .navibar input[type="radio"]:last-of-type, #jqt > * > .toolbar input[type="radio"]:last-of-type, #jqt > * .bar input[type="radio"]:last-of-type,
 #jqt > * .buttonset .button:last-of-type:not(.right), #jqt > * .buttonset .button.right:first-of-type {
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
 }
 
-#jqt > * > .navibar input[type="radio"]:not(:last-of-type), #jqt > * > .toolbar input[type="radio"]:not(:last-of-type), #jqt > * .bar input[type="radio"]:not(:last-of-type), 
+#jqt > * > .navibar input[type="radio"]:not(:last-of-type), #jqt > * > .toolbar input[type="radio"]:not(:last-of-type), #jqt > * .bar input[type="radio"]:not(:last-of-type),
 #jqt > * .buttonset .button:not(:last-of-type):not(.right), #jqt > * .buttonset .button.right:not(:first-of-type) {
     border-right: 0px none transparent;
 }
 
-#jqt > * > .navibar input[type="radio"]:last-of-type:not(:last-child), #jqt > * > .toolbar input[type="radio"]:last-of-type:not(:last-child), #jqt > * .bar input[type="radio"]:last-of-type:not(:last-child), 
+#jqt > * > .navibar input[type="radio"]:last-of-type:not(:last-child), #jqt > * > .toolbar input[type="radio"]:last-of-type:not(:last-child), #jqt > * .bar input[type="radio"]:last-of-type:not(:last-child),
 #jqt .buttonset .button:last-of-type:not(:last-child) {
     margin-right: 20px;
 }
 
-#jqt > * > .navibar input[type="radio"]:after, #jqt > * > .toolbar input[type="radio"]:after, #jqt > * .bar input[type="radio"]:after, 
+#jqt > * > .navibar input[type="radio"]:after, #jqt > * > .toolbar input[type="radio"]:after, #jqt > * .bar input[type="radio"]:after,
 #jqt .bar .button:after {
     content: attr(title);
 }
@@ -437,7 +424,7 @@ body {
     text-shadow: none;
 }
 
-#jqt > * > .navibar input[type="radio"]:active, #jqt > * > .toolbar input[type="radio"]:active, #jqt > * .bar input[type="radio"]:active, 
+#jqt > * > .navibar input[type="radio"]:active, #jqt > * > .toolbar input[type="radio"]:active, #jqt > * .bar input[type="radio"]:active,
 #jqt > * > .navibar input[type="radio"].active, #jqt > * > .toolbar input[type="radio"].active, #jqt > * .bar input[type="radio"].active {
     /* workaround the flicker between deactived and checked using in-between color*/
     background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #7d88a5),
@@ -692,18 +679,18 @@ body {
 
 /* @group Choice Pane */
 
-#jqt > div::before {
+#jqt > div::before, #jqt > form::before {
     display: none;
     position: absolute;
     content: "";
-    width: 100%;
-    height: 100%;
+    top: 0; bottom: 0; left: 0; right: 0;
     z-index: 10;
     background-color: rgba(0, 0, 0, 0.4);
     opacity: 0;
 }
 
-#jqt > div.smokedglass::before {
+#jqt > div.smokedglass::before, #jqt > form.smokedglass::before,
+#jqt > div.smokedfilm::before, #jqt > form.smokedfilm::before {
     display: block;
     opacity: 1;
     -webkit-transition-property: opacity;
@@ -1293,7 +1280,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding-right: 35px;
 }
 
-#jqt ul li.arrow > a, #jqt ul li.forward > a, #jqt ul li.check > a {
+#jqt ul li.arrow > a:only-child, #jqt ul li.forward > a:only-child, #jqt ul li.check > a {
     margin-right: -35px;
     padding-right: 35px;
 }
@@ -1310,6 +1297,14 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat, no-repeat, repeat-x;
 }
 
+#jqt > * ul.mail li .icon.arrow::before {
+    display: block; position: relative;
+    top: 15px; left: 30px; width: 27px; height: 27px;
+    background-image: url(img/blue_arrow_27px.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    content: "";
+}
 
 #jqt ul li.forward {
     background-image: url(img/chevron.png), none, none; /* @TODO@ - using only regular chervon now */
@@ -1354,19 +1349,29 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-background-origin: border-box;
 }
 
-#jqt ul li.arrow.active, #jqt ul li.check.active {
+#jqt ul li.active, #jqt ul li.arrow > a.active {
     color: #fff;
     text-shadow: none;
 }
 
-#jqt ul li.active *, #jqt ul li.forward * {
+#jqt ul li.active *, #jqt ul li.forward *, #jqt ul li.arrow > a.active * {
     color: inherit !important;
     text-shadow: none !important;
 }
 
-#jqt ul li.arrow.active {
+#jqt ul li.arrow.active, #jqt ul li.forward.active, #jqt ul li.arrow > a.active {
     background-image: url(img/listArrowSel.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
     background-position: right center, left center, left top !important;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+}
+
+#jqt > * ul.edgetoedge li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.mail li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.rounded li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.plastic li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.metal li:not(.arrow):not(.check):not(.forward).active {
+    background-image: none, none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
+    background-position: right center, 6px center, left top !important;
     background-repeat: no-repeat, no-repeat, no-repeat;
 }
 

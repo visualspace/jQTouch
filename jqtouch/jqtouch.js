@@ -48,15 +48,17 @@
             tapReady=true,
             lastTime=0,
             lastAnimationTime=0,
+            allSelectors=[],
+            touchSelectors = [],
             actionSelectors=[],
             publicObj={},
             tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
-            actionNodeTypes=['anchor', 'area', 'back'];
+            actionNodeTypes=['anchor', 'area', 'back', 'button'];
             behaviorModifier=['toggle'];
             standardAnimations=['slide', 'flip', 'slideup', 'swap', 'cube', 'pop', 'dissolve', 'fade', 'notransition'],
             animationModifiers=['smokedglass', 'clearglass'];
-            touchActived=['swipeable', 'activable', 'tapable', 'delayedinput'];
+            touchActivated=['swipeable', 'activable', 'tapable', 'delayedinput'];
             defaultSection=null,
             animations=[],
             modifiers=[],
@@ -99,6 +101,7 @@
             anchorSelector: '#jqt a',
             areaSelector: '#jqt area',
             backSelector: '#jqt .back, #jqt .cancel, #jqt .goback, #jqt .done, #jqt .toolbar input[type=\'reset\']',
+            buttonSelector: '#jqt .button',
             backwardSelector: '#jqt .backward',
             formSelector: '#jqt form',
             submitSelector: '#jqt .submit, input[type=\'submit\']',
@@ -107,11 +110,12 @@
             toggleSelector: '#jqt .tog',
 
             // special selectors
-            activableSelector: '#jqt ol > li, #jqt ul > li.arrow',
-            swipeableSelector: '#jqt .swipe',
-            tapableSelector: '#jqt .tap',
+            activableSelector: '#jqt ol > li, #jqt ul > li, .activable',
+            swipeableSelector: '#jqt .swipe, #jqt .swipable',
+            tapableSelector: '#jqt .tap, #jqt .tapable',
             engageable: [
                 {query: '#jqt .searchbox',
+                    marker: "engaged", engaged: "engaged", degaged: "degaged",
                     engager: [
                         {find: "input[type='search']", event: "focus"}
                     ],
@@ -127,6 +131,7 @@
                     ]
                 },
                 {query: '#jqt .searchpane',
+                    marker: "engaged", engaged: "engaged", degaged: "degaged",
                     engager: [{find: ".searchbox", event: "engaged"}],
                     degager: [{find: ".searchbox", event: "degaged"}]
                 },
@@ -374,7 +379,6 @@
           var result = "";
           result += h.protocol;
           result += "//";
-          // result += h.port? (":" + h.port): "";
           result += h.host;
           result += h.pathname;
           result += h.hash;
@@ -958,13 +962,14 @@
                 _debug('Not converting click to a tap event because touch handler is on the job');
             } else {
                 _debug('Converting click event to a tap event');
-                $(e.target).trigger('tap', e);
+                // $(e.target).trigger('tap', e);
             }
         }
 
         var handlers = [
             {name: "backward-modifier", fn: function($el, e, fn) {
                 if ($el.is(jQTSettings.backwardSelector)) {
+                    e.stopPropagation();
                     var hash = $el.attr('hash');
 
                     // find out the from page
@@ -992,6 +997,7 @@
             {name: "back-button", fn: function($el, e, fn) {
                 // User clicked a back button
                 if ($el.is(jQTSettings.backSelector)) {
+                    e.stopPropagation();
                     var hash = $el.attr('hash');
 
                     // find out the from page
@@ -1016,6 +1022,7 @@
             {name: "submit-button", fn: function($el, e, fn) {
                 if ($el.is(jQTSettings.submitSelector)) {
                     // User clicked or tapped a submit element
+                    e.stopPropagation();
                     submitParentForm($el);
                 } else {
                     fn();
@@ -1024,6 +1031,7 @@
             {name: "internalapp", fn: function($el, e, fn) {
                 if ($el.attr('target') === '_webapp') {
                     // User clicked an internal link, fullscreen mode
+                    e.stopPropagation();
                     window.location = $el.attr('href');
                 } else {
                     fn();
@@ -1045,6 +1053,8 @@
 
                 if (hash && hash !== '#') {
                     if ($el.is(jQTSettings.toggleSelector)) {
+                        e.stopPropagation();
+                        e.preventDefault();
                         if ($(hash).hasClass('current')) {
                             goBack({
                                 to: null,
@@ -1064,7 +1074,6 @@
                                 reverse: reverse
                             });
                         }
-                        e.preventDefault();
                     } else {
                         fn();
                     }
@@ -1084,6 +1093,7 @@
                     var reverse = $el.hasClass('reverse');
 
                     // Branch on internal or external href
+                    e.stopPropagation();
                     goTo({
                         to: $(hash).data('referrer', $el),
                         search: search,
@@ -1103,6 +1113,7 @@
 
                 // External href
                 $el.addClass('loading');
+                e.stopPropagation();
                 showPageByHref($el.attr('href'), {
                     animation: animation,
                     callback: function() {
@@ -1115,22 +1126,15 @@
 
         function tapHandler(e){
             // Grab the clicked element
-            var $el = $(e.currentTarget);
+            var $el = $(e.target);
 
-            var anyActionSelectors = actionSelectors.join(', ');
-            if (!$el.is(anyActionSelectors)) {
-              var $link = $(e.target).closest(anyActionSelectors);
-
-              if ($link.length) {
-                  $el = $link;
-              } else {
-                  console.warn('Not a known node type. type: ' + e.target.nodeName + ' id: ' + e.target.id);
-                  return;
-              }
+            var mySelectors = actionSelectors.join(', ');
+            if (!$el.is(mySelectors)) {
+                return;
             }
 
-            if (tapReady == false || !$el.length) {
-                console.warn('Not able to tap element.');
+            if (tapReady == false) {
+                console.warn('Tap not ready. type: "' + e.target.nodeName + '" id: "' + e.target.id + '"');
                 return false;
             }
 
@@ -1147,11 +1151,21 @@
             chain();
         }
 
-        /* -- tag for code merge --
-        function touchStartHandler(e) {
-        */
-        function touchstart(e) {
-            var $el = null;
+        function touchstartHandler(e) {
+            var $el, $marked;
+
+            $el = $(e.target);
+            var mySelectors = allSelectors.join(', ');
+            if (!$el.is(mySelectors)) {
+                var $link = $(e.target).closest(mySelectors);
+
+                if ($link.length) {
+                    $el = $link;
+                } else {
+                    return;
+                }
+            }
+
             var hovertimeout = null;
             var presstimeout = null;
             var startX, startY, startTime;
@@ -1195,19 +1209,17 @@
                 deltaY = 0;
                 deltaT = 0;
 
-                if (!!$el) {
-                    $el.removeClass('active');
-                    clearTimeout(hovertimeout);
-                    pressTimeout(presstimeout);
-                }
-                $el = $(e.currentTarget);
-
                 // Let's bind these after the fact, so we can keep some internal values
                 bindEvents($el);
 
                 setTimeout(function() {
-                    handlehover(e);
-                }, 50);
+                    $marked = $el;
+                    while ($marked.parent().is(mySelectors)) {
+                      $marked = $marked.parent();
+                    }
+
+                    handlehover();
+                }, 100);
 
                 setTimeout(function() {
                   $el.trigger("touch");
@@ -1233,7 +1245,7 @@
                 if (absY <= 5) {
                     if (absX > (3 * absY) && (absX > 10) && deltaT < 1000) {
                         inprogress = false;
-                        $el.removeClass('active');
+                        if ($marked) $marked.removeClass('active');
                         unbindEvents($el);
 
                         swipped = true;
@@ -1242,7 +1254,7 @@
                 } else {
                     // moved too much, can't swipe anymore
                     inprogress = false;
-                    $el.removeClass('active');
+                    if ($marked) $marked.removeClass('active');
                     unbindEvents($el);
                 }
             };
@@ -1258,32 +1270,30 @@
                     tapped = true;
                     $el.trigger('tap');
                     setTimeout(function() {
-                      $el.removeClass('active');
+                      if ($marked) $marked.removeClass('active');
                   }, 1000);
                 } else {
-                    $el.removeClass('active');
+                  if ($marked) $marked.removeClass('active');
                     e.preventDefault();
                 }
             };
 
             function handlecancel(e) {
                 inprogress = false;
-                $el.removeClass('active');
+                if ($marked) $marked.removeClass('active');
                 unbindEvents();
             };
 
-            function handlehover(e) {
+            function handlehover() {
                 timed = true;
-                if (tapReady) {
-                    if (tapped) {
-                        // flash the selection
-                        $el.addClass('active');
-                        hovertimeout = setTimeout(function() {
-                            $el.removeClass('active');
-                        }, 1000);
-                    } else if (inprogress && !moved) {
-                        $el.addClass('active');
-                    }
+                if (tapped) {
+                    // flash the selection
+                    $marked.addClass('active');
+                    hovertimeout = setTimeout(function() {
+                        $marked.removeClass('active');
+                    }, 1000);
+                } else if (inprogress && !moved) {
+                    $marked.addClass('active');
                 }
             };
 
@@ -1369,100 +1379,48 @@
               var name = actionNodeTypes[i];
               var selector = jQTSettings[name + 'Selector'];
               if (typeof(selector) == 'string' && selector.length > 0) {
+                allSelectors.push(selector);
                 actionSelectors.push(selector);
               } else {
                 console.warn('invalid selector for nodetype: ' + name);
               }
             }
-            $(window).live('click', clickHandler);
-            $(actionSelectors.join(', ')).live('tap', tapHandler);
-            $(actionSelectors.join(', ')).css('-webkit-touch-callout', 'none');
-            $(actionSelectors.join(', ')).css('-webkit-user-drag', 'none');
-            $(document).live(MOVE_EVENT, function(e) {
-              if (!$(this).hasClass("unfixed")) {
-                e.preventDefault();
-              }
-            });
 
             // listen to touch events
             // performance critical to scroll
-            var tapSelectors = [];
-            for (var i=0, len=touchActived.length; i<len; i++) {
-              var type = touchActived[i];
+            for (var i=0, len=touchActivated.length; i<len; i++) {
+              var type = touchActivated[i];
               var selector = jQTSettings[type + 'Selector'];
               if (typeof(selector) == 'string' && selector.length > 0) {
-                tapSelectors.push(selector);
+                allSelectors.push(selector);
+                touchSelectors.push(selector);
               }
             }
-            $(tapSelectors.join(', ')).live(START_EVENT, touchstart);
-            $(tapSelectors.join(', ')).css('-webkit-touch-callout', 'none');
-
-            for (var i=0, len=jQTSettings.engageable.length; i<len; i++) {
-              var item = jQTSettings.engageable[i];
-              $(item.query).each(function(e, gear) {
-                var $gear = $(gear);
-                for (var j=0, len=item.engager.length; j<len; j++) {
-                  var engager = item.engager[j];
-                  $gear.find(engager.find).bind(engager.event, function() {
-                    $gear.addClass("engaged");
-                    $gear.trigger("engaged");
-                    if (!!engager.fn && $.isFunction(engager.fn)) {
-                      engager.fn("engaged", gear);
-                    }
-                    return false;
-                  });
-                }
-                for (var j=0, len=item.degager.length; j<len; j++) {
-                  var degager = item.degager[j];
-                  $gear.find(degager.find).bind(degager.event, function() {
-                    if (!!degager.fn && $.isFunction(degager.fn)) {
-                      degager.fn("degaged", gear);
-                    }
-                    $gear.removeClass("engaged");
-                    $gear.trigger("degaged");
-                    return false;
-                  });
-                }
-              });
-            }
-
-            // delay input focus
-            // this hack is added to workaround <input> moving (translate3d or change top)
-            var delayinputTimer;
-            $(jQTSettings.delayedinputSelector).each(function(i, gear) {
-              var $gear = $(gear);
-              $gear.bind("touchstart mousedown", function(e) {
-                console.log("touch");
-                e.preventDefault();
-                if (!!delayinputTimer) {
-                  clearTimeout(delayinputTimer);
-                  delayinputTimer = null;
-                }
-                delayinputTimer = setTimeout(function() {
-                  e.target.focus();
-                }, 50);
-              });
-              $gear.bind("focus", function(e) {
-                console.log("focus'd");
-              });
-            });
-
-            // other settings
             $body = $('#jqt');
             if ($body.length === 0) {
                 console.warn('Could not find an element with the id "jqt", so the body id has been set to "jqt". This might cause problems, so you should prolly wrap your panels in a div with the id "jqt".');
                 $body = $('body').attr('id', 'jqt');
             }
 
+            $(allSelectors.join(', ')).live('tap', tapHandler);
+            $(allSelectors.join(', ')).css('-webkit-touch-callout', 'none');
+            $(allSelectors.join(', ')).css('-webkit-user-drag', 'none');
+            $(document).live(MOVE_EVENT, function(e) {
+              if (!$(this).hasClass("unfixed")) {
+                e.preventDefault();
+              }
+            });
+            $body.live(START_EVENT, touchstartHandler);
+
             // Create custom live events
             $body
-                .bind('click', tapHandler)
+                .bind('click', clickHandler)
                 .bind('orientationchange', updateOrientation)
                 .bind('submit', submitHandler)
                 .trigger('orientationchange');
 
             if (jQTSettings.useFastTouch && $.support.touch) {
-                $body.click(function(e) {
+                $body.bind('click', function(e) {
                     var timeDiff = (new Date()).getTime() - lastAnimationTime;
                     if (timeDiff > tapBuffer) {
                         var $el = $(e.target);
@@ -1483,6 +1441,59 @@
                     }
                 });
             }
+
+            for (var i=0, len=jQTSettings.engageable.length; i<len; i++) {
+              var item = jQTSettings.engageable[i];
+              $(item.query).each(function(e, gear) {
+                var marker = item.marker || "engaged";
+                var engaged = item.engaged || "engaged";
+                var degaged = item.degaged || "degaged";
+                var $gear = $(gear);
+                for (var j=0, len=item.engager.length; j<len; j++) {
+                  var engager = item.engager[j];
+                  $gear.find(engager.find).bind(engager.event, function() {
+                    $gear.addClass(marker);
+                    $gear.trigger(engaged);
+                    if (!!engager.fn && $.isFunction(engager.fn)) {
+                      engager.fn(engaged, gear);
+                    }
+                    return false;
+                  });
+                }
+                for (var j=0, len=item.degager.length; j<len; j++) {
+                  var degager = item.degager[j];
+                  $gear.find(degager.find).bind(degager.event, function() {
+                    if (!!degager.fn && $.isFunction(degager.fn)) {
+                      degager.fn(degaged, gear);
+                    }
+                    $gear.removeClass(marker);
+                    $gear.trigger(degaged);
+                    return false;
+                  });
+                }
+              });
+            }
+
+            // delay input focus
+            // this is a workaround to <input> moving artifacts: cursor does not follow the input (translate3d or change top)
+            var delayinputTimer;
+            $(jQTSettings.delayedinputSelector).each(function(i, gear) {
+              var $gear = $(gear);
+              $gear.bind("touchstart mousedown", function(e) {
+                console.log("touch");
+                e.preventDefault();
+                if (!!delayinputTimer) {
+                  clearTimeout(delayinputTimer);
+                  delayinputTimer = null;
+                }
+                delayinputTimer = setTimeout(function() {
+                  e.target.focus();
+                }, 50);
+              });
+              $gear.bind("focus", function(e) {
+                console.log("focus'd");
+              });
+            });
 
             if (jQTSettings.fullScreenClass && window.navigator.standalone == true) {
               $body.addClass(jQTSettings.fullScreenClass + ' ' + jQTSettings.statusBar);
