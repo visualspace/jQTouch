@@ -110,7 +110,7 @@
             toggleSelector: '#jqt .tog',
 
             // special selectors
-            activableSelector: '#jqt ol > li, #jqt ul > li, .activable',
+            activableSelector: '#jqt ol > li.arrow, #jqt ul > li.arrow, #jqt ul.childrenactivable > li, .activable',
             swipeableSelector: '#jqt .swipe, #jqt .swipable',
             tapableSelector: '#jqt .tap, #jqt .tapable',
             engageable: [
@@ -1132,9 +1132,15 @@
             // Grab the clicked element
             var $el = $(e.target);
 
-            var mySelectors = actionSelectors.join(', ');
+            var mySelectors = allSelectors.join(', ');
             if (!$el.is(mySelectors)) {
-                return;
+                var $link = $(e.target).closest(mySelectors);
+
+                if ($link.length) {
+                    $el = $link;
+                } else {
+                    return;
+                }
             }
 
             if (tapReady == false) {
@@ -1156,9 +1162,10 @@
         }
 
         function touchstartHandler(e) {
-            var $el, $marked;
+            var $oel, $el, $marked;
 
-            $el = $(e.target);
+            $oel = $(e.target);
+            $el = $oel;
             var mySelectors = allSelectors.join(', ');
             if (!$el.is(mySelectors)) {
                 var $link = $(e.target).closest(mySelectors);
@@ -1272,12 +1279,12 @@
                 unbindEvents($el);
                 if (!tapped && (absX <= 1 && absY <= 1)) {
                     tapped = true;
-                    $el.trigger('tap');
+                    $oel.trigger('tap');
                     setTimeout(function() {
                       if ($marked) $marked.removeClass('active');
                   }, 1000);
                 } else {
-                  if ($marked) $marked.removeClass('active');
+                    if ($marked) $marked.removeClass('active');
                     e.preventDefault();
                 }
             };
@@ -1406,7 +1413,7 @@
                 $body = $('body').attr('id', 'jqt');
             }
 
-            $(allSelectors.join(', ')).live('tap', tapHandler);
+            $body.bind('tap', tapHandler);
             $(allSelectors.join(', ')).css('-webkit-touch-callout', 'none');
             $(allSelectors.join(', ')).css('-webkit-user-drag', 'none');
             $(document).live(MOVE_EVENT, function(e) {
@@ -1414,7 +1421,7 @@
                 e.preventDefault();
               }
             });
-            $body.live(START_EVENT, touchstartHandler);
+            $body.bind(START_EVENT, touchstartHandler);
 
             // Create custom live events
             $body
@@ -1455,7 +1462,7 @@
                 var $gear = $(gear);
                 for (var j=0, len=item.engager.length; j<len; j++) {
                   var engager = item.engager[j];
-                  $gear.find(engager.find).bind(engager.event, function() {
+                  $gear.find(engager.find).live(engager.event, function() {
                     $gear.addClass(marker);
                     $gear.trigger(engaged);
                     if (!!engager.fn && $.isFunction(engager.fn)) {
@@ -1466,7 +1473,7 @@
                 }
                 for (var j=0, len=item.degager.length; j<len; j++) {
                   var degager = item.degager[j];
-                  $gear.find(degager.find).bind(degager.event, function() {
+                  $gear.find(degager.find).live(degager.event, function() {
                     if (!!degager.fn && $.isFunction(degager.fn)) {
                       degager.fn(degaged, gear);
                     }
@@ -1483,7 +1490,7 @@
             var delayinputTimer;
             $(jQTSettings.delayedinputSelector).each(function(i, gear) {
               var $gear = $(gear);
-              $gear.bind("touchstart mousedown", function(e) {
+              $gear.live("touchstart mousedown", function(e) {
                 console.log("touch");
                 e.preventDefault();
                 if (!!delayinputTimer) {
@@ -1494,7 +1501,7 @@
                   e.target.focus();
                 }, 50);
               });
-              $gear.bind("focus", function(e) {
+              $gear.live("focus", function(e) {
                 console.log("focus'd");
               });
             });
