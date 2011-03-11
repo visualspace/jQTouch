@@ -1181,8 +1181,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -moz-border-bottom-right-radius: 0;
 }
 
-#jqt ul.rounded li:first-child, #jqt ul.rounded li:first-child a,
-#jqt fieldset.rounded input[type="radio"]:first-child, #jqt fieldset.rounded input[type="radio"]:first-child a {
+#jqt ul.rounded li:first-child, #jqt ul.rounded li:first-child > a:only-of-type,
+#jqt fieldset.rounded input[type="radio"]:first-child, #jqt fieldset.rounded input[type="radio"]:first-child > a:only-of-type {
     border-top: 0;
     -webkit-border-top-left-radius: 8px;
     -webkit-border-top-right-radius: 8px;
@@ -1190,8 +1190,8 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -moz-border-top-right-radius: 8px;
 }
 
-#jqt ul.rounded li:last-child, #jqt ul.rounded li:last-child a,
-#jqt fieldset.rounded input[type="radio"]:last-child, #jqt fieldset.rounded input[type="radio"]:last-child a {
+#jqt ul.rounded li:last-child, #jqt ul.rounded li:last-child > a:only-of-type,
+#jqt fieldset.rounded input[type="radio"]:last-child, #jqt fieldset.rounded input[type="radio"]:last-child > a:only-of-type {
     -webkit-border-bottom-left-radius: 8px;
     -webkit-border-bottom-right-radius: 8px;
     -moz-border-bottom-left-radius: 8px;
@@ -1280,7 +1280,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding-right: 35px;
 }
 
-#jqt ul li.arrow > a:only-child, #jqt ul li.forward > a:only-child, #jqt ul li.check > a {
+#jqt ul li.arrow > a:only-of-type, #jqt ul li.forward > a:only-of-type, #jqt ul li.check > a {
     margin-right: -35px;
     padding-right: 35px;
 }
@@ -1318,7 +1318,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
-#jqt ul li a {
+#jqt ul li > a:only-of-type {
     /* universal links on list */
     color: inherit;
     text-decoration: none;
@@ -1365,11 +1365,12 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
-#jqt > * ul.edgetoedge li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.mail li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.rounded li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.plastic li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.metal li:not(.arrow):not(.check):not(.forward).active {
+#jqt > * ul.childrenactivable > li.active,
+#jqt > * ul.edgetoedge > li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.mail > li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.rounded > li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.plastic > li:not(.arrow):not(.check):not(.forward).active,
+#jqt > * ul.metal > li:not(.arrow):not(.check):not(.forward).active {
     background-image: none, none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
     background-position: right center, 6px center, left top !important;
     background-repeat: no-repeat, no-repeat, no-repeat;
@@ -1898,19 +1899,21 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.edgetoedge li:first-child,
-#jqt ul.edgetoedge li:first-child a,
+#jqt ul.edgetoedge li:first-child > a:only-of-type,
 #jqt ul.edgetoedge li:last-child,
-#jqt ul.edgetoedge li:last-child a,
+#jqt ul.edgetoedge li:last-child > a:only-of-type,
 #jqt ul.mail li:first-child,
-#jqt ul.mail li:first-child a,
+#jqt ul.mail li:first-child > a:only-of-type,
 #jqt ul.mail li:last-child,
-#jqt ul.mail li:last-child a,
+#jqt ul.mail li:last-child > a:only-of-type,
 #jqt ul.message li:first-child,
-#jqt ul.message li:first-child a,
+#jqt ul.message li:first-child > a:only-of-type,
 #jqt ul.message li:last-child,
-#jqt ul.message li:last-child a,
-#jqt ul.metal li:first-child a,
-#jqt ul.metal li:last-child a {
+#jqt ul.message li:last-child > a:only-of-type,
+#jqt ul.metal li:first-child,
+#jqt ul.metal li:first-child > a:only-of-type,
+#jqt ul.metal li:last-child,
+#jqt ul.metal li:last-child > a:only-of-type {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
 }
