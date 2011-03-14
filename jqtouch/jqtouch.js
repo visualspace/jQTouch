@@ -38,7 +38,6 @@
             $head=$('head'),
             hist=[],
             newPageCount=0,
-            bogomark=1,
             jQTSettings={},
             hashCheckInterval,
             currentPage,
@@ -477,13 +476,6 @@
                     }
                 }
 
-                /*
-                var darkart = 30;
-                if (params.heavy && bogomark > 0.1) {
-                    darkart = Math.floor(350 * bogomark);
-                }
-                setTimeout(function() {
-                 */
                 setTimeout(function() {
                     fromPage.addClass('start');
                     toPage.addClass('start');
@@ -493,8 +485,7 @@
                             pagecallback();
                         }
                     }, 10);
-                }, 50);
-                //}, darkart);
+                }, 120);
             } else {
                 if ($.isFunction(pagecallback)) {
                     pagecallback();
@@ -1230,7 +1221,7 @@
                     }
 
                     handlehover();
-                }, 100);
+                }, 50);
 
                 setTimeout(function() {
                   $el.trigger("touch");
@@ -1319,20 +1310,6 @@
             handlestart(e);
 
         }; // End touch handler
-
-        // Utility
-        var BogoMips = new function() {
-          this.benchmark = function() {
-              var start = new Date().getTime();
-              for (var i=0; i<= 200000; i++) {
-                  var a = 1000 / 7 * 11 / 13;
-              }
-              var end = new Date().getTime();
-              var result = (end - start) / 50;
-              return result;
-          }; /* iPhone 3GS ~1, iPad G1 ~0.4 */
-          return this;
-        };
 
         // Get the party started
         init(options);
@@ -1602,8 +1579,6 @@
             if (jQTSettings.inputguard) {
               // just won't work
             }
-
-            bogomark = Math.max(0.1, Math.min(1, BogoMips.benchmark()));
 
             // nexus (and andriod in general) need to scrollTo(0, 1). Newer iPhone call do (0, 0).
             setTimeout(function() {
