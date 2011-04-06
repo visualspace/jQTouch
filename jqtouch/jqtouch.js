@@ -1572,8 +1572,10 @@
             $("#jqt > .current").trigger("pagein", {hash: "#" + pageid, search: search});
 
             // update browser url
-            var newloc = replaceHrefPart(window.location, {search: getSearchString(search)});
-            window.history.replaceState({}, "page", newloc);
+            if (!!window.history && !!window.history.replaceState) {
+              var newloc = replaceHrefPart(window.location, {search: getSearchString(search)});
+              window.history.replaceState({}, "page", newloc);
+            }
 
             // guard input for proper scroll behaviour
             if (jQTSettings.inputguard) {
