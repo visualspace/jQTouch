@@ -404,7 +404,7 @@
         function doNavigation(fromPage, toPage, animation, backwards) {
         */
         function animatePages(params) {
-            var toPage, fromPage, animation;
+            var toPage, fromPage, animation, backwards;
             toPage = params.to;
             fromPage = params.from;
             animation = params.animation;
@@ -437,8 +437,8 @@
             toPage.css('top', window.pageYOffset);
 
             // animation settings
-            var backwards = !!animation? $.inArray('reverse', animation.split(' ')) >= 0: false;
-            var animation = !backwards? animation: adjustAnimation(animation, true);
+            backwards = !!animation? $.inArray('reverse', animation.split(' ')) >= 0: false;
+            animation = !backwards? animation: adjustAnimation(animation, true);
             var main = toPage.attr('section') === defaultSection;
 
             fromPage.trigger('pageAnimationStart', { direction: 'out' });
@@ -901,7 +901,7 @@
                 showPageByHref($form.attr('action'), {
                     data: $form.serialize(),
                     method: $form.attr('method') || "POST",
-                    animation: animations[0] || null,
+                    animation: animations[0].name || null,
                     callback: callback
                 });
             }
@@ -1494,7 +1494,7 @@
             var usersplitmode = search.jqtsplitmode;
             if (usersplitmode !== undefined) {
               delete search.jqtsplitmode;
-              if (usersplitmode === "true") {
+              if (usersplitmode === 'true') {
                 usersplitmode = true;
               } else {
                 usersplitmode = false;
@@ -1506,16 +1506,16 @@
             // handling split screen for wider device (such as iPad)
             splitscreenmode = usersplitmode && $.support.wide && $body.hasClass('splitscreen');
             if (usersplitmode === false) {
-              $("#jqt").removeClass('splitscreen');
+              $('#jqt').removeClass('splitscreen');
             }
             if (splitscreenmode) {
                 var $aside = $('#jqt > [section="aside"]');
                 if ($aside.length > 0) {
                     if ($($aside.filter('.current').length != 0)) {
-                      currentAside = $($($aside.filter('.current:first')));
+                      currentAside = $($aside.filter('.current:first')[0]);
                       $aside.removeClass('current');
                     } else {
-                      currentAside = $aside.filter(':first');
+                      currentAside = $($aside.filter(':first')[0]);
                     }
                     addPageToHistory(currentAside);
                 }
