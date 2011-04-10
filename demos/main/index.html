@@ -36,7 +36,6 @@
                 background-image: url(./image/iphonecontact_57px.png);
             }
 
-
             .buttonicon {
               position: relative;
               min-width: 30px;
@@ -54,6 +53,10 @@
             .d-config {
               -webkit-mask-image: url(./image/20-gear2.png);
               -webkit-mask-position: 1px 1px;
+            }
+
+            .w-gmail {
+              background-image: url(./image/gmaillogo_29px.png);
             }
 
             .p-photographer{
@@ -127,6 +130,11 @@
                             }, 1000); // <-- Simulate network congestion, remove setTimeout from production!
                           }
                         };
+                      } else if ($wrapper.hasClass("scrollzoompane")) {
+                        options = {
+                          zoom:true
+                        };
+                        console.warn("special scroll: " + "scrollzoompane");
                       }
 
                       scroll = new iScroll(wrap, options);
@@ -417,14 +425,14 @@
             </div>
             <div id="contact">
                 <div class="toolbar">
-                    <h1>Edge to Edge (w/ Photo)</h1>
+                    <h1>Edge to Edge (w/ icon)</h1>
                     <a href="#" class="back">Back</a>
                 </div>
                 <div class="s-scrollwrapper contentwrap">
                     <div class="s-scrollpane" id="contactpane">
                         <ul class="edgetoedge childrenactivable">
                             <li class="sep">F</li>
-                            <li class="icon p-painter"><a href="#" class="">Flintstone, <em>Fred</em></a></li>
+                            <li><a href="#" class="icon p-painter">Flintstone, <em>Fred</em></a></li>
                             <li><a href="#">Flintstone, <em>Pebble</em></a></li>
                             <li><a href="#">Flintstone, <em>Wilma</em></a></li>
                             <li class="sep">J</li>
@@ -467,6 +475,9 @@
                                 <div><label>Ends</label><span class="value">Wed, Mar 11, 2011</span></div>
                               </a>
                             </li>
+                        </ul>
+                        <ul class="rounded form">
+                            <li class="activable"><a href="#" class="slideup centeredicon w-gmail"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -628,13 +639,13 @@
                 <div class="s-scrollwrapper contentwrap">
                   <form class="s-scrollpane" id="homepane">
                     <ul class="rounded">
-                        <li class="arrow"><a href="#ui">User Interface</a> <small class="counter">13</small></li>
-                        <li class="arrow"><a href="#animations">Animations</a> <small class="counter">8</small></li>
-                        <li class="arrow"><a href="#ajax">AJAX</a> <small class="counter">3</small></li>
-                        <li class="arrow"><a href="#callbacks">Events</a> <small class="counter">3</small></li>
-                        <li class="arrow"><a href="#extensions">Extensions</a> <small class="counter">4</small></li>
+                        <li class="arrow"><a href="#ui">User Interface<small class="counter">13</small></a></li>
+                        <li class="arrow"><a href="#animations">Animations<small class="counter">8</small></a></li>
+                        <li class="arrow"><a href="#ajax">AJAX<small class="counter">3</small></a></li>
+                        <li class="arrow"><a href="#callbacks">Events<small class="counter">3</small></a></li>
+                        <li class="arrow"><a href="#extensions">Extensions<small class="counter">4</small></a></li>
                         <li class="arrow"><a href="#video">Video</a></li>
-                        <li class="arrow"><a href="#demos">Demos</a> <small class="counter">3</small></li>
+                        <li class="arrow"><a href="#demos">Demos<small class="counter">3</small></a></li>
                     </ul>
                     <h2>External Links</h2>
                     <ul class="rounded">

@@ -78,6 +78,8 @@
             useAnimations: true,
             defaultAnimation: 'slide',
             defaultModifier: '',
+            updatehash: true,
+            hashquery: false,
             inputguard: true,
             inputtypes: ["input[type='text']", "input[type='password']", "input[type='tel']", "input[type='number']", "input[type='search']", "input[type='email']", "input[type='url']", "select", "textarea"],
             useFastTouch: false, // Experimental.
@@ -104,6 +106,7 @@
             backwardSelector: '#jqt .backward',
             formSelector: '#jqt form',
             submitSelector: '#jqt .submit, input[type=\'submit\']',
+            dialogSelector: '#jqt .dialog, #jqt a input',
 
             // behavior selectors (experimental)
             toggleSelector: '#jqt .tog',
@@ -241,7 +244,7 @@
             return result;
         }
 
-        function addPageToHistory(page, search, animation) {
+        function addPageToHistory(page, search, pageback, animation) {
             // Grab some info
             var pageId = page[0].id;
             var npage = $('#' + pageId); // normalize to actual page
@@ -252,12 +255,13 @@
                 search: search,
                 animation: animation,
                 section: section,
+                pageback: pageback,
                 id: pageId
             });
 
             // update hash
-            if (section === defaultSection) {
-                location.hash = '#' + pageId + getSearchString(search);
+            if (jQTSettings.updatehash && section === defaultSection) {
+                location.hash = '#' + pageId + optPrefix('?', getSearchString(search));
             }
             startHashCheck();
         }
@@ -380,10 +384,17 @@
           result += "//";
           result += h.host;
           result += h.pathname;
-          result += h.hash;
           result += h.search;
+          result += h.hash;
 
           return result;
+        }
+
+        function optPrefix(leading, string) {
+          if (!string) {
+            return string;
+          }
+          return leading + string;
         }
 
         function getSearchString(search) {
@@ -393,9 +404,6 @@
                     result += '&';
                 }
                 result += item + '=' + encodeURIComponent(search[item]);
-            }
-            if (result.length > 0) {
-                result = '?' + result;
             }
             return result;
         };
@@ -566,7 +574,7 @@
 
         function goBack(param) {
             var to, from;
-            var fn;
+            var fn, returns;
             if (typeof(param) === 'string' || param instanceof jQuery) {
                 /* back compat param */
                 to = param;
@@ -575,6 +583,7 @@
                 to = param.to;
                 from = param.from;
                 fn = param.fn;
+                returns = param.returns;
             }
 
             // init the param
@@ -619,6 +628,10 @@
                         pagecallback: function() {
                             $('#' + fromPage.id).trigger('pageout', {hash: '#' + fromPage.id, search: fromPage.search});
                             $('#' + toPage.id).trigger('pageresume', {hash: '#' + toPage.id, search: toPage.search});
+                            if (fromPage.pageback) {
+                                fromPage.pageback.apply(toPage.page[0], [returns]);
+                            }
+                            $('#' + toPage.id).trigger('pageback', {hash: '#' + fromPage.id, search: fromPage.search});
                         },
                         postcallback: fn
                     });
@@ -642,13 +655,13 @@
                     }
                 }
             } else {
-                location.hash = '#' + hist[0].id + getSearchString(param.search);
+                location.hash = '#' + hist[0].id + optPrefix('?', getSearchString(param.search));
             }
             return publicObj;
         }
 
         function goTo(param, p2, p3) {
-            var toPage, search, animation, reverse;
+            var toPage, search, animation, reverse, pageback;
             if (typeof(param) === 'string' || param instanceof jQuery) { /* back compt hack */
                 /* back compat param */
                 toPage = param;
@@ -659,6 +672,7 @@
                 search = param.search;
                 animation = param.animation;
                 reverse = param.reverse;
+                pageback = param.pageback;
             }
 
             if (typeof(toPage) === 'string') {
@@ -680,6 +694,9 @@
             if (!fromPage) {
                 console.error('Cannot find source page.');
                 return false;
+            } else if (toPage.length === 0) {
+              console.error('Cannot find source page: "' + toPage.selector + '".');
+              return false;
             } else if (toPage[0].id !== fromPage.id) {
                 var animationstarted = animatePages({
                     to: toPage,
@@ -692,7 +709,7 @@
                     }
                 });
                 if (animationstarted) {
-                    addPageToHistory(toPage, search, adjustedName);
+                    addPageToHistory(toPage, search, pageback, adjustedName);
 
                     return publicObj;
                 } else {
@@ -705,7 +722,7 @@
                     $('#' + fromPage.id).trigger('pageout', {hash: '#' + fromPage.id, search: fromPage.search});
                     toPage.trigger('pagein', {hash: '#' + toPage.attr('id'), search: param.search});
                     removePageInHistory(fromPage.i, 0, {section: fromPage.section});
-                    addPageToHistory(toPage, search, adjustedName);
+                    addPageToHistory(toPage, search, pageback, adjustedName);
                 } else {
                     $.fn.unselect();
                     console.warn('Target element is the current page.');
@@ -741,13 +758,15 @@
         }
 
         function hashCheck() {
-            var curid = currentPage.attr('id');
-            if (location.hash != '#' + curid) {
-                clearInterval(hashCheckInterval);
-                // goBack(location.hash);
-            }
-            else if (location.hash == '') {
-                location.hash = '#' + curid;
+            if (jQTSettings.updatehash) {
+                var curid = currentPage.attr('id');
+                if (location.hash != '#' + curid) {
+                    clearInterval(hashCheckInterval);
+                    // goBack(location.hash);
+                }
+                else if (location.hash == '') {
+                    location.hash = '#' + curid;
+                }
             }
         }
 
@@ -888,22 +907,31 @@
         function submitHandler(e, callback) {
             $(':focus').blur();
 
+            if (e.isDefaultPrevented()) {
+              return;
+            }
             e.preventDefault();
 
             var $form = (typeof(e)==='string') ? $(e).eq(0) : (e.target ? $(e.target) : $(e));
 
             if (!$form.length) return false;
             // someone else will handle this event
-            if (!$form.is(jQTSettings.formSelector) && !$form.is(jQTSettings.selectSelector)) {
+            if (!$form.is(jQTSettings.formSelector)) {
               return true;
             }
-            if ($form.attr('action')) {
-                showPageByHref($form.attr('action'), {
-                    data: $form.serialize(),
-                    method: $form.attr('method') || "POST",
-                    animation: animations[0].name || null,
-                    callback: callback
-                });
+
+            var action = $form.attr('action');
+            if (action) {
+                if (action === '#') {
+                    goBack({returns: $form.serializeArray()});
+                } else {
+                    showPageByHref($form.attr('action'), {
+                        data: $form.serialize(),
+                        method: $form.attr('method') || "POST",
+                        animation: animations[0].name || null,
+                        callback: callback
+                    });
+                }
             }
             return false;
         }
@@ -962,6 +990,11 @@
         }
 
         var handlers = [
+            {name: "skip-default-prevented", fn: function($el, e, fn) {
+                if (!e.isDefaultPrevented()) {
+                   fn(); // continue only if default is not prevented
+                }
+            }},
             {name: "backward-modifier", fn: function($el, e, fn) {
                 if ($el.is(jQTSettings.backwardSelector)) {
                     e.stopPropagation();
@@ -1078,20 +1111,54 @@
             }},
             {name: "standard", fn: function($el, e, fn) {
                 var hash = $el.attr('hash'),
+                    pageback,
                     search = parseSearch($el.attr('search'));
 
                 if (hash && hash !== '#') {
+                    // Branch on internal or external href
+                    e.stopPropagation();
+
+                    if ($el.is(jQTSettings.dialogSelector) || $el.find(jQTSettings.dialogSelector).length > 0) {
+                      pageback = function(returns) {
+                        console.warn("pageback is called. returns: " + JSON.stringify(returns));
+
+                        var $page = $(this);
+                        if (returns) {
+                          for (var i=0, len=returns.length; i<len; i++) {
+                            var item = returns[i];
+                            var $item = $el.find('input[data-sourcename="' + item.name + '"], input[name="' + item.name + '"]').first();
+                            if (i === 0 && $item.length === 0) {
+                              // sloppy workaround for the simpliest
+                              var $item = $el.find('input[value]').eq(i);
+                            }
+                            console.warn("setting value for item: " + $item.attr("id"));
+                            $item.val(item.value);
+                            if ($item.attr('type') === 'radio' || $item.attr('type') === 'checkbox') {
+                              $item.attr('checked', true);
+                            }
+                          }
+                        } // (!returns) indicates dialog was cancelled
+                      };
+
+                      $el.find('input[data-sourcename]').each(function(i, input) {
+                        var $input = $(input);
+                        var name = $input.attr('data-sourcename');
+                        if (name) {
+                          search[name] = $input.val();
+                        }
+                      });
+                    }
+
                     // Figure out the animation to use
                     var animation = findAnimation(function(candidate) {
                         return $el.is(candidate.selector);
                     });
                     var reverse = $el.hasClass('reverse');
 
-                    // Branch on internal or external href
-                    e.stopPropagation();
                     goTo({
                         to: $(hash).data('referrer', $el),
                         search: search,
+                        pageback: pageback,
                         animation: animation,
                         reverse: reverse
                     });
@@ -1152,8 +1219,24 @@
             chain();
         }
 
+        function isRightClick(e) {
+          var rightclick = false;
+
+          if (!SUPPORT_TOUCH) {
+            // http://www.quirksmode.org/js/events_properties.html
+            if (!e) var e = window.event;
+            if (e.which) rightclick = (e.which == 3);
+            else if (e.button) rightclick = (e.button == 2);
+          }
+          return rightclick;
+        }
+
         function touchstartHandler(e) {
             var $oel, $el, $marked;
+
+            if (isRightClick(e)) {
+              return;
+            }
 
             $oel = $(e.target);
             $el = $oel;
@@ -1488,9 +1571,11 @@
             }
 
             var loc = window.location;
+            var search = jQTSettings.hashquery?
+                  parseSearch(loc.hash.substring(1)):
+                  parseSearch(loc.search.substring(1));
 
-            //allow override of splitscreen mode in the url
-            var search = parseSearch(loc.search.substring(1));
+            // allow override of splitscreen mode in the url
             var usersplitmode = search.jqtsplitmode;
             if (usersplitmode !== undefined) {
               delete search.jqtsplitmode;
@@ -1501,6 +1586,13 @@
               }
             } else {
               usersplitmode = true;
+            }
+
+            // allow start page to be specified
+            var startpage = null;
+            if (!!search.jqtpage) {
+              startpage = "#" + search.jqtpage;
+              delete search.jqtpage;
             }
 
             // handling split screen for wider device (such as iPad)
@@ -1517,7 +1609,9 @@
                     } else {
                       currentAside = $($aside.filter(':first')[0]);
                     }
+
                     addPageToHistory(currentAside);
+                    currentAside.trigger('pagein', {hash: '#' + currentAside[0].id, search: {}, referer: document.referrer});
                 }
                 defaultSection = "main";
                 $('#jqt > [section!="aside"]').attr("section", defaultSection);
@@ -1542,6 +1636,7 @@
             }
             currentPage.addClass('current alphapage');
             addPageToHistory(currentPage);
+            currentPage.trigger('pagein', {hash: '#' + currentPage[0].id, search: search, referer: document.referrer});
 
             // adjust visibiliy of elements
             $.each(['full', 'main', 'aside'], function(i, section) {
@@ -1551,16 +1646,15 @@
             });
 
             // move to init page be specified in querystring
-            if (!!search.jqtpage) {
-              var page = "#" + search.jqtpage;
-              delete search.jqtpage;
-
-              var $page = $("#jqt > " + page);
+            if (startpage) {
+              var $page = $("#jqt > " + startpage);
               var section = $page.attr("section");
               if ($page.length === 1) {
                 if (section === defaultSection) {
                   $("#jqt > .current").removeClass("current alphapage");
                   $page.addClass("current alphapage");
+                  addPageToHistory($page);
+                  $page.trigger('pagein', {hash: '#' + startpage, search: search, referer: document.referrer});
                 } else {
                   console.warn("Init page must be displayed in the default section.");
                 }
@@ -1568,13 +1662,13 @@
                 console.warn("Unexpected number of page.");
               }
             }
-            var pageid = $("#jqt > .current").attr("id");
-            $("#jqt > .current").trigger("pagein", {hash: "#" + pageid, search: search});
 
             // update browser url
+            var searchString = getSearchString(search);
+            var hrefPart = jQTSettings.hashquery? {hash: optPrefix('#', '')}: {search: optPrefix('?', searchString)};
+            var newloc = replaceHrefPart(window.location, hrefPart);
             if (!!window.history && !!window.history.replaceState) {
-              var newloc = replaceHrefPart(window.location, {search: getSearchString(search)});
-              window.history.replaceState({}, "page", newloc);
+               window.history.replaceState({}, "page", newloc);
             }
 
             // guard input for proper scroll behaviour
