@@ -350,6 +350,7 @@ iScroll.prototype = {
 	
 	_move: function (e) {
 		if (hasTouch && e.touches.length > 1) return;
+		if (!hasTouch && e.ctrlKey) return;
 
 		var that = this,
 			point = hasTouch ? e.changedTouches[0] : e,
@@ -514,7 +515,7 @@ iScroll.prototype = {
 				newPosY = snap.y;
 				newDuration = m.max(snap.time, newDuration);
 			}
-			
+
 /*			if (newPosX > 0 || newPosX < that.maxScrollX || newPosY > 0 || newPosY < that.maxScrollY) {
 				// Subtle change of scroller motion
 				that.scroller.style.webkitTransitionTimingFunction = 'cubic-bezier(0.33,0.66,0.5,1)';
