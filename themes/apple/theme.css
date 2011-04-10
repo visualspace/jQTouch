@@ -61,23 +61,22 @@ body {
 
 #jqt > * .contentwrap[title]::before,
 #jqt > * .content[title]::before {
-  /* position: absolute; */
-  display: block;
-  position: relative;
-  -webkit-box-sizing: border-box;
-  height: 22px; width: 100%;
-  top: 0px;
-  border-top: 1px solid #CDD5DF; border-bottom: 1px solid #6d84a2;
-  background-color: #889bb3;
-  background-position: center, 0 0; background-repeat: no-repeat, repeat-x;
-  background-image: url(./images/cascade_15px.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 171, 159, 0.75)), to(rgba(181, 201, 193, 0.75)));
-  cursor: pointer;
-  padding: 0 10px;
-  opacity: 0.5;
-  z-index: 19;
-  text-align: right;
-  font-weight: 200;
-  content: attr(title);
+    /* position: absolute; */
+    display: block; position: relative;
+    -webkit-box-sizing: border-box;
+    height: 22px; width: 100%;
+    top: 0px;
+    border-top: 1px solid #CDD5DF; border-bottom: 1px solid #6d84a2;
+    background-color: #889bb3;
+    background-position: center, 0 0; background-repeat: no-repeat, repeat-x;
+    background-image: url(./images/cascade_15px.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 171, 159, 0.75)), to(rgba(181, 201, 193, 0.75)));
+    cursor: pointer;
+    padding: 0 10px;
+    opacity: 0.5;
+    z-index: 19;
+    text-align: right;
+    font-weight: 200;
+    content: attr(title);
 }
 
 @-moz-document url-prefix() {
@@ -88,11 +87,23 @@ body {
     }
 }
 
-#jqt > * > div:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info):not(.choicefloat):not(.spinnerfloat) {
+#jqt > * > div:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info):not(.choicefloat):not(.spinnerfloat):not(.sw-slots-wrapper),
+#jqt > * > form:not(.contentwrap):not(.navibar):not(.toolbar):not(.bar):not(.info):not(.choicefloat):not(.spinnerfloat):not(.sw-slots-wrapper) {
     /* back-compat worthwhile? */
     top: 0; left: 0; right: 0;
-    padding-top: 0px; padding-bottom: 0px;
     /* min-height: 100%; */
+    padding-top: 0px; padding-bottom: 0px;
+    -webkit-box-flex: 10;
+    -moz-box-flex: 10;
+    /* border-top workaround the bug/feature that mobile safari skip the child (such as ui) padding */
+    border-top: 1px solid transparent;
+    margin-top: -1px;
+}
+
+/* all input pad: spinningwheel, emoticon pane etc. */
+#jqt > * > .sw-slots-wrapper {
+    top: 0; left: 0; right: 0;
+    padding-top: 0px; padding-bottom: 0px;
     -webkit-box-flex: 10;
     -moz-box-flex: 10;
 }
@@ -268,7 +279,7 @@ body {
 }
 
 #jqt > * > * .button.greyblue,
-#jqt > * > * .button, /* default */
+#jqt > * > * .button:not(.backarrowgreyblue), /* default */
 #jqt > * > * .tog,
 #jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"],
 #jqt .toolbar .add, #jqt .toolbar .leftButton,
@@ -342,7 +353,8 @@ body {
 }
 
 #jqt > * > * .left,
-#jqt .toolbar .back, #jqt .toolbar .cancel, #jqt .toolbar .leftButton,
+#jqt .toolbar .back, #jqt .toolbar .cancel, #jqt > * > * .button.backarrowgreyblue,
+#jqt .toolbar .leftButton,
 #jqt .toolbar input[type="reset"] {
     float: left;
 }
@@ -385,7 +397,6 @@ body {
     border-bottom-left-radius: 6px;
 }
 
-
 #jqt > * > .navibar input[type="radio"]:first-of-type:not(:first-child), #jqt > * > .toolbar input[type="radio"]:first-of-type:not(:first-child), #jqt > * .bar input[type="radio"]:first-of-type:not(:first-child),
 #jqt > * .buttonset .button:first-of-type:not(:first-child) {
     margin-left: 20px;
@@ -412,8 +423,8 @@ body {
     content: attr(title);
 }
 
-#jqt > * > * .button.active, #jqt .toolbar .add.active,
-#jqt > * > * .button:active, #jqt .toolbar .add:active, #jqt > * > * .button:checked
+#jqt > * > * .button:not(.backarrowgreyblue).active, #jqt .toolbar .add.active,
+#jqt .toolbar .add:active, #jqt > * > * .button:checked
 #jqt > * > * .tog.active, #jqt > * > * .tog:active,
 #jqt .toolbar .leftButton.active, #jqt .toolbar .leftButton:active,
 #jqt .toolbar .actionButton:active, #jqt .toolbar .done:active, #jqt .toolbar .actionButton.active, #jqt .toolbar .done.active,
@@ -442,7 +453,7 @@ body {
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #99555A), color-stop(0.5, #9A373F), color-stop(0.5, #90040F), color-stop(1, #8F040F));
 }
 
-#jqt .toolbar .back:active, #jqt .toolbar .cancel:active {
+#jqt .toolbar .back:active, #jqt .toolbar .cancel:active, #jqt > * > * .button.backarrowgreyblue:active {
     -webkit-border-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAeCAYAAAC16ufeAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAPlSURBVHjaYvz//z8DIbBi2wnLz58/te7cst7x0YN7DJ8/vmegOWBkZJCRU2Bw9fDbJKeoHBThZfEXIIAYCTl22ZbjonduXru0cd1yCTFJBQYxSTkGbj5+mrv1/79/DK9fPGZ4fO8Gg6m59S8rO6d0gABiIaTpzq3ri7ZsWCOhb+rKwCcszMDCxsHAzMzMQA/AxSfIICIpz3Dp3GE2MQnJ+QABhDdk++etr16xaHaLtqkTA7+gOAMTExMDvQHIfe/fPmd4+eAqA0AA4QzZ6ct22qxcMr9RSduSgYdPjAEYK0D8j2EgAA+vKMPjPwwMAAGE1bFz1x4UXb9qyWpRaTVmARFphr9/B8aRyICVnYcBIICwOvbMqaOLvv36LyEnp8rwDxgN//7/HXDHMgPzCkAAYTi2Z/b66hNHD3tomXoAHcnE8O/PwIcqCIAiFyCAUBw7bflem81rVzRKKxsysLByMvz9859hsIC/wPwCEEBwx05Zulv0wpkTq7//Y2WWEpJh+P33L8NgAqB8AxBAcMd+eP9u0cnjxyRUjJ2B0Q+S/T+oHPsP6CiAAAI7dsKindUb1yz3EFPUZ2Bk4gCG6j+GwQZAbgIIIJa+BduVTh871PiPhZeBW0gCGNx/GQYjAIUsQACxvH71ouzs2TPMSgauDBB3/h+0jgUIIOYv3/9tFpTRYWDj4gdXbYMVf/30lgEggFgExeQYvjJxM3z88oNhMINv338xAAQQU1CQLwPLv0/AJtlfYBOScdBiUPsWIICY3n36ZhTo6cDw49NrBmIa4gMJAAKICVjYXvjx6+8mD0dThp9f3jBAPTH4MNCxAAHE1Jgb/P/Xn38RAgJ8p5RlRBh+fv80aEMWIIDAremmvODvX7//9jEx0LrDw/yL4e/vnwwQvwwuDBBA8KZ/c37I68/ff/u7Olp+/PvtLbC4/TvokgJAAKH0U1oKQq/9/MMY5O1i/evb59eDroIACCCMThUwSexjYedMtDHRZvjx+f2gcixAAGHtAdZk+i+TlZZsUpASYPj1/cuAOxJUB7CzsTAABBDO7mpZik+9paneMi6m78AMN7C12x9ghhfk52EACCC8fetXb78kerna7fv3/R2w1/BrYEIVWFH9+vKewcrM6CNAAOF1bGdpxK93n38EBXjZ32T69YHhx9ePwJbZH/q0soD2/P75jeHr++cMjjbG3/8wsgQBBBAjMVVsRd9KFQEu5mMXr94Rvf/wKcPXb7RPFuzsbAxiIgIMtpamwGY3Y1B1hv8mgABiJLY9UNq1XI+Hk/nEv98/OFlZaD989AfoRD4BYYa3H7/GtRaELgaJAQQYABf579XVOHe5AAAAAElFTkSuQmCC) 0 8 0 14;
     color: #fff;
 }
@@ -504,7 +515,7 @@ body {
   #jqt > * > .navibar input[type="radio"], #jqt > * > .toolbar input[type="radio"], #jqt > * .bar input[type="radio"],
   #jqt .toolbar .add,
   #jqt .toolbar .actionButton, #jqt .toolbar .done,
-  #jqt .toolbar .back, #jqt .toolbar .cancel {
+  #jqt .toolbar .back, #jqt .toolbar .cancel, #jqt > * > * .button.backarrowgreyblue {
       height: 24px;
       line-height: 23px;
       min-height: 24px;
@@ -513,7 +524,7 @@ body {
       font-size: 8.5pt;
   }
 
-  #jqt .toolbar .back, #jqt .toolbar .cancel {
+  #jqt .toolbar .back, #jqt .toolbar .cancel, #jqt > * > * .button.backarrowgreyblue {
       height: 27px; /* different in counting png and css border */
   }
 }
@@ -750,7 +761,7 @@ body {
 
 
 
-/* @group Spinner */
+/* @group iScroll pull to refresh */
 
 /* based on: https://github.com/cubiq/iscroll */
 .iScrollPullDown,
@@ -860,6 +871,96 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 @-webkit-keyframes fade {
   from {opacity: 1;}
   to {opacity: 0.25;}
+}
+
+/* @end */
+
+
+
+/* @group Spinner Wheel */
+
+/* http://cubiq.org/spinning-wheel-on-webkit-for-iphone-ipod-touch/11 */
+
+.sw-pressed { opacity:0.4; }
+
+#jqt > * .sw-slots-wrapper {
+    -webkit-box-sizing: border-box;
+    position: absolute; z-index:999;
+    display: block;
+    height: 216px;
+    top: auto; bottom: 0px; left: 0px; right: 0px;
+    border-top: 1px solid black;
+    padding: 0 11px;
+    overflow: hidden;
+    -webkit-transform: translate3d(0, 261px,0);
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 250ms;
+    -webkit-transition-timing-function: linear;
+}
+
+@media only screen and (max-device-width: 320px) and (orientation:landscape) {
+  #jqt > * .sw-slots-wrapper {
+    /* height: 162px; */
+  }
+}
+
+#jqt > *.current .sw-slots-wrapper {
+    -webkit-transform: translate3d(0, 0, 0);
+}
+
+#jqt > * .sw-slots-wrapper .sw-frame {
+    position:absolute; z-index:1000;
+    top: 0; bottom:0; left:0; right:0;
+    border-width:16px;
+    -webkit-border-image:url(../../extensions/spinningwheel/sw-alpha.png) 16;
+}
+
+#jqt > * .sw-slots-wrapper .sw-slots {
+    display:table;
+    width:100%;
+    background:#fcfcfc;
+    text-align: center;
+}
+
+#jqt > * .sw-slots-wrapper .sw-slots div {
+    display:table-cell;
+    height:100%;
+    padding-top:86px;
+    border-left:2px solid #0d0e0f;
+    background-color:#fcfcfc;
+    background-image: url(../../extensions/spinningwheel/sw-slot-border.png);
+    background-position: 0 0, 100% 0;
+    background-repeat: repeat-y;
+    list-style-type: none;
+}
+
+#jqt > * .sw-slots-wrapper ul, #jqt > * .sw-slots-wrapper ul li {
+    display: block;
+    list-style-type: none;
+    padding-right: 5px;
+}
+
+#jqt > * .sw-slots-wrapper .sw-slots div:first-child { border:0; }
+
+#jqt > * .sw-slots-wrapper .sw-slots ul {
+    padding:0 0 85px 0; margin:0;
+    list-style:none;
+}
+
+#jqt > * .sw-slots-wrapper .sw-slots .sw-highlight { color: #468CE0; }
+#jqt > * .sw-slots-wrapper .sw-slots .sw-disabled { color: #lightgrey; }
+#jqt > * .sw-slots-wrapper .sw-slots .sw-right { text-align:right; }
+#jqt > * .sw-slots-wrapper .sw-slots .sw-day { color:grey; font-size: 21px; }
+#jqt > * .sw-slots-wrapper .sw-slots .sw-shrink { width:1%; }
+#jqt > * .sw-slots-wrapper .sw-slots .sw-readonly { background:#ddd; }
+
+#jqt > * .sw-slots-wrapper .sw-slots ul li {
+    -webkit-box-sizing: border-box;
+    padding:0 8px;
+    height:44px;
+    overflow:hidden;
+    border: 0px;
+    font:bold 24px/44px Helvetica,sans-serif;
 }
 
 /* @end */
@@ -1168,7 +1269,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     margin: -15px -10px -17px -10px;
 }
 
-#jqt fieldset.rounded input[type="radio"] {
+#jqt fieldset.rounded > *, #jqt fieldset.rounded > * > a:only-of-type {
     border-style: none;
     border-width: 0;
     -webkit-border-top-left-radius: 0;
@@ -1181,8 +1282,31 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -moz-border-bottom-right-radius: 0;
 }
 
-#jqt ul.rounded li:first-child, #jqt ul.rounded li:first-child > a:only-of-type,
-#jqt fieldset.rounded input[type="radio"]:first-child, #jqt fieldset.rounded input[type="radio"]:first-child > a:only-of-type {
+#jqt fieldset.rounded {
+    border: none;
+}
+
+#jqt fieldset.rounded input[type="radio"] {
+    display: -webkit-box;
+    -webkit-appearance: none;
+    -webkit-box-pack: justify;
+    -webkit-box-align: center;
+    -webkit-box-orient: horizontal;
+    width: 100%;
+    line-height: 28px;
+    font-size: 28px;
+    font-weight: bold;
+    color: inherit;
+}
+
+#jqt fieldset.rounded > input[type="radio"] {
+    min-height: 44px;
+    background-color: white;
+    color: black;
+}
+
+#jqt ul.rounded > li:first-child, #jqt ul.rounded > li:first-child > a:only-of-type,
+#jqt fieldset.rounded > *:first-child, #jqt fieldset.rounded > *:first-child > a:only-of-type {
     border-top: 0;
     -webkit-border-top-left-radius: 8px;
     -webkit-border-top-right-radius: 8px;
@@ -1190,15 +1314,15 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -moz-border-top-right-radius: 8px;
 }
 
-#jqt ul.rounded li:last-child, #jqt ul.rounded li:last-child > a:only-of-type,
-#jqt fieldset.rounded input[type="radio"]:last-child, #jqt fieldset.rounded input[type="radio"]:last-child > a:only-of-type {
+#jqt ul.rounded > li:last-child, #jqt ul.rounded > li:last-child > a:only-of-type,
+#jqt fieldset.rounded > *:last-child, #jqt fieldset.rounded > *:last-child > a:only-of-type {
     -webkit-border-bottom-left-radius: 8px;
     -webkit-border-bottom-right-radius: 8px;
     -moz-border-bottom-left-radius: 8px;
     -moz-border-bottom-right-radius: 8px;
 }
 
-#jqt ul li, #jqt fieldset.rounded input[type="radio"] {
+#jqt ul li, #jqt fieldset.rounded > * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     font-size: inherit;
@@ -1211,9 +1335,14 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     min-height: 44px;
 }
 
-#jqt ul li > a, #jqt fieldset.rounded input[type="radio"] > a {
+#jqt ul li > a, #jqt fieldset.rounded > * > a:only-of-type {
     margin: -10px;
     padding: 10px;
+}
+
+#jqt fieldset.rounded > a {
+    display: block;
+    text-decoration:none
 }
 
 #jqt ul.mail li {
@@ -1276,46 +1405,13 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
 }
 
-#jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check, #jqt fieldset.rounded input[type="radio"] {
-    padding-right: 35px;
+#jqt ul li.arrow, #jqt ul li.forward, #jqt ul li.check, #jqt fieldset.rounded > input[type="radio"], #jqt fieldset.rounded > a {
+    padding-right: 30px;
 }
 
 #jqt ul li.arrow > a:only-of-type, #jqt ul li.forward > a:only-of-type, #jqt ul li.check > a {
     margin-right: -35px;
     padding-right: 35px;
-}
-
-#jqt ul li.arrow {
-    background-image: url(img/chevron.png), none, none;
-    background-position: right center, 6px center, left top;
-    background-repeat: no-repeat;
-}
-
-#jqt ul li.arrow.unread {
-    background-image: url(img/chevron.png), url(img/blueball.png), none;
-    background-position: right center, 6px center, left top;
-    background-repeat: no-repeat, no-repeat, repeat-x;
-}
-
-#jqt > * ul.mail li .icon.arrow::before {
-    display: block; position: relative;
-    top: 15px; left: 30px; width: 27px; height: 27px;
-    background-image: url(img/blue_arrow_27px.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    content: "";
-}
-
-#jqt ul li.forward {
-    background-image: url(img/chevron.png), none, none; /* @TODO@ - using only regular chervon now */
-    background-position: right center, left center, left top;
-    background-repeat: no-repeat, no-repeat, no-repeat;
-}
-
-#jqt ul li.check, #jqt fieldset.rounded input[type="radio"]:checked {
-    background-image: url(img/check.png), none, none;
-    background-position: right center, left center, left top;
-    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 #jqt ul li > a:only-of-type {
@@ -1332,6 +1428,15 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
+#jqt > * ul.mail li .icon.arrow::before {
+    display: block; position: relative;
+    top: 15px; left: 30px; width: 27px; height: 27px;
+    background-image: url(img/blue_arrow_27px.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    content: "";
+}
+
 #jqt ul li.icon,
 #jqt ul li a.icon {
     text-indent: 44px;
@@ -1343,13 +1448,21 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-mask-origin: content-box;
 }
 
-#jqt ul.edgetoedge li.icon,
-#jqt ul.edgetoedge li a.icon {
-    -webkit-mask-origin: border-box;
-    -webkit-background-origin: border-box;
+#jqt ul li.centeredicon,
+#jqt ul li a.centeredicon {
+    min-width: 60px; height: 29px;
+    -webkit-box-flex: 1;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
 }
 
-#jqt ul li.active, #jqt ul li.arrow > a.active {
+#jqt ul.edgetoedge li.icon,
+#jqt ul.edgetoedge li a.icon {
+    -webkit-background-origin: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#jqt ul li.active, #jqt ul li.arrow > a.active, #jqt fieldset.rounded > *.active {
     color: #fff;
     text-shadow: none;
 }
@@ -1359,62 +1472,84 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     text-shadow: none !important;
 }
 
-#jqt ul li.arrow.active, #jqt ul li.forward.active, #jqt ul li.arrow > a.active {
-    background-image: url(img/listArrowSel.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
-    background-position: right center, left center, left top !important;
+#jqt ul li.arrow, #jqt fieldset.rounded > a {
+    background-image: url(img/chevron.png), none, none;
+    background-position: right center, 6px center, left top;
     background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
-#jqt > * ul.childrenactivable > li.active,
-#jqt > * ul.edgetoedge > li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.mail > li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.rounded > li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.plastic > li:not(.arrow):not(.check):not(.forward).active,
-#jqt > * ul.metal > li:not(.arrow):not(.check):not(.forward).active {
-    background-image: none, none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
-    background-position: right center, 6px center, left top !important;
+#jqt ul li.arrow.unread {
+    background-image: url(img/chevron.png), url(img/blueball.png), none;
+}
+
+#jqt ul li.forward {
+    background-image: url(img/chevron.png), none, none; /* @TODO@ - using only regular chervon now */
+    background-position: right center, 6px center, left top;
     background-repeat: no-repeat, no-repeat, no-repeat;
+}
+
+#jqt ul li.check, #jqt fieldset.rounded > input[type="radio"]:checked {
+    background-image: url(img/check.png), none, none;
+    background-position: right center, 6px center, left top;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    padding-right: 30px;
+}
+
+#jqt fieldset.rounded > a > input[type="radio"]:checked {
+    background-image: url(img/check.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+}
+
+#jqt ul li.selected, #jqt ul li > a.selected {
+    background-image: none, none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
+    color: white;
+}
+
+#jqt > * ul.childrenactivable > li.active,
+#jqt > * ul.edgetoedge > li.active,
+#jqt > * ul.mail > li.active,
+#jqt > * ul.rounded > li.active,
+#jqt > * ul.plastic > li.active,
+#jqt > * ul.metal > li.active {
+    background-image: none, none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
+}
+
+#jqt ul li.arrow.active, #jqt ul li.forward.active, #jqt > * fieldset.rounded > a.active {
+    background-image: url(img/listArrowSel.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
 }
 
 #jqt ul li.arrow.unread.active {
     background-image: url(img/listArrowSel.png), url(img/blueball.png), -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb)) !important;
-    background-position: right center, 6px center, left top !important;
-    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
-#jqt ul li.check.active, #jqt fieldset.rounded input[type="radio"]:checked:active {
+#jqt ul li.check.active, #jqt fieldset.rounded > input[type="radio"]:checked:active {
     background-image: url(img/check_white.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left center, left top;
-    background-repeat: no-repeat, no-repeat, no-repeat;
+    color: white;
 }
 
-#jqt ul li.check.active, #jqt fieldset.rounded input[type="radio"]:not(:checked):active {
+#jqt fieldset.rounded > input[type="radio"]:not(:checked):active {
     background-image: none, none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left center, left top;
-    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
-#jqt fieldset.rounded input[type="radio"]:not(:active) {
+#jqt fieldset.rounded > a.active > input[type="radio"]:checked {
+    background-image: url(img/check_white.png);
+}
+
+#jqt fieldset.rounded > input[type="radio"]:not(:active) {
     -webkit-transition-property: background-color, color;
     -webkit-transition-duration: 350ms, 200ms;
     -webkit-transition-timing-function: linear, linear;
 }
 
-#jqt fieldset.rounded input[type="radio"]:active {
+#jqt fieldset.rounded > input[type="radio"]:active {
     background-color: #194fdb;
     color: white;
 }
 
 #jqt ul li.forward.active {
     background-image: url(img/chevron_circle.png);
-    background-position: right center;
-    background-repeat: no-repeat, no-repeat, no-repeat;
-}
-
-#jqt ul li.check.active {
-    background-image: url(img/check_white.png), none, -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
-    background-position: right center, left center, left top;
-    background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 /* items (.img) below does not seem to be used anywhere in the example. */
@@ -1476,15 +1611,26 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 
 
 /* @group Forms */
-#jqt form ul li, #jqt ul.form li {
+#jqt form ul li, #jqt ul.form li,
+#jqt form ul li > a:only-of-type, #jqt ul.form li > a:only-of-type,
+#jqt form ul li.multiline > div, #jqt ul.form li.multiline > div,
+#jqt form ul li > a.multiline > div, #jqt ul.form li > a.multiline > div {
     display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: justify;
+    -webkit-box-align: stretch;
+}
+
+#jqt ul.metal li > a:only-of-type,
+#jqt ul.grid li > a:only-of-type,
+#jqt ul.individual li > a:only-of-type {
+    /* backward compatiablity to existing metal */
+    display: block;
 }
 
 #jqt form ul li.multiline, #jqt ul.form li.multiline,
 #jqt form ul li > a.multiline, #jqt ul.form li > a.multiline {
     -webkit-box-orient: vertical;
-    -webkit-box-pack: start;
-    -webkit-box-align: stretch;
     -webkit-box-lines: multiple;
     box-lines: multiple;
 }
@@ -1492,12 +1638,14 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt form ul li.multiline > div, #jqt ul.form li.multiline > div,
 #jqt form ul li > a.multiline > div, #jqt ul.form li > a.multiline > div {
     display: -webkit-box;
-    -webkit-box-sizing: border-box;
     -webkit-box-flex: 10;
-    -webkit-box-orient: horizontal;
+    -webkit-box-sizing: border-box;
 }
 
-#jqt form ul li.noflex, #jqt ul.form li.noflex {
+#jqt form ul li.noflex, #jqt ul.form li.noflex,
+#jqt form ul.noflex li, #jqt ul.form.noflex li,
+#jqt form ul li > a.noflex:only-of-type, #jqt ul.form li > a.noflex:only-of-type,
+#jqt form ul.noflex li > a:only-of-type, #jqt ul.form.noflex li > a:only-of-type {
     display: block;
 }
 
@@ -1510,7 +1658,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul.form li, #jqt fieldset.rounded input[type="radio"] {
-/*    padding: 7px 10px;*/
+    /* padding: 7px 10px;*/
 }
 
 #jqt ul.form li.error {
@@ -1545,14 +1693,27 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     display: -webkit-box;
     display: -moz-box;
     position: relative;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white));
-    border: 0;
+    /* background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, white)); */
+    background-color: transparent;
+    border: 0; border: 1px solid transparent;
     padding: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-text-size-adjust: none;
     -webkit-appearance: none;
     -webkit-user-select: text;
+}
+
+#jqt ul li.selected input[type="text"],
+#jqt ul li.selected input[type="password"],
+#jqt ul li.selected input[type="tel"],
+#jqt ul li.selected input[type="number"],
+#jqt ul li.selected input[type="search"],
+#jqt ul li.selected input[type="email"],
+#jqt ul li.selected input[type="url"],
+#jqt ul li.selected textarea,
+#jqt ul li.selected select {
+     color: white;
 }
 
 #jqt ul li .value,
@@ -1571,14 +1732,20 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 }
 
 #jqt ul li.input::before {
+    /* override default input shadow */
     display: block;
     position: absolute;
     content: "";
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 0; bottom: 0; left: 0; right: 0;
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+#jqt > * ul.inputguard > li:not(.inputguardoff) > a:only-child::after,
+#jqt > * ul > li.inputguard > a:only-child::after,
+#jqt > * ul > li > a.inputguard:only-child::after {
+    display: block; position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    content: "";
 }
 
 #jqt ul li input[type="text"],
@@ -1606,6 +1773,10 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
     white-space: nowrap;
     -webkit-user-select: auto;
+}
+
+#jqt form ul li label.tight, #jqt ul.form li label.tight {
+    min-width: 0;
 }
 
 #jqt form ul li input:focus + small {
@@ -1645,6 +1816,11 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     text-align: left;
 }
 
+#jqt form ul li label + input[readonly], #jqt ul.form li label + input[readonly],
+#jqt form ul li label.tight + input, #jqt ul.form li label.tight + input {
+    text-align: right;
+}
+
 #jqt form ul li textarea, #jqt ul.form li textarea {
     width: 100%;
     min-height: 120px;
@@ -1662,30 +1838,62 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-user-select: auto;
 }
 
-#jqt form ul li input[type="checkbox"], #jqt fieldset.rounded input[type="radio"],
-#jqt ul.form li input[type="checkbox"], #jqt fieldset.rounded input[type="radio"] {
+#jqt form ul li input[type="checkbox"], #jqt ul.form li input[type="checkbox"] {
     margin: 0;
-    color: rgb(50,79,133);
+    color: #324F85;
     padding: 10px 10px;
 }
 
-#jqt form ul li input[type="checkbox"]:before, #jqt ul.form li input[type="checkbox"]:before {
-    display: block;
-    content: attr(title);
-    font: 17px "Helvetica Neue", Helvetica;
-    font-weight: bold;
-    vertical-align: center;
-    line-height: 28px;
-    width: 246px;
+#jqt fieldset.rounded > input[type="radio"] {
+    margin: 0;
+    padding: 10px 10px;
 }
 
-#jqt fieldset.rounded input[type="radio"]:before, #jqt fieldset.rounded input[type="radio"]:before {
+#jqt fieldset.rounded > input[type="radio"]:active {
+    color: #fff;
+}
+
+#jqt fieldset.rounded input[type="radio"]:checked {
+    color: #324F85;
+}
+
+#jqt form ul li input[type="checkbox"]::before, #jqt ul.form li input[type="checkbox"]::before,
+#jqt form ul li input[readonly]::before, #jqt ul.form li input[readonly]::before,
+#jqt fieldset.rounded input[type="radio"]::before {
     display: block;
+    -webkit-box-flex: 10;
     content: attr(title);
     font: 17px "Helvetica Neue", Helvetica;
     font-weight: bold;
     vertical-align: center;
     line-height: 28px;
+}
+
+#jqt fieldset.rounded input[type="radio"][title][value].showvalue:checked::after {
+    display: block;
+    content: attr(value);
+    font: 17px "Helvetica Neue", Helvetica;
+    font-weight: normal;
+    vertical-align: center;
+    text-align: right;
+}
+
+#jqt fieldset.rounded input[type="radio"][title][displayvalue].showvalue:checked::after {
+    display: block;
+    content: attr(displayvalue);
+    font: 17px "Helvetica Neue", Helvetica;
+    font-weight: normal;
+    vertical-align: center;
+    text-align: right;
+}
+
+#jqt fieldset.rounded > a > input[type="radio"] {
+    background-color: transparent;
+    border: 0px solid transparent;
+}
+
+#jqt fieldset.rounded a.active > input[type="radio"] {
+    color: #fff;
 }
 
 #jqt form > h1, #jqt form > :not(.toolbar) h1, #jqt .form :not(.toolbar) > h1 {
@@ -1772,30 +1980,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     -webkit-transition: background-position .15s;
 }
 
-#jqt fieldset.rounded {
-    border: none;
-}
-
-#jqt fieldset.rounded input[type="radio"] {
-    display: block;
-    min-height: 44px;
-    -webkit-appearance: none;
-    width: 100%;
-    color: black;
-    background-color: white;
-    line-height: 28px;
-    font-size: 50px;
-    font-weight: bold;
-}
-
-#jqt fieldset.rounded input[type="radio"]:checked {
-    color: #324F85;
-}
-
-#jqt fieldset.rounded input[type="radio"]:active {
-    color: #fff;
-}
-
 /* @end */
 
 
@@ -1850,20 +2034,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt ul.edgetoedge li {
 }
 
-#jqt ul.edgetoedge li .icon {
-  -webkit-box-sizing: border-box;
-  width: 44px;
-  height: 44px;
-  background-color: lightgrey;
-  float: left;
-  margin-left: 0px;
-  margin-right: 10px;
-  margin-top: -10px;
-  margin-left: -10px;
-  margin-bottom: -10px;
-  padding: 0px;
-}
-
 #jqt .edgetoedge h4 {
     color: #fff;
     background: rgb(154,159,170) url(img/listGroup.png) top left repeat-x;
@@ -1894,7 +2064,7 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     background: rgb(180,180,180);
 }
 
-#jqt ul.mail {
+#jqt ul.mail, #jqt ul.message {
     background: white;
 }
 
@@ -1933,6 +2103,15 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     font-style: normal;
 }
 
+#jqt > * > .contentwrap ul.message.content {
+    display: -webkit-box;
+    position: relative;
+    width: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: start;
+    -webkit-box-align: stretch;
+}
+
 #jqt .edgetoedge h4 + ul {
     border-top: 1px solid rgb(152,158,164);
     border-bottom: 1px solid rgb(113,125,133);
@@ -1961,9 +2140,15 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
 }
 
-#jqt ul.message li.paragraph {
+#jqt ul.message .paragraph {
+    display: block;
+    /* display: -webkit-box; */
+    position: relative;
     font-weight: normal;
     font-size: 13px;
+    -webkit-box-flex: 10;
+    top: 0; bottom: 0;
+    background-color: lightgrey;
 }
 
 #jqt ul.message li.title .span {
@@ -1984,7 +2169,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     overflow: hidden;
     display: block;
     width: 23%;
-    float: right;
     padding: 3px 0px;
 }
 
@@ -2004,10 +2188,6 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     padding: 5px 10px 5px 10px;
     width: auto;
     top: 0px;
-}
-
-#jqt ul li.arrow small {
-    right: 30px;
 }
 
 #jqt ul li.arrow small.counter {
