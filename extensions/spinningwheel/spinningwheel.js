@@ -23,8 +23,6 @@ $(document).ready(function() {
     var target = this, $target = $(this);
     var dateobject;
 
-    console.warn("pagein: " + JSON.stringify(info));
-
     var search = info.search;
     if (!!search.starts) {
       selected = null;
@@ -326,7 +324,6 @@ function DateTimeSpinningWheel(container, clientcallbacks, dateobject) {
   };
   
   instance.setDurationMode = function(durationmode) {
-    console.warn("duration mode set: " + durationmode);
     if (duration !== durationmode) {
       duration = durationmode;
       instance.position();
@@ -334,7 +331,6 @@ function DateTimeSpinningWheel(container, clientcallbacks, dateobject) {
   };
 
   instance.position = function() {
-    console.warn("position(): " + JSON.stringify(selected));
     if (duration !== true && duration !== "true") {
       for (var i=0, len=slotshandler.length; i < len; i++) {
         var value = slotshandler[i].get(selected);
@@ -343,7 +339,6 @@ function DateTimeSpinningWheel(container, clientcallbacks, dateobject) {
     } else {
       var enddate = DateFormats.convertObjectToDate(selected, !allday);
       enddate = DateFormats.getOffsetMinute(enddate, selected.duration);
-      console.warn("duration: " + selected.duration);
       var jso = DateFormats.convertDateToObject(enddate, !allday);
       for (var i=0, len=slotshandler.length; i < len; i++) {
         var value = slotshandler[i].get(jso);
@@ -423,6 +418,18 @@ function removeClass(el, className) {
   }
   return updated;
 };
+
+// http://www.quirksmode.org/js/findpos.html
+function findPos(obj) {
+  var curleft = curtop = 0;
+  if (obj.offsetParent) {
+    do {
+      curleft += obj.offsetLeft;
+      curtop += obj.offsetTop;
+    } while (obj = obj.offsetParent);
+    return {left: curleft, top: curtop};
+  }
+}
 
 var instance = {
 	cellHeight: 44,
@@ -554,7 +561,6 @@ var instance = {
 
 			// Place the slot to its default position (if other than 0)
 			if (instance.slotData[l].defaultValue) {
-			  console.warn("scroll: " + l + " to: " + instance.slotData[l].defaultValue);
 				instance.scrollToValue(l, instance.slotData[l].defaultValue);	
 			}
 		}
@@ -685,7 +691,8 @@ var instance = {
 	
 	scrollStart: function (e) {
 		// Find the clicked slot
-		var xPos = (isTouch? e.targetTouches[0].clientX: e.clientX) - instance.swSlots.offsetLeft;	// Clicked position minus left offset (should be 11px)
+		var origin = findPos(instance.swSlots);
+		var xPos = (isTouch? e.targetTouches[0].clientX: e.clientX) - origin.left;	// Clicked position minus left offset (should be 11px)
 
 		// Find tapped slot
 		var slot = 0;
@@ -719,7 +726,7 @@ var instance = {
   			instance.setPosition(instance.activeSlot, theTransform);
   		}
 		}
-		
+
 		instance.startY = (isTouch? e.targetTouches[0].clientY: e.clientY);
 		instance.scrollStartY = instance.slotEl[instance.activeSlot].slotYPosition;
 		instance.scrollStartTime = e.timeStamp;
@@ -1074,7 +1081,6 @@ var DateFormats = new function() {
     } else {
       enddateString = enddate.toString(format);
     }
-    console.warn("end date: " + enddateString);
 
     return {startdate: startdate.toString(format), enddate: enddateString, format: format}; 
   };
