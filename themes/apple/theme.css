@@ -1862,11 +1862,17 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 #jqt fieldset.rounded input[type="radio"]::before {
     display: block;
     -webkit-box-flex: 10;
-    content: attr(title);
+    content: attr(value);
     font: 17px "Helvetica Neue", Helvetica;
     font-weight: bold;
     vertical-align: center;
     line-height: 28px;
+}
+
+#jqt form ul li input[type="checkbox"][title]::before, #jqt ul.form li input[type="checkbox"][title]::before,
+#jqt form ul li input[readonly][title]::before, #jqt ul.form li input[readonly][title]::before,
+#jqt fieldset.rounded input[type="radio"][title]::before {
+    content: attr(title);
 }
 
 #jqt fieldset.rounded input[type="radio"][title][value].showvalue:checked::after {
