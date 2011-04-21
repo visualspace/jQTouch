@@ -1237,6 +1237,7 @@
 
         function touchstartHandler(e) {
             var $oel, $el, $marked;
+            var elX, elY;
 
             if (isRightClick(e)) {
               return;
@@ -1254,6 +1255,8 @@
                     return;
                 }
             }
+            elStartY = $el.offset().top;
+            elStartX = $el.offset().left;
 
             var hovertimeout = null;
             var presstimeout = null;
@@ -1285,6 +1288,9 @@
                 deltaX = first.pageX - startX;
                 deltaY = first.pageY - startY;
                 deltaT = (new Date).getTime() - startTime;
+                var absElOffset = $el.offset();
+                elX = absElOffset.left - elStartX;
+                elY = absElOffset.top - elStartY;
             }
 
             function handlestart(e) {
@@ -1328,10 +1334,10 @@
                 var absX = Math.abs(deltaX);
                 var absY = Math.abs(deltaY);
 
-                if (absX >= 1 || absY >= 1) {
+                if (absX > 1 || absY > 1) {
                     moved = true;
                 }
-                if (absY <= 5) {
+                if (absY <= 5 && elX === 0 && elY === 0) {
                     if (absX > (3 * absY) && (absX > 10) && deltaT < 1000) {
                         inprogress = false;
                         if ($marked) $marked.removeClass('active');
@@ -1355,7 +1361,7 @@
 
                 inprogress = false;
                 unbindEvents($el);
-                if (!tapped && (absX <= 1 && absY <= 1)) {
+                if (!tapped && (absX <= 1 && absY <= 1) && (elX === 0 && elY === 0)) {
                     tapped = true;
                     $oel.trigger('tap');
                     setTimeout(function() {
