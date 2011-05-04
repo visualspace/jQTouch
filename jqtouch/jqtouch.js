@@ -1373,7 +1373,7 @@
                   }, 1000);
                 } else {
                     if ($marked) $marked.removeClass('active');
-                    e.preventDefault();
+                    //e.preventDefault();
                 }
             };
 

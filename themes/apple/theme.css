@@ -67,7 +67,7 @@ body {
     border-top: 1px solid #CDD5DF; border-bottom: 1px solid #6d84a2;
     background-color: #889bb3;
     background-position: center, 0 0; background-repeat: no-repeat, repeat-x;
-    background-image: url(./images/cascade_15px.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 171, 159, 0.75)), to(rgba(181, 201, 193, 0.75)));
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(139, 171, 159, 0.75)), to(rgba(181, 201, 193, 0.75)));
     cursor: pointer;
     padding: 0 10px;
     opacity: 0.5;
