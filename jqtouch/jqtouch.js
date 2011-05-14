@@ -26,7 +26,6 @@
 */
 (function($) {
     $.jQTouch = function(options) {
-
         var SUPPORT_TOUCH = (typeof Touch != "undefined");
         var START_EVENT = SUPPORT_TOUCH? 'touchstart' : 'mousedown';
         var MOVE_EVENT = SUPPORT_TOUCH? 'touchmove' : 'mousemove';
@@ -34,7 +33,9 @@
         var CANCEL_EVENT = SUPPORT_TOUCH? 'touchcancel' : 'mouseout'; // mouseout on document
 
         // Initialize internal variables
-        var $body,
+        var state_started,
+            state_initialized,
+            $body,
             $head=$('head'),
             hist=[],
             newPageCount=0,
@@ -79,6 +80,7 @@
             defaultAnimation: 'slide',
             defaultModifier: '',
             updatehash: true,
+            clearInitHash: true,
             hashquery: false,
             inputguard: true,
             inputtypes: ["input[type='text']", "input[type='password']", "input[type='tel']", "input[type='number']", "input[type='search']", "input[type='email']", "input[type='url']", "select", "textarea"],
@@ -837,6 +839,7 @@
                 $node.children().find('[section]:not([section~="' + section + '"])').addClass('missection');
 
                 $body.trigger('pageInserted', {page: $node.appendTo($body)});
+                $body.trigger("pageinit", {page: $node.appendTo($body)});
 
                 if ($node.hasClass('current') || !targetPage) {
                     targetPage = $node;
@@ -1286,8 +1289,8 @@
             function updateChanges(e) {
                 var point = e.originalEvent;
                 var first = $.support.touch? point.changedTouches[0]: point;
-                deltaX = first.pageX - startX;
-                deltaY = first.pageY - startY;
+                deltaX = first.clientX - startX;
+                deltaY = first.clientY - startY;
                 deltaT = (new Date).getTime() - startTime;
                 var absElOffset = $el.offset();
                 elX = absElOffset.left - elStartX;
@@ -1408,11 +1411,8 @@
 
         }; // End touch handler
 
-        // Get the party started
-        init(options);
-
         // Document ready stuff
-        $(document).ready(function() {
+        function start() {
 
             // Store some properties in the jQuery support object
             $.support.WebKitCSSMatrix = (typeof WebKitCSSMatrix != "undefined");
@@ -1660,8 +1660,13 @@
             });
 
             // move to init page be specified in querystring
+            var $page = $("#jqt > " + startpage);
+            $page = $("#jqt > " + startpage);
+            $page.each(function(i, page) {
+              $body.trigger("pageinit");
+            });
+
             if (startpage) {
-              var $page = $("#jqt > " + startpage);
               var section = $page.attr("section");
               if ($page.length === 1) {
                 if (section === defaultSection) {
@@ -1678,11 +1683,11 @@
             }
 
             // update browser url
-            var searchString = getSearchString(search);
-            var hrefPart = jQTSettings.hashquery? {hash: optPrefix('#', '')}: {search: optPrefix('?', searchString)};
-            var newloc = replaceHrefPart(window.location, hrefPart);
-            if (!!window.history && !!window.history.replaceState) {
-               window.history.replaceState({}, "page", newloc);
+            if (jQTSettings.clearInitHash && !!window.history && !!window.history.replaceState) {
+              var searchString = getSearchString(search);
+              var hrefPart = jQTSettings.hashquery? {hash: optPrefix('#', '')}: {search: optPrefix('?', searchString)};
+              var newloc = replaceHrefPart(window.location, hrefPart);
+              window.history.replaceState({}, "page", newloc);
             }
 
             // guard input for proper scroll behaviour
@@ -1695,7 +1700,7 @@
               window.scrollTo(0, 1);
             }, 1000);
             startHashCheck();
-        });
+        };
 
         // Expose public methods and properties
         publicObj = {
@@ -1705,6 +1710,26 @@
             goTo: goTo,
             submitForm: submitHandler
         };
+
+        // Get the party started
+        if ($("#jqt").data("jqt") === undefined) {
+          $("#jqt").data("jqt", publicObj);
+
+          if (!state_initialized) {
+            init(options);
+            state_initialized = true;
+          }
+
+          $(document).ready(function() {
+            if (!state_started) {
+              start();
+              state_started = true;
+            }
+          });
+        } else {
+          publicObj = undefined;
+          console.warn("jQTouch has been previously initialized.");
+        }
 
         return publicObj;
     };
