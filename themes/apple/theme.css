@@ -24,7 +24,7 @@ body {
     -webkit-user-select: ignore;
     -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
     -webkit-box-orient: vertical; -moz-box-orient: vertical; box-orient: vertical;
-    -webkit-box-pack: justify; -moz-box-pack: justify; box-pack: justify;
+    -webkit-box-pack: start; -moz-box-pack: start; box-pack: start;
     -webkit-box-align: stretch; -moz-box-align: stretch; box-align: stretch;
     min-height: 100%;
 }
@@ -114,7 +114,7 @@ body {
 
 #jqt > * > .content {
     -webkit-box-orient: vertical; -moz-box-orient: vertical; box-orient: vertical;
-    -webkit-box-pack: justify; -moz-box-pack: justify; box-pack: justify;
+    -webkit-box-pack: start; -moz-box-pack: start; box-pack: start;
     -webkit-box-align: stretch; -moz-box-align: stretch; box-align: stretch;
 }
 
@@ -422,8 +422,7 @@ body {
     margin-right: 20px;
 }
 
-#jqt > * > .navibar label.radio input[type="radio"], #jqt > * > .toolbar label.radio input[type="radio"], #jqt > * .bar label.radio input[type="radio"],
-#jqt .bar .button {
+#jqt > * > .navibar label.radio input[type="radio"], #jqt > * > .toolbar label.radio input[type="radio"], #jqt > * .bar label.radio input[type="radio"] {
     opacity: 0;
 }
 
