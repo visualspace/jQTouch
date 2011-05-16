@@ -943,7 +943,7 @@
             var $form = $el.closest('form');
             if ($form.length) {
                 var evt = $.Event("submit");
-                evt.preventDefault();
+                //evt.preventDefault();
                 $form.trigger(evt);
                 return false;
             }
@@ -976,7 +976,7 @@
             }
 
             // Prevent default if we found an internal link (relative or absolute)
-            if ($el && $el.attr('href') && !$el.isExternalLink()) {
+            if ($el && $el.attr('href') && !$el.isExternalLink() && !$el.hasClass("nofasttouch")) {
                 _debug('Need to prevent default click behavior');
                 e.preventDefault();
             } else {
@@ -1206,6 +1206,10 @@
                 } else {
                     return;
                 }
+            }
+            if ($el.hasClass("nofasttouch")) {
+                // let the regular click handler to handle it, if at all.
+                return;
             }
 
             if (tapReady == false) {
