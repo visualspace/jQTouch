@@ -61,7 +61,7 @@ function iScroll (el, options) {
 
 	that.options.HWCompositing = that.options.HWCompositing && hasCompositing;
 	that.options.HWTransition = that.options.HWTransition && hasCompositing;
-	
+
 	if (that.options.HWCompositing) {
 		that.scroller.style.cssText += '-webkit-transition-property:-webkit-transform;-webkit-transform-origin:0 0;-webkit-transform:' + trnOpen + '0,0' + trnClose;
 	} else {
@@ -282,7 +282,7 @@ iScroll.prototype = {
 
 		that.moved = false;
 
-		//e.preventDefault();
+		e.preventDefault();
 
 		if (hasTouch && e.touches.length == 2 && that.options.zoom && hasGesture && !that.zoomed) {
 			that.originX = m.abs(e.touches[0].pageX + e.touches[1].pageX - that.wrapperOffsetLeft*2) / 2 - that.x;
