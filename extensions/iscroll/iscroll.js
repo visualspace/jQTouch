@@ -59,13 +59,13 @@ function iScroll (el, options) {
 		that.options[i] = options[i];
 	}
 
-	that.options.HWCompositing = that.options.HWCompositing && hasCompositing;
-	that.options.HWTransition = that.options.HWTransition && hasCompositing;
+	that.options.HWCompositing = options.HWCompositing && hasCompositing;
+	that.options.HWTransition = options.HWTransition && hasCompositing;
 
 	if (that.options.HWCompositing) {
 		that.scroller.style.cssText += '-webkit-transition-property:-webkit-transform;-webkit-transform-origin:0 0;-webkit-transform:' + trnOpen + '0,0' + trnClose;
 	} else {
-		that.scroller.style.cssText += '-webkit-transition-property:top,left;-webkit-transform-origin:0 0;top:0;left:0';
+		that.scroller.style.cssText += '-webkit-transition-property:top,left;-moz-transition-property:top,left;transition-property:top,left;-webkit-transform-origin:0 0;top:0;left:0';
 	}
 
 	if (that.options.HWTransition) {
@@ -237,9 +237,12 @@ iScroll.prototype = {
 		that.x = that.hScroll ? x : 0;
 		that.y = that.vScroll ? y : 0;
 
-		that.scroller.style.webkitTransform = trnOpen + that.x + 'px,' + that.y + 'px' + trnClose + ' scale(' + that.scale + ')';
-//		that.scroller.style.left = that.x + 'px';
-//		that.scroller.style.top = that.y + 'px';
+		if (that.options.HWCompositing) {
+			that.scroller.style.webkitTransform = trnOpen + that.x + 'px,' + that.y + 'px' + trnClose + ' scale(' + that.scale + ')';
+		} else {
+			that.scroller.style.left = that.x + 'px';
+			that.scroller.style.top = that.y + 'px';
+		}
 
 		that._indicatorPos('h');
 		that._indicatorPos('v');
