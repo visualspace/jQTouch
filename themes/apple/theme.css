@@ -2269,13 +2269,12 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
     border-width: 0;
     border-radius: 4px;
     background: black url(img/on_off.png) no-repeat;
-    background-position: 0 center;
+    background-position: -55px center;
     -webkit-transition: background-position .15s;
 }
 
 #jqt input[type="checkbox"].onoff:checked {
-    background-position: -55px 0;
-    -webkit-transition: background-position .15s;
+    background-position: 0 center;
 }
 
 /* @end */
