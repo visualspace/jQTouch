@@ -141,7 +141,20 @@ $(function(){
 	<div>
     <ul>
       <li>
-        <a href="#about" mask="bar_img/jqt.png" mask2x="bar_img/jqt@2x.png" animation="slidedown">
+        <!-- Action from the href attribute -->
+        <a href="javascript:alert('This alert was triggered from the href attribute');return false;" mask="bar_img/alert.png" mask2x="bar_img/alert@2x.png" animation="slidedown">
+          <strong>Alert1</strong>
+        </a>
+      </li>
+      <li>
+        <!-- Action from the onclick event -->
+        <a mask="bar_img/alert.png" mask2x="bar_img/alert@2x.png" animation="slidedown" onclick="alert('This alert was triggered with an onclick event');return(true);">
+          <strong>Alert2</strong>
+        </a>
+      </li>
+      <li>
+        <!-- Action & navigation -->
+        <a href="#about" mask="bar_img/jqt.png" mask2x="bar_img/jqt@2x.png" animation="slidedown" onclick="alert('Navigating to the About page'); return (false)">
           <strong>About</strong>
         </a>
       </li>
@@ -158,6 +171,7 @@ $(function(){
         </a>
       </li>
       <li>
+        <!-- Navigation to an AJAX loaded page -->
         <a href="ajax_page.html" mask="bar_img/ajax.png" mask2x="bar_img/ajax@2x.png" animation="pop">
           <small class="badge right">4</small>
           <strong>AJAX</strong>

@@ -28,10 +28,16 @@ Integration of iScroll into jQT with tabbar and toolbar implementations
 
 Change Log
 --------------------------------------------------------------------------------
-2010-05-04 Added jQT.barsSettings.iscroll_lite (true|false). Set this to false
+2011-07-21 JavaScript can now be executed from the tabbar. Insert JS code from
+either the href attribute or the onclick event.
+
+2011-06-21 Pages can now be loaded dynamically with AJAX via the tabbar. Just
+use an external href attribute in the tab's anchor tab. Ex:
+
+2011-05-04 Added jQT.barsSettings.iscroll_lite (true|false). Set this to false
 to use the full-featured version of iScroll.
 
-2010-04-16 Optimized setPageHeight. Added jQT.barsSettings.phonegap. This, along
+2011-04-16 Optimized setPageHeight. Added jQT.barsSettings.phonegap. This, along
 with typeof(PhoneGap) !== 'undefined' can be used to prepare app for PhoneGap. 
 
 2011-03-20 Since portions of jqt.bars.js have to be rewritten for iScroll v4 I
@@ -152,12 +158,35 @@ To resize a page after an event, like the ones in #events, use...
 
   jQT.setPageHeight();
 
-See the swipe or tab functions in index.html.
+See the swipe or tap functions in index.html.
+
+--------------------------------------------------------------------------------
+Tabbar Actions
+
+<li>
+  <!-- Action from the href attribute -->
+  <a href="javascript:alert('This alert was triggered from the href attribute');return false;" mask="bar_img/alert.png" mask2x="bar_img/alert@2x.png" animation="slidedown">
+    <strong>Alert1</strong>
+  </a>
+</li>
+<li>
+  <!-- Action from the onclick event -->
+  <a mask="bar_img/alert.png" mask2x="bar_img/alert@2x.png" animation="slidedown" onclick="alert('This alert was triggered with an onclick event');return(true);">
+    <strong>Alert2</strong>
+  </a>
+</li>
+<li>
+  <!-- Action & navigation -->
+  <a href="#about" mask="bar_img/jqt.png" mask2x="bar_img/jqt@2x.png" animation="slidedown" onclick="alert('Navigating to the About page'); return (false)">
+    <strong>About</strong>
+  </a>
+</li>
 
 --------------------------------------------------------------------------------
 Tabbar Animations
 
 Animations between tabs are marked-up in the anchor tag like so:
+
 <div id="tabbar">
   <div>
     <ul>
@@ -171,12 +200,28 @@ Animations between tabs are marked-up in the anchor tag like so:
   </div>
 </div>
 
-Only three jQT animations are supported (fade, pop & slideup). If an animation
-is not recognized, like...
+Only seven jQT animations are supported (dissolve, fade, pop, slidedown, slideleft,
+slideright & slideup). If an animation is not recognized, like...
+
   animation="bugsBunny"
+
 ...then the default tab animation (none) will be used.
 
+--------------------------------------------------------------------------------
+Tabbar Dynamically Loaded Pages
+
+<li>
+  <!-- Navigation to an AJAX loaded page -->
+  <a href="ajax_page.html" mask="bar_img/ajax.png" mask2x="bar_img/ajax@2x.png" animation="pop">
+    <small class="badge right">4</small>
+    <strong>AJAX</strong>
+  </a>
+</li>
+--------------------------------------------------------------------------------
+
 */
+/*jslint bitwise: true, browser: true, devel: true, maxerr: 50, newcap: true, nomen: true, plusplus: true, regexp: true, sloppy: true, white: true */
+/*global console, document, iScroll, jQuery, PhoneGap, setTimeout, window */
 (function ($) {
   if ($.jQTouch) {
     $.jQTouch.addExtension(function bars(jQT) {
@@ -424,13 +469,16 @@ is not recognized, like...
           _debug('  #tabbar height = ' + $('#tabbar').height() + 'px');
           $('#tabbar a').each(function (index) {
             var $me = $(this),
-                defaultTarget = $me.data('defaultTarget'),
-                mask2x = $(this).attr('mask2x'),
-                tabIcon, tabZoom;
+                mask2x = $me.attr('mask2x'),
+                tabIcon = $me.attr('mask'),
+                tabZoom = 1,
+                parseJS = function(input) {return input.replace(/(\r\n|\n|\r)/gm,' ').replace(/\s+/g,' ').replace(/^javascript:\s*/i,'').replace(/return\s*[\(]*\s*false\s*[\)]*[;]*$|return\s*[\(]*\s*true\s*[\)]*[;]*$/i,'');};
 
             // PhoneGap integration
-            if (typeof(PhoneGap) !== 'undefined' && jQT.barsSettings.phonegap) {
-              $('body > #tabbar').css({bottom: '20px !important'});
+            if (typeof (PhoneGap) !== 'undefined' && jQT.barsSettings.phonegap) {
+              $('body > #tabbar').css({
+                bottom: '20px !important'
+              });
             }
 
             // Enummerate the tabbar anchor tags
@@ -441,70 +489,95 @@ is not recognized, like...
               $me.addClass('enabled');
             }
 
-            // Put page animation, if any, into data('animation')
-            $me.data('animation', $me.attr('animation'));
-
-            // Put href target into data('defaultTarget') and void href
-            if (defaultTarget === null || typeof(defaultTarget) === 'undefined') {
-              $me.data('defaultTarget', $me.attr('href'));
-              $me.attr('href', 'javascript:void(0);');
-            }
-
             // Create css masks from the anchor's mask property
-            tabIcon = $(this).attr('mask');
-            tabZoom = 1;
-            if (window.devicePixelRatio && window.devicePixelRatio === 2 && typeof(mask2x) !== 'undefined') {
+            if (window.devicePixelRatio && window.devicePixelRatio === 2 && typeof (mask2x) !== 'undefined') {
               tabIcon = $(this).attr('mask2x');
               tabZoom = 0.5;
             }
             sheet.insertRule('a#tab_' + index + '::after, a#tab_' + index + '::before {-webkit-mask-image:url(\'' + tabIcon + '\');' + ' zoom: ' + tabZoom + ';}', sheet.cssRules.length);
 
-            // tabbar touches
-            $me.click(function () {
-              var $referrerTab = $('#tabbar .enabled'),
-                  $tabs = $('#tabbar a'),
-                  $targetTab = $(this),
-                  animation = animations.indexOf(':' + $me.data('animation') + ':') > -1 ? $me.data('animation') : '', 
-                  i,
-                  referrerAnimation = animations.indexOf(':' + $referrerTab.data('animation') + ':') > -1 ? $referrerTab.data('animation') : '',
-                  referrerPage = $referrerTab.data('defaultTarget'),
-                  target = $me.data('defaultTarget'),
-                  targetAnimation = animations.indexOf(':' + $targetTab.data('animation') + ':') > -1 ? $targetTab.data('animation') : '',
-                  targetHist = $targetTab.data('hist'),
-                  targetPage = $targetTab.data('defaultTarget'),
-                  thisTab, 
-                  TARDIS = function(anime) {
-                    var DW;
-                    if (anime.indexOf('left') > 0) {
-                      DW = anime.replace(/left/, 'right');
-                    } else if (anime.indexOf('right') > 0) {
-                      DW = anime.replace(/right/, 'left');
-                    } else if (anime.indexOf('up') > 0) {
-                       DW = anime.replace(/up/, 'down');
-                    } else if (anime.indexOf('down') > 0) {
-                      DW = anime.replace(/down/, 'up');
-                    } else {
-                      DW = anime;
-                    }
-                    return DW;
-                  };
+            // Put page animation, if any, into data('animation')
+            $me.data('animation', $me.attr('animation'));
 
-              if (!$targetTab.hasClass('enabled')) {
-                for (i = $('#tabbar a').length - 1; i >= 0; --i) {
-                  thisTab = $tabs.eq(i);
-                  thisTab.toggleClass('enabled', ($targetTab.get(0) === thisTab.get(0)));
-                  if ($targetTab.get(0) === thisTab.get(0)) {
-                    jQT.goTo(target, (targetAnimation === '' ? TARDIS(referrerAnimation) : targetAnimation));
-                    _debug('tabbbar touch, new tab');
-                    setPageHeight();
-                  }
-                }
+            // Action code or url in href attribute
+            if (typeof ($me.attr('href')) !== 'undefined' && $me.attr('href') !== null) {
+              if ($me.attr('href').match(/^javascript:\s*/i) !== null) {
+                // Put action code into data('action')...
+                $me.data('action', parseJS($me.attr('href')));
+                $me.addClass('action');
               } else {
-                jQT.goTo(target);
-                _debug('tabbar touch, same tab');
-                setPageHeight();
+                // Put href target into data('defaultTarget')...
+                $me.data('defaultTarget', $me.attr('href'));
               }
-            });
+              // ...and remove href
+              $me.removeAttr('href');
+            }
+
+            // Action code in onClick event
+            if (typeof ($me.attr('onClick')) !== 'undefined' && $me.attr('onClick') !== null) {
+              $me.data('action', parseJS($me.attr('onClick')));
+              $me.removeAttr('onclick');
+              if (typeof ($me.data('defaultTarget')) === 'undefined' || $me.data('defaultTarget') === null) {
+                $me.addClass('action');
+              }
+            }
+
+            // Tabbar tap event
+            // Action
+            if (typeof ($me.data('action')) !== 'undefined' && $me.data('action') !== null) {
+              $me.click(function () {
+                setTimeout($me.data('action'), 0);
+              });
+            }
+
+            // Navigation
+            if (typeof ($me.data('defaultTarget')) !== 'undefined' && $me.data('defaultTarget') !== null) {
+              $me.click(function () {
+                var $referrerTab = $('#tabbar .enabled'),
+                    $tabs = $('#tabbar a'),
+                    $targetTab = $(this),
+                    animation = animations.indexOf(':' + $me.data('animation') + ':') > -1 ? $me.data('animation') : '',
+                    i,
+                    referrerAnimation = animations.indexOf(':' + $referrerTab.data('animation') + ':') > -1 ? $referrerTab.data('animation') : '',
+                    referrerPage = $referrerTab.data('defaultTarget'),
+                    target = $me.data('defaultTarget'),
+                    targetAnimation = animations.indexOf(':' + $targetTab.data('animation') + ':') > -1 ? $targetTab.data('animation') : '',
+                    targetHist = $targetTab.data('hist'),
+                    targetPage = $targetTab.data('defaultTarget'),
+                    thisTab,
+                    TARDIS = function (anime) {
+                      var DW;
+                      if (anime.indexOf('left') > 0) {
+                        DW = anime.replace(/left/, 'right');
+                      } else if (anime.indexOf('right') > 0) {
+                        DW = anime.replace(/right/, 'left');
+                      } else if (anime.indexOf('up') > 0) {
+                        DW = anime.replace(/up/, 'down');
+                      } else if (anime.indexOf('down') > 0) {
+                        DW = anime.replace(/down/, 'up');
+                      } else {
+                        DW = anime;
+                      }
+                      return DW;
+                    };
+
+                if (!$targetTab.hasClass('enabled')) {
+                  for (i = $('#tabbar a').length - 1; i >= 0; --i) {
+                    thisTab = $tabs.eq(i);
+                    thisTab.toggleClass('enabled', ($targetTab.get(0) === thisTab.get(0)));
+                    if ($targetTab.get(0) === thisTab.get(0)) {
+                      jQT.goTo(target, (targetAnimation === '' ? TARDIS(referrerAnimation) : targetAnimation));
+                      _debug('tabbbar touch, new tab');
+                      setPageHeight();
+                    }
+                  }
+                } else {
+                  jQT.goTo(target);
+                  _debug('tabbar touch, same tab');
+                  setPageHeight();
+                }
+              });
+            }
           });
 
           // Hide tabbar when page has a form or any form element or .hide_tabbar class except when the page's parent div has the .keep_tabbar class.
@@ -542,7 +615,7 @@ is not recognized, like...
           $('#jqt').bind('turn', function (e, data) {
             var $tabbar = $('#tabbar'),
                 scroll = $tabbar.data('iscroll');
-            if (scroll !== null && typeof(scroll) !== 'undefined') {
+            if (scroll !== null && typeof (scroll) !== 'undefined') {
               setTimeout(function () {
                 $tabbar.width = win.innerWidth;
                 if ($('.enabled').offset().left + $('.enabled').width() >= win.innerWidth) {
@@ -705,5 +778,3 @@ is not recognized, like...
     });
   }
 })(jQuery);
-/*jslint onevar: true, undef: true, regexp: true, devel: true, maxerr: 50, indent: 0 */
-/*global document, window, console, setTimeout, iScroll, jQuery */

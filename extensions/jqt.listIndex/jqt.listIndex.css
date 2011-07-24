@@ -27,6 +27,8 @@
   width: 28px;
   z-index: 1000;
   -webkit-border-radius: 14px;
+  -moz-border-radius: 14px;
+  border-radius: 14px;
 }
 
 #jqt .listIndex li {

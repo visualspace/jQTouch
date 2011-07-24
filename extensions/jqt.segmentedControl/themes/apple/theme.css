@@ -6,7 +6,7 @@
 }
 
 #jqt ul.segmentedControl li label {
-  text-shadow: rgba(255,255,255,.8) 1px 1px 0px;
+  text-shadow: rgba(255,255,255,.8) 1px 1px 0;
 }
   
 #jqt ul.segmentedControl li.scSelected {
