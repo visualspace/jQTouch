@@ -708,9 +708,7 @@ Tabbar Dynamically Loaded Pages
 
       // Begin loading iscroll & initialization
       $(document).ready(function () {
-
-        // Begin getPath()
-        function getPath() {
+        var getPath = (function() {
           var path;
           _debug();
           $('script').each(function () {
@@ -725,8 +723,7 @@ Tabbar Dynamically Loaded Pages
             }
           });
           return path;
-        }
-        // End getPath()
+        }());
 
         // Begin initializations
         function initializations() {
@@ -761,7 +758,7 @@ Tabbar Dynamically Loaded Pages
         if (jQT.barsSettings.autoLoad_iScroll) {
           var filename = jQT.barsSettings.iscroll_lite ? 'iscroll-lite-min.js' : 'iscroll-min.js';
           _debug('Begin loading ' + filename);
-          $.getScript(getPath() + filename, function () {
+          $.getScript(getPath + filename, function () {
             initializations();
           });
         } else {
@@ -771,6 +768,8 @@ Tabbar Dynamically Loaded Pages
       // End loading iscroll & initialization
 
       return {
+        init_iScroll: init_iScroll,
+        initTabbar: initTabbar,
         refresh_iScroll: refresh_iScroll,
         refreshTabbar: initTabbar,
         setPageHeight: setPageHeight
