@@ -60,8 +60,7 @@
                 fullScreenClass: 'fullscreen',
                 hoverDelay: 50,
                 icon: null,
-                iconPad: null, // available in iOS 4.2 and later. 
-                icon4: null, // available in iOS 4.2 and later.
+                icon4: null, // experimental
                 moveThreshold: 10,
                 preloadImages: false,
                 pressDelay: 1000,
@@ -92,8 +91,8 @@
             };
 
         function _debug(message) {
-            var now = (new Date).getTime();
-            var delta = now - lastTime;
+            now = (new Date).getTime();
+            delta = now - lastTime;
             lastTime = now;
             if (jQTSettings.debug) {
                 if (message) {
@@ -137,7 +136,7 @@
 
             // Find the nearest tappable ancestor
             if (!$el.is(touchSelectors.join(', '))) {
-                $el = $(e.target).closest(touchSelectors.join(', '));
+                var $el = $(e.target).closest(touchSelectors.join(', '));
             }
 
             // Prevent default if we found an internal link (relative or absolute)
@@ -352,16 +351,20 @@
                 };
             }
 
-            // Set appropriate icon (retina display available in iOS 4.2 and later.)
-            var precomposed = (jQTSettings.addGlossToIcon) ? '' : '-precomposed';
-            if (jQTSettings.icon) {
-                hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" href="' + jQTSettings.icon + '" />';
-            }
-            if (jQTSettings.iconPad) {
-                hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" sizes="72x72" href="' + jQTSettings.iconPad + '" />';
-            }
-            if (jQTSettings.icon4) {
-                hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" sizes="114x114" href="' + jQTSettings.icon4 + '" />';
+            // Set appropriate icon (retina display stuff is experimental)
+            if (jQTSettings.icon || jQTSettings.icon4) {
+                var precomposed, appropriateIcon;
+                if (jQTSettings.icon4 && window.devicePixelRatio && window.devicePixelRatio === 2) {
+                    appropriateIcon = jQTSettings.icon4;
+                } else if (jQTSettings.icon) {
+                    appropriateIcon = jQTSettings.icon;
+                } else {
+                    appropriateIcon = false;
+                }
+                if (appropriateIcon) {
+                    precomposed = (jQTSettings.addGlossToIcon) ? '' : '-precomposed';
+                    hairExtensions += '<link rel="apple-touch-icon' + precomposed + '" href="' + appropriateIcon + '" />';
+                }
             }
 
             // Set startup screen

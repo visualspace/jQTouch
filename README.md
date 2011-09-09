@@ -1,6 +1,12 @@
-BeeDesk's fork. 
-=======
-Added 
+=============================
+Visualspace's fork of JQTouch
+=============================
+
+Merging BeeDesk's fork (integration branch) and DataZombies fork.
+
+------------------
+Changes by Beedesk
+------------------
 - iScroll integration,
 - Grid layout with badge
 - Webkit gradient for buttons,
@@ -10,6 +16,25 @@ Added
 
 See the demo here:
     [Demo](http://dev.beedesk.com/jqtouch_iscroll/demos/iscroll/).
+
+----------------------
+Changes by DataZombies
+----------------------
+
+Fixed
+------------------------------------------------------------
+
+- Fixed jqt.autotitles.js to honor hardcoded titles (and does back buttons, too). [demo](http://web.me.com/djpinter1/iPhone/jqtouch/demos/ext_autotitles)
+
+Enhancements 
+------------------------------------------------------------
+
+- jqt.bars.js - Horizontal scrolling tabbar with badges; ([demo](http://web.me.com/djpinter1/iPhone/jqtouch/demos/main_tabbar/))
+- Reworked Main demo that uses a global tabbar and iScroll (see above demo).
+- jqt.activityIndicator ([demo](http://web.me.com/djpinter1/iPhone/jqtouch/demos/ext_activityIndicator/)), a really cool, customizable object.
+- jqt.autotitles ([demo](http://web.me.com/djpinter1/iPhone/jqtouch/demos/ext_autotitles)), now sets the back button's text honoring any hardcoded text.
+- jqt.checkGroup ([demo](http://web.me.com/djpinter1/iPhone/jqtouch/demos/ext_checkGroup/)), for that to do list you've been putting off.
+- jqt.segmentedControl ([demo](http://web.me.com/djpinter1/iPhone/jqtouch/demos/ext_segmentedControl/))
 
 
 jQTouch
