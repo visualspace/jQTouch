@@ -26,7 +26,10 @@
 
 (function($) {
     $.jQTouch = function(options) {
-
+        var START_EVENT = 'touchstart';
+        var MOVE_EVENT = 'touchmove';
+        var END_EVENT = 'touchend';
+        var CANCEL_EVENT = 'touchcancel';
         // Initialize internal jQT variables
         var $body,
             $head=$('head'),
@@ -47,7 +50,7 @@
             hairExtensions='',
             defaults = {
                 addGlossToIcon: true,
-                backSelector: '.back, .cancel, .goback',
+                backSelector: '.back, .cancel, .goback, .done',
                 cacheGetRequests: true,
                 debug: false,
                 fallback2dAnimation: 'fade',
@@ -161,6 +164,7 @@
             if (toPage.length === 0) {
                 $.fn.unselect();
                 _debug('Target element is missing.');
+                tapReady = true;
                 return false;
             }
 
@@ -168,6 +172,7 @@
             if (toPage.hasClass('current')) {
                 $.fn.unselect();
                 _debug('You are already on the page you are trying to navigate to.');
+                tapReady = true;
                 return false;
             }
 
@@ -445,6 +450,8 @@
             var settings = $.extend({}, defaults, options);
 
             if (href != '#') {
+                tapReady = false;
+
                 $.ajax({
                     url: href,
                     data: settings.data,
@@ -458,6 +465,8 @@
                             if (settings.callback) {
                                 settings.callback(true);
                             }
+                        } else {
+                            tapReady = true;
                         }
                     },
                     error: function (data) {
@@ -467,6 +476,7 @@
                         if (settings.callback) {
                             settings.callback(false);
                         }
+                        tapReady = true;
                     }
                 });
             } else if (settings.$referrer) {
@@ -689,10 +699,12 @@
             }
 
             // Prep the element
-            $el.bind('touchmove',touchMoveHandler).bind('touchend',touchEndHandler).bind('touchcancel',touchCancelHandler);
+            $el.bind(MOVE_EVENT, touchMoveHandler).bind(END_EVENT,touchEndHandler).bind(CANCEL_EVENT,touchCancelHandler);
 
             hoverTimeout = setTimeout(function() {
-                $el.makeActive();
+                if (tapReady) {
+                    $el.makeActive();
+                }
             }, jQTSettings.hoverDelay);
 
             pressTimeout = setTimeout(function() {
@@ -707,13 +719,13 @@
                 _debug();
                 clearTimeout(hoverTimeout);
                 $el.unselect();
-                $el.unbind('touchmove',touchMoveHandler).unbind('touchend',touchEndHandler).unbind('touchcancel',touchCancelHandler);
+                $el.unbind(MOVE_EVENT,touchMoveHandler).unbind(END_EVENT,touchEndHandler).unbind(CANCEL_EVENT,touchCancelHandler);
             }
 
             function touchEndHandler(e) {
                 _debug();
                 // updateChanges();
-                $el.unbind('touchend',touchEndHandler).unbind('touchcancel',touchCancelHandler);
+                $el.unbind(END_EVENT,touchEndHandler).unbind(CANCEL_EVENT,touchCancelHandler);
                 clearTimeout(hoverTimeout);
                 clearTimeout(pressTimeout);
                 if (Math.abs(deltaX) < jQTSettings.moveThreshold && Math.abs(deltaY) < jQTSettings.moveThreshold && deltaT < jQTSettings.pressDelay) {
@@ -737,7 +749,7 @@
                     } else {
                         direction = 'right';
                     }
-                    $el.unbind('touchmove',touchMoveHandler).unbind('touchend',touchEndHandler).unbind('touchcancel',touchCancelHandler);
+                    $el.unbind(MOVE_EVENT,touchMoveHandler).unbind(END_EVENT,touchEndHandler).unbind(CANCEL_EVENT,touchCancelHandler);
                     $el.trigger('swipe', {direction:direction, deltaX:deltaX, deltaY: deltaY});
                 }
                 $el.unselect();
@@ -882,13 +894,14 @@
             if (jQTSettings.fullScreenClass && window.navigator.standalone == true) {
                 $body.addClass(jQTSettings.fullScreenClass + ' ' + jQTSettings.statusBar);
             }
+
             if (window.navigator.userAgent.match(/Android/ig)) { // Grr... added to postion checkbox labels. Lame. I know. - js
                 $body.addClass('android');
             }
 
             // Bind events
             $(window).bind('hashchange', hashChangeHandler);
-            $body.bind('touchstart', touchStartHandler)
+            $body.bind(START_EVENT, touchStartHandler)
                 .bind('click', clickHandler)
                 .bind('mousedown', mousedownHandler)
                 .bind('orientationchange', orientationChangeHandler)

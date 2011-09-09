@@ -1,3 +1,17 @@
+BeeDesk's fork. 
+=======
+Added 
+- iScroll integration,
+- Grid layout with badge
+- Webkit gradient for buttons,
+- Fixes to landscape mode,
+- Tabbar,
+- etc.
+
+See the demo here:
+    [Demo](http://dev.beedesk.com/jqtouch_iscroll/demos/iscroll/).
+
+
 jQTouch
 =======
 
